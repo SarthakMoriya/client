@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -11,15 +11,18 @@ import {
 } from "../../schemas/authSchema";
 
 const Signup = () => {
+  const [image, setImage] = useState(null);
+  const [isImageUploaded, setIsImageUploaded] = useState(false)
   const navigate = useNavigate();
 
   const handleSignup = async (values, onSubmitProps) => {
+    console.log(image);
     const formData = new FormData();
     for (let value in values) {
       formData.append(value, values[value]);
     }
     formData.append("passcode", values.secretkey);
-    formData.append("picturePath", values.picture.name);
+    formData.append("picturePath", image ? image.name : "");
     console.log(formData);
     const res = await fetch("http://localhost:8000/auth/signup", {
       method: "POST",
@@ -43,6 +46,32 @@ const Signup = () => {
   };
   const handleFormSubmit = async (values, onSubmitProps) => {
     handleSignup(values, onSubmitProps);
+  };
+
+  const handleImageUpload = async () => {
+    if (image) {
+      const imageForm = new FormData();
+      imageForm.append("image", image);
+
+      try {
+        const response = await fetch("http://localhost:8000/upload", {
+          method: "POST",
+          body: imageForm,
+        });
+
+        if (response.ok) {
+          console.log("Image uploaded successfully");
+          notify("Image uploaded successfully","success")
+          setIsImageUploaded(true)
+        } else {
+          console.error("Error uploading image");
+        }
+      } catch (error) {
+        console.error("Error uploading image", error);
+      }
+    } else {
+      console.error("No file selected");
+    }
   };
   return (
     <>
@@ -76,6 +105,29 @@ const Signup = () => {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Create your account
               </h1>
+              {/* IMAGE FIELD */}
+              <div>
+                <label
+                  htmlFor="picture"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Profile Photo
+                </label>
+                <input
+                  type="file"
+                  name="picture"
+                  id="picture"
+                  onChange={(e) => setImage(e.target.files[0])}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                />
+                <button
+                  className="w-full mt-2 text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-blue-500 dark:focus:ring-primary-800"
+                  onClick={handleImageUpload}
+                  disabled={isImageUploaded?true:false}
+                >
+                  {isImageUploaded? "Image Uploaded" : "Upload Image"}
+                </button>
+              </div>
               <Formik
                 onSubmit={handleFormSubmit}
                 initialValues={initialValuesRegister}
@@ -96,34 +148,6 @@ const Signup = () => {
                     method="POST"
                     onSubmit={handleSubmit}
                   >
-                    {/* IMAGE FIELD */}
-                    <div>
-                      <label
-                        htmlFor="picture"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        Profile Photo
-                      </label>
-                      <input
-                        type="file"
-                        name="picture"
-                        id="picture"
-                        onBlur={handleBlur}
-                        value={values.picture}
-                        onChange={handleChange}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="name@company.com"
-                        error={
-                          Boolean(touched.picture) && Boolean(errors.picture)
-                        }
-                        helperText={touched.picture && errors.picture}
-                      />
-                       {touched.picture && errors.picture && (
-                        <div className="text-blue-700 text-md my-1 ml-2">
-                          {errors.picture}
-                        </div>
-                      )}
-                    </div>
                     {/* USERNAME FIELD */}
                     <div>
                       <label
