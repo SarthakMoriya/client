@@ -23,7 +23,7 @@ const Sidebar = () => {
             }}
           >
             <div className="w-[50%] p-2 rounded-lg flex items-center cursor-pointer">
-              <img src={user} alt="" className="w-10 h-10 rounded-full" />
+              <img src={record?.imageName ? `http://localhost:8000/assets/${record?.imageName}` : user} alt="" className="w-10 h-10 rounded-full" />
               <div className=" p-2 font-semibold text-white capitalize ml-4">
                 ID:{record?.studentName}
               </div>

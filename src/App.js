@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import { setRecords } from "./state";
 import { useDispatch } from "react-redux";
 import Edit from "./components/Edit/Edit";
+import MyPanel from "./components/MyPanel/MyPanel";
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
@@ -45,6 +46,10 @@ function App() {
         <Route
           path="/record/edit/:id"
           element={user != null ? <Edit /> : <Login />}
+        />
+        <Route
+          path="/mypanel"
+          element={user != null ? <MyPanel /> : <Login />}
         />
       </Routes>
     </BrowserRouter>

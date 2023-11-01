@@ -9,10 +9,10 @@ const Edit = () => {
   const record = useSelector((state) => {
     return state.record.records.find((rec) => rec._id === id.id);
   });
-  const [sName, setSname] = useState(record.studentName);
-  const [coursename, setCoursename] = useState(record.studentCourse);
-  const [date, setDate] = useState(record.dateEnrolled);
-  const [studentId, setStudentId] = useState(record.studentId);
+  const [sName, setSname] = useState(record?.studentName);
+  const [coursename, setCoursename] = useState(record?.studentCourse);
+  const [date, setDate] = useState(record?.dateEnrolled);
+  const [studentId, setStudentId] = useState(record?.studentId);
   const [isAddingExam, setIsAddingExam] = useState(false);
   const [examsArr, setExamsArr] = useState([...record?.exams]);
 

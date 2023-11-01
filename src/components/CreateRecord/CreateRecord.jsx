@@ -7,15 +7,17 @@ const CreateRecord = () => {
   const [date, setDate] = useState(Date.now());
   const [subs, setSubs] = useState(0);
   const [examname, setExamname] = useState("");
-  const [totalmarks, setTotalmarks] = useState('');
-  const [marksobtained, setMarksobtained] = useState('');
+  const [totalmarks, setTotalmarks] = useState("");
+  const [marksobtained, setMarksobtained] = useState("");
   const [studentId, setStudentId] = useState("");
   const [exams, setExams] = useState([]);
+  const [image, setImage] = useState([]);
 
   const teacherId = useSelector((state) => state.auth.user._id);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(image)
     await fetch("http://localhost:8000/records/createrecord", {
       method: "POST",
       headers: {
@@ -28,8 +30,15 @@ const CreateRecord = () => {
         exams: exams,
         studentId,
         teacherId,
+        imageName:image.name
       }),
     });
+    const formData=new FormData()
+    formData.append("image",image)
+    await fetch("http://localhost:8000/upload",{
+      method: "POST",
+      body:formData
+    })
 
     //Resetting field values
     setSname("");
@@ -44,7 +53,7 @@ const CreateRecord = () => {
       { name: examname, mt: totalmarks, mo: marksobtained },
       ...prev,
     ]);
-   
+
     //Resetting Exam Details
     setExamname("");
     setTotalmarks("");
@@ -60,6 +69,24 @@ const CreateRecord = () => {
             </h2>
             <form onSubmit={handleSubmit}>
               <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
+                {/* STUDENT IMAGE */}
+                <div className="sm:col-span-2">
+                  <label
+                    for="image"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Student Name
+                  </label>
+                  <input
+                    type="file"
+                    name="image"
+                    id="image"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    onChange={(e) => {
+                      setImage(e.target.files[0]);
+                    }}
+                  />
+                </div>
                 {/* STUDENT NAME */}
                 <div className="sm:col-span-2">
                   <label
@@ -162,7 +189,7 @@ const CreateRecord = () => {
                   />
                 </div>
                 {/* EXAMS DETAILS */}
-                {subs >=1 && (
+                {subs >= 1 && (
                   <>
                     <div className=" w-full">
                       <label

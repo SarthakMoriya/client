@@ -56,7 +56,7 @@ const GetRecord = () => {
         <div className="flex   border-2 ">
           <div className="flex m-2 w-[100%] h-[40vh] border ">
             <div className="image flex p-4 rounded-full text-white">
-              <img src={user} alt="" className="rounded-full" />
+              <img src={record?.imageName ? `http://localhost:8000/assets/${record?.imageName}` : user} alt="" className="rounded-full" />
             </div>
             <div className="info flex flex-col  justify-center  text-white">
               <div className="mx-4 my-2 font-normal  text-3xl">
