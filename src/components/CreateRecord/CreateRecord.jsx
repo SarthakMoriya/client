@@ -9,11 +9,13 @@ const CreateRecord = () => {
   const [totalmarks, setTotalmarks] = useState("");
   const [marksobtained, setMarksobtained] = useState("");
   const [exams, setExams] = useState([]);
+  const [image, setImage] = useState(null);
+  const [isImageUploaded, setIsImageUploaded] = useState(false);
 
   const teacherId = useSelector((state) => state.auth.user._id);
 
   const handleRecordSubmit = async (values, onSubmitProps) => {
-    console.log(values.picture.name)
+  
     await fetch("http://localhost:8000/records/createrecord", {
       method: "POST",
       headers: {
@@ -24,19 +26,11 @@ const CreateRecord = () => {
         studentCourse: values.coursename,
         dateEnrolled: values.date,
         exams: exams,
-        studentId:values.studentId,
-        teacherId:teacherId,
-        imageName: values.picture.name,
+        studentId: values.studentId,
+        teacherId: teacherId,
+        imageName: image?image?.name:"",
       }),
     });
-    const formData = new FormData();
-    formData.append("image", values.picture);
-    await fetch("http://localhost:8000/upload", {
-      method: "POST",
-      body: formData,
-    });
-
-
 
   };
   //To handle tests details of various tests taken
@@ -53,6 +47,31 @@ const CreateRecord = () => {
     setTotalmarks("");
     setMarksobtained("");
   };
+  const handleImageUpload = async () => {
+    if (image) {
+      const imageForm = new FormData();
+      imageForm.append("image", image);
+
+      try {
+        const response = await fetch("http://localhost:8000/upload", {
+          method: "POST",
+          body: imageForm,
+        });
+
+        if (response.ok) {
+          console.log("Image uploaded successfully");
+          // notify("Image uploaded successfully","success")
+          setIsImageUploaded(true);
+        } else {
+          console.error("Error uploading image");
+        }
+      } catch (error) {
+        console.error("Error uploading image", error);
+      }
+    } else {
+      console.error("No file selected");
+    }
+  };
   return (
     <>
       <div className="  bg-blue-100">
@@ -61,6 +80,29 @@ const CreateRecord = () => {
             <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
               Add a new Record
             </h2>
+            {/* IMAGE FIELD */}
+            <div>
+              <label
+                htmlFor="picture"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Profile Photo
+              </label>
+              <input
+                type="file"
+                name="picture"
+                id="picture"
+                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                onChange={(e)=>setImage(e.target.files[0])}
+              />
+            </div>
+            <button
+              className="w-full mt-2 text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-blue-500 dark:focus:ring-primary-800"
+              onClick={handleImageUpload}
+              disabled={isImageUploaded ? true : false}
+            >
+              {isImageUploaded ? "Image Uploaded" : "Upload Image"}
+            </button>
             <Formik
               onSubmit={handleRecordSubmit}
               initialValues={initialValuesRecord}
@@ -78,35 +120,7 @@ const CreateRecord = () => {
               }) => (
                 <form onSubmit={handleSubmit}>
                   <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
-                    {/* STUDENT IMAGE */}
-                    {/* IMAGE FIELD */}
-                    <div>
-                      <label
-                        htmlFor="picture"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        Profile Photo
-                      </label>
-                      <input
-                        type="file"
-                        name="picture"
-                        id="picture"
-                        onBlur={handleBlur}
-                        value={values.picture}
-                        onChange={handleChange}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="name@company.com"
-                        error={
-                          Boolean(touched.picture) && Boolean(errors.picture)
-                        }
-                        helperText={touched.picture && errors.picture}
-                      />
-                       {touched.picture && errors.picture && (
-                        <div className="text-blue-700 text-md my-1 ml-2">
-                          {errors.picture}
-                        </div>
-                      )}
-                    </div>
+
                     {/* STUDENT NAME */}
                     <div className="sm:col-span-2">
                       <label
@@ -124,9 +138,7 @@ const CreateRecord = () => {
                         onBlur={handleBlur}
                         value={values.sName}
                         onChange={handleChange}
-                        error={
-                          Boolean(touched.sName) && Boolean(errors.sName)
-                        }
+                        error={Boolean(touched.sName) && Boolean(errors.sName)}
                         helperText={touched.sName && errors.sName}
                       />
                       {touched.sName && errors.sName && (
@@ -153,7 +165,8 @@ const CreateRecord = () => {
                         value={values.coursename}
                         onChange={handleChange}
                         error={
-                          Boolean(touched.coursename) && Boolean(errors.coursename)
+                          Boolean(touched.coursename) &&
+                          Boolean(errors.coursename)
                         }
                         helperText={touched.coursename && errors.coursename}
                       />
@@ -180,12 +193,10 @@ const CreateRecord = () => {
                         onBlur={handleBlur}
                         value={values.date}
                         onChange={handleChange}
-                        error={
-                          Boolean(touched.date) && Boolean(errors.date)
-                        }
+                        error={Boolean(touched.date) && Boolean(errors.date)}
                         helperText={touched.date && errors.date}
                       />
-                       {touched.date && errors.date && (
+                      {touched.date && errors.date && (
                         <div className="text-blue-700 text-md my-1 ml-2">
                           {errors.date}
                         </div>
@@ -209,7 +220,8 @@ const CreateRecord = () => {
                         value={values.studentId}
                         onChange={handleChange}
                         error={
-                          Boolean(touched.studentId) && Boolean(errors.studentId)
+                          Boolean(touched.studentId) &&
+                          Boolean(errors.studentId)
                         }
                         helperText={touched.studentId && errors.studentId}
                       />

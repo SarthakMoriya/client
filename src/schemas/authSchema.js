@@ -19,7 +19,18 @@ export const loginSchema=yup.object().shape({
    
 })
 
+export const adminloginSchema=yup.object().shape({
+    email: yup.string().email("invalid email").required("Please enter a email"),
+    password: yup.string().required("Please enter a password"),
+   
+})
+
 export const initialValuesLogin = {
+    email: "",
+    password: "",
+    
+  };
+export const initialValuesAdminLogin = {
     email: "",
     password: "",
     

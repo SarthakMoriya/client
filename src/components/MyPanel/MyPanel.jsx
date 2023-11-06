@@ -4,21 +4,33 @@ import fallbackPic from "./user.png";
 import UpdatePassword from "./UpdatePassword";
 import UpdatePasscode from "./UpdatePasscode";
 import Student from "./Student";
+import OtpModal from "./OtpModal";
 
 const MyPanel = () => {
   const { user } = useSelector((state) => state.auth);
   const [isUpdatePassword, setIsUpdatePassword] = useState(false);
   const [isUpdatePasscode, setIsUpdatePasscode] = useState(false);
   const [teacherRecords, setTeacherRecords] = useState([]);
+  const [isVerified, setIsVerified] = useState(user?.verified);//Boolean(localStorage.getItem('is_verified'))
+  const [isOtpSent, setIsOtpSent] = useState(false);
 
   const fetchStudents = async () => {
-    console.log(user?._id);
+
     const data = await fetch(
       `http://localhost:8000/records/getstudents/${user?._id}`
     );
     const res = await data.json();
     setTeacherRecords(res.records);
-    console.log(res)
+
+  };
+  const verifyEmail = async () => {
+    const res = await fetch(`http://localhost:8000/auth/verifyemail`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: user?.email }),
+    });
+    const data = await res.json();
+    setIsOtpSent(data.otp);
   };
   useEffect(() => {
     fetchStudents();
@@ -70,8 +82,26 @@ const MyPanel = () => {
                 type="button"
                 className="w-full text-white  bg-blue-800 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg "
               >
-                Edit Info
+                Edit Account
               </button>
+              {isVerified === false && (
+                <span
+                  type="button"
+                  onClick={verifyEmail}
+                  disabled={isVerified ? false : true}
+                  className=" cursor-pointer w-full text-white  bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg "
+                >
+                  Unverified Account
+                </span>
+              )}
+              {isVerified === true && (
+                <span
+                  type="button"
+                  className=" cursor-pointer w-full text-white  bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg "
+                >
+                  Verifed Account
+                </span>
+              )}
             </div>
           </div>
         </div>
@@ -82,11 +112,25 @@ const MyPanel = () => {
       {isUpdatePasscode && (
         <UpdatePasscode user={user} setIsUpdatePasscode={setIsUpdatePasscode} />
       )}
+      {isOtpSent && (
+        <OtpModal
+          otp={isOtpSent}
+          setIsOtpSent={setIsOtpSent}
+          setIsVerified={setIsVerified}
+        />
+      )}
 
       {/* TEACHER'S STUDENTS */}
-      <div className="text-center text-3xl text-white w-full uppercase my-4">Your Students</div>
-      {teacherRecords.length > 0 && teacherRecords.map((stu) => <Student key={stu?._id} student={stu}/>)}
-      {teacherRecords.length ===0 && <div className="text-center text-3xl text-white w-full ">No Student Records Found!</div>}
+      <div className="text-center text-3xl text-white w-full uppercase my-4">
+        Your Students
+      </div>
+      {teacherRecords.length > 0 &&
+        teacherRecords.map((stu) => <Student key={stu?._id} student={stu} />)}
+      {teacherRecords.length === 0 && (
+        <div className="text-center text-3xl text-white w-full ">
+          No Student Records Found!
+        </div>
+      )}
     </div>
   );
 };

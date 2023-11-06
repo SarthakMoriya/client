@@ -12,25 +12,28 @@ import { setRecords } from "./state";
 import { useDispatch } from "react-redux";
 import Edit from "./components/Edit/Edit";
 import MyPanel from "./components/MyPanel/MyPanel";
+import AdminLogin from "./components/Admin/AdminLogin";
+import Panel from "./components/Admin/Panel";
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
-
+  console.log(user)
   const getRecords = async () => {
     const data = await fetch("http://localhost:8000/records/getrecords");
     const res = await data.json();
-    console.log(res)
-    dispatch(setRecords({records:res}));
+    dispatch(setRecords({ records: res }));
   };
-  console.log(user)
+
+
+  localStorage.setItem("is_verified", user ? user?.verified : false);
   useEffect(() => {
     getRecords();
   }, []);
   return (
     <BrowserRouter>
       <Navbar />
-      <br/>
-      <br/>
+      <br />
+      <br />
       <Routes>
         <Route path="/" element={user ? <Home /> : <Login />} />
         <Route path="/login" element={<Login />} />
@@ -50,6 +53,18 @@ function App() {
         <Route
           path="/mypanel"
           element={user != null ? <MyPanel /> : <Login />}
+        />
+        <Route
+          path="/admin/login"
+          element={ <AdminLogin />}
+        />
+        <Route
+          path="/admin"
+          element={ <AdminLogin />}
+        />
+        <Route
+          path="/admin/panel"
+          element={ user!=null?<Panel />:<AdminLogin/>}
         />
       </Routes>
     </BrowserRouter>

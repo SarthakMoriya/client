@@ -20,13 +20,12 @@ const Edit = () => {
   const teacherId = useSelector((state) => state.auth.user._id);
 
   const handleUpdateExam = (result) => {
-    // console.log(result)
+
     setExamsArr(result);
-    console.log(examsArr)
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(id)
+
     await fetch(`http://localhost:8000/records/updatefullrecord/${id.id}`, {
       method: "PATCH",
       headers: {
@@ -161,7 +160,7 @@ const Edit = () => {
                 type="button"
                 className="bg-gray-500 border border-gray-300 text-white text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  "
               >
-                Add More Exams
+                {!isAddingExam?"Add More Exams":"save exams"}
               </button>
               {/* ADD EXAM MODAL */}
               {isAddingExam && (
@@ -175,7 +174,7 @@ const Edit = () => {
                 type="submit"
                 className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800 bg-blue-400"
               >
-                Add Record
+                Save Record
               </button>
             </form>
           </div>

@@ -27,7 +27,7 @@ const RecordTable = ({ exams, studentName,studentCourseName}) => {
       ))}
       <div className="flex items-center uppercase">
         <div className="bg-blue-400 text-gray-100 text-center p-1 w-[25%] border py-4 ">
-          No. of Exams: {exams?.length - 1}
+          No. of Exams: {exams?.length}
         </div>
         <div className="bg-blue-400 text-gray-100 text-center p-1 w-[25%] border py-4">
           Total Marks Obtained: {}

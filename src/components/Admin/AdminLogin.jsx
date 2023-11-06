@@ -4,27 +4,30 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setLogin } from "../../state";
 import { Formik } from "formik";
-import { initialValuesLogin, loginSchema } from "../../schemas/authSchema";
+import { initialValuesAdminLogin, adminloginSchema } from "../../schemas/authSchema";
 
-const Login = () => {
+const AdminLogin = () => {
   const distpatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogin = async (values, onSubmitProps) => {
-    const res = await fetch("http://localhost:8000/auth/login", {
+    const res = await fetch("http://localhost:8000/auth/admin/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: values.email, password: values.password }),
     });
     const data = await res.json();
-    console.log(data.isAdminApprovedAccount,data);
-    if (data?.user?.isAdminApprovedAccount === false) {
-      alert("Account isnt approved by admin");
-    } else {
-      distpatch(setLogin({ user: data.user, token: data.token }));
-      localStorage.setItem("is_verified", data.user.verified);
-      navigate("/");
-    }
+    distpatch(
+      setLogin({
+        user: data.user,
+        token: data.token,
+        secretkey: data.secretkey,
+      })
+    );
+    console.log(data)
+
+    localStorage.setItem("is_verified", data.user.verified);
+    navigate("/");
   };
   return (
     <>
@@ -40,13 +43,13 @@ const Login = () => {
           </Link>
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-              <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                Sign in to your account
+              <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white capitalize">
+                Sign in to your Admin account
               </h1>
               <Formik
                 onSubmit={handleLogin}
-                initialValues={initialValuesLogin}
-                validationSchema={loginSchema}
+                initialValues={initialValuesAdminLogin}
+                validationSchema={adminloginSchema}
               >
                 {({
                   values,
@@ -67,7 +70,7 @@ const Login = () => {
                         htmlFor="email"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
-                        Your email
+                        Admin email
                       </label>
                       <input
                         type="email"
@@ -92,7 +95,7 @@ const Login = () => {
                         htmlFor="password"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
-                        Password
+                        Admin Password
                       </label>
                       <input
                         type="password"
@@ -114,26 +117,13 @@ const Login = () => {
                         </div>
                       )}
                     </div>
-                    <div className="flex items-center justify-between">
-                      <Link className="text-sm font-medium text-primary-600 hover:underline text-blue-400">
-                        Forgot password?
-                      </Link>
-                    </div>
+
                     <button
                       type="submit"
                       className="w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-blue-500 dark:focus:ring-primary-800"
                     >
                       Sign in
                     </button>
-                    <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                      Don’t have an account yet?{" "}
-                      <Link
-                        to="/signup"
-                        className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                      >
-                        Sign up
-                      </Link>
-                    </p>
                   </form>
                 )}
               </Formik>
@@ -145,4 +135,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default AdminLogin;
