@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Formik } from "formik";
 import { initialValuesRecord, recordSchema } from "../../schemas/recordSchema";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CreateRecord = () => {
   const [subs, setSubs] = useState(0);
@@ -14,9 +16,13 @@ const CreateRecord = () => {
 
   const teacherId = useSelector((state) => state.auth.user._id);
 
+  const notify = (message, type = "error") => {
+    if (type === "success") toast.success(message);
+    else toast.error(message);
+  };
+
   const handleRecordSubmit = async (values, onSubmitProps) => {
-  
-    await fetch("http://localhost:8000/records/createrecord", {
+    const res = await fetch("http://localhost:8000/records/createrecord", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -28,10 +34,17 @@ const CreateRecord = () => {
         exams: exams,
         studentId: values.studentId,
         teacherId: teacherId,
-        imageName: image?image?.name:"",
+        imageName: image ? image?.name : "",
       }),
     });
-
+    const data = await res.json();
+    console.log(data)
+    if(data.ok){
+      onSubmitProps.resetForm();
+      notify("Record Created Successfully", "success");
+    }else{
+      notify("Record Creation Failed, Try using Unique Student ID")
+    }
   };
   //To handle tests details of various tests taken
   const handleExamDetails = () => {
@@ -75,6 +88,18 @@ const CreateRecord = () => {
   return (
     <>
       <div className="  bg-blue-100">
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
         <section className="bg-white dark:bg-gray-900 h-[100vh]">
           <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
             <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
@@ -93,7 +118,7 @@ const CreateRecord = () => {
                 name="picture"
                 id="picture"
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                onChange={(e)=>setImage(e.target.files[0])}
+                onChange={(e) => setImage(e.target.files[0])}
               />
             </div>
             <button
@@ -120,7 +145,6 @@ const CreateRecord = () => {
               }) => (
                 <form onSubmit={handleSubmit}>
                   <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
-
                     {/* STUDENT NAME */}
                     <div className="sm:col-span-2">
                       <label

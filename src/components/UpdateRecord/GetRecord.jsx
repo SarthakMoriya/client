@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { deleteRecord } from "../../api";
 import user from "../../assets/user.png";
 import RecordTable from "./RecordTable";
+import { gradeCalculator } from "../../utils/gradeCalculator";
 
 const GetRecord = () => {
   const [record, setRecord] = useState("");
@@ -26,21 +27,24 @@ const GetRecord = () => {
   };
 
   const handleDownload = async () => {
-    console.log(record)
+    console.log(record);
     const data = {
       studentName: record.studentName,
       enrolledAt: record.dateEnrolled,
       teacherName: id,
       grade: "a",
       exams: record.exams,
+      id,
     };
 
     await fetch("http://localhost:8000/records/downloadrecord", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({data: data}),
+      body: JSON.stringify({ data: data }),
     });
-    console.log(data)
+    setTimeout(() => {
+      window.open(`http://localhost:8000/pdfs/${id}.png`);
+    }, 2000);
   };
 
   useEffect(() => {
@@ -56,7 +60,15 @@ const GetRecord = () => {
         <div className="flex   border-2 ">
           <div className="flex m-2 w-[100%] h-[40vh] border ">
             <div className="image flex p-4 rounded-full text-white">
-              <img src={record?.imageName ? `http://localhost:8000/assets/${record?.imageName}` : user} alt="" className="rounded-full" />
+              <img
+                src={
+                  record?.imageName
+                    ? `http://localhost:8000/assets/${record?.imageName}`
+                    : user
+                }
+                alt=""
+                className="rounded-full"
+              />
             </div>
             <div className="info flex flex-col  justify-center  text-white">
               <div className="mx-4 my-2 font-normal  text-3xl">
@@ -66,7 +78,7 @@ const GetRecord = () => {
                 Course: {record?.studentCourse}
               </div>
               <div className="mx-4 my-2 font-normal text-xl text-white">
-                Grade: {record?.grade || "Not Graded"}
+                Grade: {gradeCalculator(record?.exams)}
               </div>
             </div>
             <div className="text-white  mt-2">
@@ -95,6 +107,11 @@ const GetRecord = () => {
               >
                 Download
               </button>
+              <a
+                href={`http://localhost:8000/pdfs/654a2138494de5107bdd1c14.png`}
+              >
+                HELLLLO
+              </a>
             </div>
           </div>
         </div>

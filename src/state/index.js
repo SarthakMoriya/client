@@ -28,7 +28,8 @@ export const recordsSlice = createSlice({
   initialState: { records: [] },
   reducers: {
     setRecords: (state, action) => {
-      state.records = action.payload.records;
+      console.log(action?.payload?.records)
+      state.records = action?.payload?.records;
     },
   },
 });

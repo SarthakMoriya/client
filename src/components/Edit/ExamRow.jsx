@@ -35,6 +35,7 @@ const ExamRow = ({ exam, exams,handleUpdateExam }) => {
         />
         <input
           type="number"
+          placeholder="total marks"
           value={totalMarks}
           onChange={(e) => {
             setTotalMarks(e.target.value);
@@ -43,6 +44,7 @@ const ExamRow = ({ exam, exams,handleUpdateExam }) => {
         />
         <input
           type="number"
+          placeholder="marks obtained"
           value={obtMarks}
           onChange={(e) => {
             setObtMarks(e.target.value);

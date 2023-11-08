@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import ExamRow from "./ExamRow";
 import ExamModal from "./ExamModal";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Edit = () => {
   const id = useParams();
+  const navigate = useNavigate();
   const record = useSelector((state) => {
     return state.record.records.find((rec) => rec._id === id.id);
   });
@@ -16,11 +19,14 @@ const Edit = () => {
   const [isAddingExam, setIsAddingExam] = useState(false);
   const [examsArr, setExamsArr] = useState([...record?.exams]);
 
-
   const teacherId = useSelector((state) => state.auth.user._id);
 
-  const handleUpdateExam = (result) => {
+  const notify = (message, type = "error") => {
+    if (type === "success") toast.success(message);
+    else toast.error(message);
+  };
 
+  const handleUpdateExam = (result) => {
     setExamsArr(result);
   };
   const handleSubmit = async (e) => {
@@ -38,7 +44,7 @@ const Edit = () => {
         exams: examsArr,
         studentId,
         teacherId,
-        id
+        id,
       }),
     });
 
@@ -46,12 +52,30 @@ const Edit = () => {
     // setSname("");
     // setDate(Date.now());
     // setCoursename("");
+
+    notify("Record Updated", "success");
+    setTimeout(() => {
+      navigate(`/record/${record?._id}`);
+    }, 2000);
   };
   //To handle tests details of various tests taken
 
   return (
     <>
       <div className="  bg-blue-100">
+        {" "}
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
         <section className="bg-white dark:bg-gray-900 h-[100vh]">
           <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
             <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
@@ -72,8 +96,8 @@ const Edit = () => {
                     name="name"
                     id="name"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Type product name"
-                    required=""
+                    placeholder="Type student name"
+                    required="true"
                     value={sName}
                     onChange={(e) => {
                       setSname(e.target.value);
@@ -83,18 +107,18 @@ const Edit = () => {
                 {/* COURSE NAME */}
                 <div className="w-full">
                   <label
-                    htmlFor="brand"
+                    htmlFor="course"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
                     Course name
                   </label>
                   <input
                     type="text"
-                    name="brand"
-                    id="brand"
+                    name="course"
+                    id="course"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Product brand"
-                    required={true}
+                    required="true"
                     value={coursename}
                     onChange={(e) => setCoursename(e.target.value)}
                   />
@@ -113,7 +137,7 @@ const Edit = () => {
                     id="date"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="dd-mm-yyyy"
-                    required=""
+                    required="true"
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
                   />
@@ -160,7 +184,7 @@ const Edit = () => {
                 type="button"
                 className="bg-gray-500 border border-gray-300 text-white text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  "
               >
-                {!isAddingExam?"Add More Exams":"save exams"}
+                {!isAddingExam ? "Add More Exams" : "Save Exams"}
               </button>
               {/* ADD EXAM MODAL */}
               {isAddingExam && (

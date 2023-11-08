@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route,useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import Home from "./components/Home/Home";
@@ -14,16 +14,17 @@ import Edit from "./components/Edit/Edit";
 import MyPanel from "./components/MyPanel/MyPanel";
 import AdminLogin from "./components/Admin/AdminLogin";
 import Panel from "./components/Admin/Panel";
+import Pdf from "./components/PDF/Pdf";
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
-  console.log(user)
+  console.log(user);
   const getRecords = async () => {
     const data = await fetch("http://localhost:8000/records/getrecords");
     const res = await data.json();
+    console.log(res);
     dispatch(setRecords({ records: res }));
   };
-
 
   localStorage.setItem("is_verified", user ? user?.verified : false);
   useEffect(() => {
@@ -54,18 +55,13 @@ function App() {
           path="/mypanel"
           element={user != null ? <MyPanel /> : <Login />}
         />
-        <Route
-          path="/admin/login"
-          element={ <AdminLogin />}
-        />
-        <Route
-          path="/admin"
-          element={ <AdminLogin />}
-        />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin" element={<AdminLogin />} />
         <Route
           path="/admin/panel"
-          element={ user!=null?<Panel />:<AdminLogin/>}
+          element={user != null ? <Panel /> : <AdminLogin />}
         />
+        <Route path="/record/pdf/:id" element={<Pdf />} />
       </Routes>
     </BrowserRouter>
   );

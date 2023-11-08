@@ -21,9 +21,15 @@ const Login = () => {
     if (data?.user?.isAdminApprovedAccount === false) {
       alert("Account isnt approved by admin");
     } else {
-      distpatch(setLogin({ user: data.user, token: data.token }));
-      localStorage.setItem("is_verified", data.user.verified);
-      navigate("/");
+      if(data.ok){
+
+        distpatch(setLogin({ user: data.user, token: data.token }));
+        localStorage.setItem("is_verified", data.user.verified);
+        navigate("/");
+      }else{
+        alert("Invalid credentials...Please Try Again!")
+        onSubmitProps.resetForm();
+      }
     }
   };
   return (

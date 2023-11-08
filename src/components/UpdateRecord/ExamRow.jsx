@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
+import { gradeCalculator } from "../../utils/gradeCalculator";
 
 const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
   const [edit, setEdit] = useState(false);
@@ -10,6 +11,7 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
   const [isDeleted, setIsDeleted] = useState(false);
 
   const id = useParams();
+  const location = useLocation();
 
   const handleEdit = (examId) => {
     // exam id is name of Exam
@@ -37,6 +39,7 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
       }),
     });
     setEdit(false);
+    window.location.reload();
   };
 
   // HANDLING DELETE EXAM
@@ -116,7 +119,7 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
         </div>
       )}
       {/* NOT IN EDITING MODE */}
-      {edit === false && isDeleted !==exam?.name && (
+      {edit === false && isDeleted !== exam?.name && (
         <div className="flex items-center ">
           <div
             className={`${
@@ -150,28 +153,32 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
               i % 2 !== 0 ? "bg-gray-700" : "bg-gray-900"
             }  text-gray-100 text-center p-1 w-[20%] border-gray-400 border-2 `}
           >
-            {exam?.grade || "A"}
+            {gradeCalculator([{ mt: exam?.mt, mo: exam?.mo }])}
           </div>
-          <div
-            className={`${
-              i % 2 !== 0 ? "bg-gray-700" : "bg-gray-900"
-            }  text-gray-100 text-center p-1 w-[20%] border-gray-400 border-2 flex items-center`}
-          >
-            <div
-              onClick={() => {
-                handleEdit(exam?.name);
-              }}
-              className="w-[50%] bg-slate-400  hover:bg-blue-400 duration-500 ease-in rounded-sm border-1 cursor-pointer"
-            >
-              Edit
-            </div>
-            <div
-              onClick={handleDeleteExam}
-              className="w-[50%] bg-gray-600  hover:bg-red-400 duration-500 ease-in rounded-sm border-1 cursor-pointer"
-            >
-              Delete
-            </div>
-          </div>
+          {!location.pathname.includes("pdf") && (
+            <>
+              <div
+                className={`${
+                  i % 2 !== 0 ? "bg-gray-700" : "bg-gray-900"
+                }  text-gray-100 text-center p-1 w-[20%] border-gray-400 border-2 flex items-center`}
+              >
+                <div
+                  onClick={() => {
+                    handleEdit(exam?.name);
+                  }}
+                  className="w-[50%] bg-slate-400  hover:bg-blue-400 duration-500 ease-in rounded-sm border-1 cursor-pointer"
+                >
+                  Edit
+                </div>
+                <div
+                  onClick={handleDeleteExam}
+                  className="w-[50%] bg-gray-600  hover:bg-red-400 duration-500 ease-in rounded-sm border-1 cursor-pointer"
+                >
+                  Delete
+                </div>
+              </div>
+            </>
+          )}
         </div>
       )}
       {/* DELETED EXAM */}

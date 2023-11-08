@@ -18,6 +18,7 @@ const ExamModal = ({ exam, exams, handleUpdateExam }) => {
         <input
           type="text"
           value={examName}
+          placeholder="Exam Name"
           onChange={(e) => {
             setExamName(e.target.value);
           }}
@@ -26,6 +27,7 @@ const ExamModal = ({ exam, exams, handleUpdateExam }) => {
         <input
           type="number"
           value={totalMarks}
+          placeholder="Total Marks"
           onChange={(e) => {
             setTotalMarks(e.target.value);
           }}
@@ -34,6 +36,7 @@ const ExamModal = ({ exam, exams, handleUpdateExam }) => {
         <input
           type="number"
           value={obtMarks}
+          placeholder="Marks Obtained"
           onChange={(e) => {
             setObtMarks(e.target.value);
           }}
