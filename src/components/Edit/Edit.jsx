@@ -18,8 +18,10 @@ const Edit = () => {
   const [studentId, setStudentId] = useState(record?.studentId);
   const [isAddingExam, setIsAddingExam] = useState(false);
   const [examsArr, setExamsArr] = useState([...record?.exams]);
-
-  const teacherId = useSelector((state) => state.auth.user._id);
+  const [mainExamName, setMainExamName] = useState(record?.mainExamName);
+  const [mainExamMT, setMainExamMT] = useState(record?.mainExamMT);
+  const [mainExamMO, setMainExamMO] = useState(record?.mainExamMO)
+  const teacherId = useSelector((state) => state.auth.user._id)
 
   const notify = (message, type = "error") => {
     if (type === "success") toast.success(message);
@@ -62,7 +64,7 @@ const Edit = () => {
 
   return (
     <>
-      <div className="  bg-blue-100">
+      <div className="  bg-blue-100 h-auto">
         {" "}
         <ToastContainer
           position="top-center"
@@ -76,7 +78,7 @@ const Edit = () => {
           pauseOnHover
           theme="dark"
         />
-        <section className="bg-white dark:bg-gray-900 h-[100vh]">
+        <section className="bg-white dark:bg-gray-900 h-auto">
           <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
             <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
               Edit record of studentId: {record.studentId}
@@ -160,6 +162,69 @@ const Edit = () => {
                     value={studentId}
                     onChange={(e) => {
                       setStudentId(e.target.value);
+                    }}
+                  />
+                </div>
+                {/* MAIN EXAM NAME */}
+                <div className="sm:col-span-2">
+                  <label
+                    htmlFor="mainExamName"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Main Exam Name
+                  </label>
+                  <input
+                    type="text"
+                    name="mainExamName"
+                    id="mainExamName"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    placeholder="Type Student Id "
+                    required=""
+                    value={mainExamName}
+                    onChange={(e) => {
+                      setMainExamName(e.target.value);
+                    }}
+                  />
+                </div>
+                {/* Main Exam Marks Total */}
+                <div className="sm:col-span-2">
+                  <label
+                    htmlFor="mainExamMT"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Main Exams Marks Total
+                  </label>
+                  <input
+                    type="number"
+                    name="mainExamMT"
+                    id="mainExamMT"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    placeholder="Type Total Marks In Main Exam "
+                    required=""
+                    value={mainExamMT}
+                    onChange={(e) => {
+                      setMainExamMT(e.target.value);
+                    }}
+                  />
+                </div>
+                {/* Main Exam Marks Total */}
+                <div className="sm:col-span-2">
+                  <label
+                    htmlFor="mainExamMT"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Main Exams Marks Obtained
+                  </label>
+                  <input
+                    type="number"
+                    name="mainExamMO"
+                    id="mainExamMO"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    placeholder="Type Total Marks Obtained In Main Exam "
+                    required=""
+                    value={mainExamMO}
+                    onChange={(e) => {
+                      setMainExamMO(e.target.value);
                     }}
                   />
                 </div>

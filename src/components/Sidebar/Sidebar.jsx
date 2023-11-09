@@ -7,16 +7,21 @@ import user from "../../assets/user.png";
 const Sidebar = () => {
   const [records, setRecords] = useState([]);
   const navigate = useNavigate();
-  const results = useSelector((state) => state?.record?.records);
+
+  const fetchRecords=async()=>{
+    const results=await fetch("http://localhost:8000/records/getrecords")
+    const res=await results.json();
+    setRecords(res);
+  }
   useEffect(() => {
-    setRecords(results);
+    fetchRecords();
   }, []);
   const handleRecordClick = (id) => {
     navigate(`/record/${id}`);
   };
   return (
     <div className="w-[30%] border-2">
-      {records.length > 0 &&
+      {records?.length > 0 &&
         records?.map((record) => {
           return (
             <div
@@ -54,7 +59,7 @@ const Sidebar = () => {
             </div>
           );
         })}
-        {records.length===0 && <div className="text-3xl text-center text-white w-full p-2">NO RECORDS </div>}
+        {records?.length===0 && <div className="text-3xl text-center text-white w-full p-2">NO RECORDS </div>}
     </div>
   );
 };

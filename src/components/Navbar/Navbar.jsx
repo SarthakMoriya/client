@@ -7,10 +7,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 const Navbar = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-  console.log(location.pathname.includes("pdf"));
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
-  console.log(user?.admin);
 
   const handleLogout = () => {
     dispatch(setLogout());

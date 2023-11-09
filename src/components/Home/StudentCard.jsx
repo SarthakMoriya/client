@@ -18,7 +18,7 @@ const StudentCard = ({ data, setRecords, records }) => {
     notify("Record Deleted", "success");
       const newRecords = records?.filter((rec) => rec?._id !== data?._id);
       setRecords(newRecords);
-      dispatch(setRecords({records:newRecords}));
+      // dispatch(setRecords({records:newRecords}));
   };
   return (
     <div className="flex flex-col w-[45%] shadow-2xl rounded-lg mr-4 mb-4 ml-4  bg-gray-800 px-4 py-6 border border-blue-500 min-h-[50%]">

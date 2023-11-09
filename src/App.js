@@ -15,10 +15,10 @@ import MyPanel from "./components/MyPanel/MyPanel";
 import AdminLogin from "./components/Admin/AdminLogin";
 import Panel from "./components/Admin/Panel";
 import Pdf from "./components/PDF/Pdf";
+import Certificate from "./components/Certificate/Certificate";
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
-  console.log(user);
   const getRecords = async () => {
     const data = await fetch("http://localhost:8000/records/getrecords");
     const res = await data.json();
@@ -62,6 +62,7 @@ function App() {
           element={user != null ? <Panel /> : <AdminLogin />}
         />
         <Route path="/record/pdf/:id" element={<Pdf />} />
+        <Route path="/record/certificate/:id" element={<Certificate />} />
       </Routes>
     </BrowserRouter>
   );

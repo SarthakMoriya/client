@@ -35,15 +35,18 @@ const CreateRecord = () => {
         studentId: values.studentId,
         teacherId: teacherId,
         imageName: image ? image?.name : "",
+        mainExamName: values.mainExamName,
+        mainExamMT: values.mainExamMT,
+        mainExamMO: values.mainExamMO,
       }),
     });
     const data = await res.json();
-    console.log(data)
-    if(data.ok){
+    console.log(data);
+    if (data.ok) {
       onSubmitProps.resetForm();
       notify("Record Created Successfully", "success");
-    }else{
-      notify("Record Creation Failed, Try using Unique Student ID")
+    } else {
+      notify("Record Creation Failed, Try using Unique Student ID");
     }
   };
   //To handle tests details of various tests taken
@@ -87,7 +90,7 @@ const CreateRecord = () => {
   };
   return (
     <>
-      <div className="  bg-blue-100">
+      <div className="  bg-blue-100 ">
         <ToastContainer
           position="top-center"
           autoClose={5000}
@@ -100,7 +103,7 @@ const CreateRecord = () => {
           pauseOnHover
           theme="dark"
         />
-        <section className="bg-white dark:bg-gray-900 h-[100vh]">
+        <section className="bg-white dark:bg-gray-900 h-auto">
           <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
             <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
               Add a new Record
@@ -254,6 +257,83 @@ const CreateRecord = () => {
                           {errors.studentId}
                         </div>
                       )}
+                    </div>
+                    {/* MAIN EXAM DETAILS */}
+                    <div className="sm:col-span-2">
+                      <label
+                        htmlFor="mainExamName"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Main Exam Name
+                      </label>
+                      <input
+                        type="text"
+                        name="mainExamName"
+                        id="mainExamName"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        placeholder="Enter Main Exam Name "
+                        onBlur={handleBlur}
+                        value={values.mainExamName}
+                        onChange={handleChange}
+                        error={
+                          Boolean(touched.mainExamName) &&
+                          Boolean(errors.mainExamName)
+                        }
+                        helperText={touched.mainExamName && errors.mainExamName}
+                      />
+                    </div>
+                    {/* MAIN EXAM MARK TOTAL */}
+                    <div className="sm:col-span-2">
+                      <label
+                        htmlFor="mainExamMT"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Main Exam Total Marks
+                      </label>
+                      <input
+                        type="number"
+                        name="mainExamMT"
+                        id="mainExamMT"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        placeholder="Enter Main Exam Total Marks "
+                        onBlur={handleBlur}
+                        value={values.mainExamMT}
+                        onChange={handleChange}
+                        error={
+                          Boolean(touched.mainExamMT) &&
+                          Boolean(errors.mainExamMT)
+                        }
+                        helperText={touched.mainExamMT && errors.mainExamMT}
+                      />
+                    </div>
+                    {/* MAIN EXAM MARKS OBTAINED */}
+                    <div className="sm:col-span-2">
+                      <label
+                        htmlFor="mainExamMO"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Main Exam Marks Obtained
+                      </label>
+                      <input
+                        type="number"
+                        name="mainExamMO"
+                        id="mainExamMO"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        placeholder="Enter Main Exam Name "
+                        onBlur={handleBlur}
+                        value={values.mainExamMO}
+                        onChange={handleChange}
+                        error={
+                          Boolean(touched.mainExamMO) &&
+                          Boolean(errors.mainExamMO)
+                        }
+                        helperText={touched.mainExamMO && errors.mainExamMO}
+                      />
+                      {/* {touched.mainExamName && errors.mainExamName && (
+                        <div className="text-blue-700 text-md my-1 ml-2">
+                          {errors?.mainExamName}
+                        </div>
+                      )} */}
                     </div>
                     {/* NUMBER OF TESTS */}
                     <div className="sm:col-span-2">

@@ -93,16 +93,38 @@ const Pdf = () => {
                   Grade: {gradeCalculator(record?.exams)}
                 </div>
               </div>
-
             </div>
           </div>
         )}
 
-        <RecordTable
-          exams={record?.exams}
-          studentName={record?.studentName}
-          studentCourseName={record?.studentCourse}
-        />
+        {record?.exams?.length && (
+          <RecordTable
+            exams={record?.exams}
+            studentName={record?.studentName}
+            studentCourseName={record?.studentCourse}
+          />
+        )}
+        {record?.mainExamMT > 0 && (
+          <div className="w-full items-center justify-center border mt-7">
+            <div className="flex items-center justify-center uppercase">
+              <div className="bg-blue-900 text-gray-100 text-center px-2 py-4 w-[30%] border ">
+                Main Exam : {record?.mainExamName}
+              </div>
+              <div className="bg-blue-900 text-gray-100 text-center px-2 py-4 w-[30%] border">
+                Marks Obtained : {record?.mainExamMO}
+              </div>
+              <div className="bg-blue-900 text-gray-100 text-center px-2 py-4 w-[30%] border">
+                Marks Total : {record?.mainExamMT}
+              </div>
+              <div className="bg-blue-900 text-gray-100 text-center px-2 py-4 w-[30%] border">
+                Grade :{" "}
+                {gradeCalculator([
+                  { mt: record?.mainExamMT, mo: record?.mainExamMO },
+                ])}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
