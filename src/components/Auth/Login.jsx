@@ -17,9 +17,8 @@ const Login = () => {
       body: JSON.stringify({ email: values.email, password: values.password }),
     });
     const data = await res.json();
-    console.log(data.isAdminApprovedAccount,data);
     if (data?.user?.isAdminApprovedAccount === false) {
-      alert("Account isnt approved by admin");
+      alert("Account isn't approved by admin");
     } else {
       if(data.ok){
 

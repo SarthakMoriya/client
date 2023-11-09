@@ -16,19 +16,20 @@ import AdminLogin from "./components/Admin/AdminLogin";
 import Panel from "./components/Admin/Panel";
 import Pdf from "./components/PDF/Pdf";
 import Certificate from "./components/Certificate/Certificate";
+import { getRecords } from "./api";
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
-  const getRecords = async () => {
-    const data = await fetch("http://localhost:8000/records/getrecords");
-    const res = await data.json();
-    console.log(res);
-    dispatch(setRecords({ records: res }));
-  };
+localStorage.setItem("is_verified", user ? user?.verified : false);
 
-  localStorage.setItem("is_verified", user ? user?.verified : false);
+const fetchRecords=async()=>{
+  const records=await getRecords();
+  dispatch(setRecords({records}))
+  console.log(records)
+
+}
   useEffect(() => {
-    getRecords();
+    fetchRecords();
   }, []);
   return (
     <BrowserRouter>

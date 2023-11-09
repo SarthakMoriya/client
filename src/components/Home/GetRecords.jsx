@@ -11,7 +11,6 @@ const GetRecords = () => {
     } else {
       const data = await fetch("http://localhost:8000/records/getrecords");
       const res = await data.json()
-      console.log(res)
       setRecords(res);
     }
   };

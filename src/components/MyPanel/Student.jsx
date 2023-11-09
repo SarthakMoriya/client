@@ -30,7 +30,7 @@ const Student = ({ student }) => {
           Name:{student?.studentName}
         </div>
       </div>
-      <div className="flex items-center w-[50%] p-2">
+      <div className="flex items-center w-[42%] p-2">
         <button
           type="button"
           onClick={() => {
@@ -39,6 +39,24 @@ const Student = ({ student }) => {
           className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-5 py-2.5 text-center mr-2 mb-2 mt-2 w-[95%] rounded-lg  ease-in-out duration-500"
         >
           View
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            handleRecordClick(student?._id);
+          }}
+          className="text-white bg-purple-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-5 py-2.5 text-center mr-2 mb-2 mt-2 w-[95%] rounded-lg  ease-in-out duration-500"
+        >
+          Edit
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            handleRecordClick(student?._id);
+          }}
+          className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-5 py-2.5 text-center mr-2 mb-2 mt-2 w-[95%] rounded-lg  ease-in-out duration-500"
+        >
+          Delete
         </button>
       </div>
     </div>

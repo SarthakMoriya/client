@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Formik } from "formik";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
   initialValuesRegister,
   registerSchema,
 } from "../../schemas/authSchema";
+import { notify } from "../../utils/notification";
 
 const Signup = () => {
   const [image, setImage] = useState(null);
@@ -35,18 +36,9 @@ const Signup = () => {
       notify(data.message, "success");
       setTimeout(() => {
         navigate("/login");
-      }, 2000);
+      }, 5000);
       setIsOpen(true);
     }
-
-  };
-
-  const notify = (message, type = "error") => {
-    if (type === "success") toast.success(message);
-    else toast.error(message);
-  };
-  const handleFormSubmit = async (values, onSubmitProps) => {
-    handleSignup(values, onSubmitProps);
   };
 
   const handleImageUpload = async () => {
@@ -64,12 +56,15 @@ const Signup = () => {
           notify("Image uploaded successfully", "success");
           setIsImageUploaded(true);
         } else {
+          notify("Error uploading image");
           console.error("Error uploading image");
         }
       } catch (error) {
+        notify("Error uploading image");
         console.error("Error uploading image", error);
       }
     } else {
+      notify("No File Selected");
       console.error("No file selected");
     }
   };
@@ -129,7 +124,7 @@ const Signup = () => {
                 </button>
               </div>
               <Formik
-                onSubmit={handleFormSubmit}
+                onSubmit={handleSignup}
                 initialValues={initialValuesRegister}
                 validationSchema={registerSchema}
               >

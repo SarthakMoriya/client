@@ -18,7 +18,7 @@ export const authSlice = createSlice({
     setLogout: (state, action) => {
       state.user = null;
       state.token = null;
-      state.secretkey = null
+      state.secretkey = null;
     },
   },
 });
@@ -28,15 +28,21 @@ export const recordsSlice = createSlice({
   initialState: { records: [] },
   reducers: {
     setRecords: (state, action) => {
-      console.log(action?.payload?.records)
+      console.log(action?.payload?.records);
       state.records = action?.payload?.records;
     },
+    setNewRecords: (state, action) => {
+      state.records = [...state.records, action.payload.record];
+      console.log("NEW RECORDS" + state.records);
+    },
+
+    
   },
 });
 
 //Functions to use in Application to handle auth
 export const { setLogin, setLogout } = authSlice.actions;
-export const { setRecords } = recordsSlice.actions;
+export const { setRecords, setNewRecords } = recordsSlice.actions;
 
 export const authReducers = authSlice.reducer;
 export const recordReducers = recordsSlice.reducer;

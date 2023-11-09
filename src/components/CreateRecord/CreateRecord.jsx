@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Formik } from "formik";
 import { initialValuesRecord, recordSchema } from "../../schemas/recordSchema";
-import { ToastContainer, toast } from "react-toastify";
+import { notify } from "../../utils/notification";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { setNewRecords } from "../../state";
 
 const CreateRecord = () => {
   const [subs, setSubs] = useState(0);
@@ -15,11 +17,7 @@ const CreateRecord = () => {
   const [isImageUploaded, setIsImageUploaded] = useState(false);
 
   const teacherId = useSelector((state) => state.auth.user._id);
-
-  const notify = (message, type = "error") => {
-    if (type === "success") toast.success(message);
-    else toast.error(message);
-  };
+  const dispatch = useDispatch();
 
   const handleRecordSubmit = async (values, onSubmitProps) => {
     const res = await fetch("http://localhost:8000/records/createrecord", {
@@ -44,7 +42,10 @@ const CreateRecord = () => {
     console.log(data);
     if (data.ok) {
       onSubmitProps.resetForm();
+      setExams([]);
+      setSubs("");
       notify("Record Created Successfully", "success");
+      dispatch(setNewRecords({record:data?.record}))
     } else {
       notify("Record Creation Failed, Try using Unique Student ID");
     }
@@ -75,17 +76,16 @@ const CreateRecord = () => {
         });
 
         if (response.ok) {
-          console.log("Image uploaded successfully");
-          // notify("Image uploaded successfully","success")
+          notify("Image uploaded successfully", "success");
           setIsImageUploaded(true);
         } else {
-          console.error("Error uploading image");
+          notify("Error uploading Image");
         }
       } catch (error) {
-        console.error("Error uploading image", error);
+        notify("Error uploading Image");
       }
     } else {
-      console.error("No file selected");
+      notify("Error uploading Image");
     }
   };
   return (
