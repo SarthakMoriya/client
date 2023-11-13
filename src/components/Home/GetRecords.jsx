@@ -10,7 +10,7 @@ const GetRecords = () => {
       setRecords(searchResults);
     } else {
       const data = await fetch("http://localhost:8000/records/getrecords");
-      const res = await data.json()
+      const res = await data.json();
       setRecords(res);
     }
   };
@@ -19,11 +19,15 @@ const GetRecords = () => {
   }, []);
   return (
     <div className="w-[70%]">
-      <h1>All Records</h1>
-      <div className="mb-4">
+      <div className="mb-4 mt-4">
         <SearchBar searchRecords={getRecords} />
       </div>
       <div className="flex  flex-wrap">
+        {records.length === 0 && (
+          <div className="text-3xl text-center text-white w-full">
+            NO RECORDS{" "}
+          </div>
+        )}
         {records?.length > 0 &&
           records?.map((rec) => {
             return (
@@ -37,7 +41,6 @@ const GetRecords = () => {
               </>
             );
           })}
-          {records.length===0 && <div className="text-3xl text-center text-white w-full">NO RECORDS </div>}
       </div>
     </div>
   );

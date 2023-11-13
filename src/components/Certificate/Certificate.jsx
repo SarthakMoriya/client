@@ -13,9 +13,9 @@ const Certificate = () => {
   useEffect(() => {
     fetchCertificate();
   }, []);
-  return<>
-    {record?<img src={`http://localhost:8000/assets/${record.certificate}`}/>:"n o imhge" }
-  </>
+  return<div className="flex items-center justify-center w-screen h-screen">
+    {record?<img src={`http://localhost:8000/assets/${record?.certificate}`} alt="Certificate" className="w-[70%] h-[70%]" />:"n o imhge"  }
+  </div>
 };
 
 export default Certificate;

@@ -44,6 +44,7 @@ const CreateRecord = () => {
       onSubmitProps.resetForm();
       setExams([]);
       setSubs("");
+      setImage("")
       notify("Record Created Successfully", "success");
       dispatch(setNewRecords({record:data?.record}))
     } else {

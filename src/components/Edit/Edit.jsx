@@ -8,14 +8,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { notify } from "../../utils/notification";
 import { setRecords } from "../../state/index";
 import { getRecords } from "../../api";
-import { convertBackToISODateString, convertDateFormat } from "../../utils/dateFormatter";
 
 const Edit = () => {
   const id = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const record = useSelector((state) => {
-    console.log(state.record.records[0]);
     return state?.record?.records?.find((rec) => rec._id === id?.id);
   });
 
@@ -46,14 +44,14 @@ const Edit = () => {
         body: JSON.stringify({
           studentName: sName,
           studentCourse: coursename,
-          dateEnrolled: convertBackToISODateString(date),
+          dateEnrolled: date,
           exams: examsArr,
-          studentId:Number(studentId),
+          studentId: Number(studentId),
           teacherId,
           id,
           mainExamName: mainExamName,
-          mainExamMT:Number(mainExamMT),
-          mainExamMO:Number(mainExamMO),
+          mainExamMT: Number(mainExamMT),
+          mainExamMO: Number(mainExamMO),
         }),
       }
     );
@@ -144,13 +142,13 @@ const Edit = () => {
                     Date Enrolled
                   </label>
                   <input
-                    type="text"
+                    type="date"
                     name="date"
                     id="date"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="dd-mm-yyyy"
                     required="true"
-                    value={convertDateFormat(date)}
+                    value={date}
                     onChange={(e) => setDate(e.target.value)}
                   />
                 </div>
@@ -168,8 +166,7 @@ const Edit = () => {
                     id="sId"
                     inputMode="numeric"
                     style={{
-                      MozAppearance: 'textfield',  // For Firefox
-                    
+                      MozAppearance: "textfield", // For Firefox
                     }}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type Student Id "

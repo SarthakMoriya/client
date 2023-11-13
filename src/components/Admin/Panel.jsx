@@ -10,18 +10,22 @@ const Panel = () => {
     const res = await fetch(
       "http://localhost:8000/auth/admin/getunapprovedaccounts"
     );
+    const data = await res.json();
     const acc = await fetch("http://localhost:8000/auth/admin/getallaccounts");
     const accs = await acc.json();
-    const data = await res.json();
-    console.log(data,accs)
-    setUnapprovedAccounts(data);
     setAccounts(accs);
+    setUnapprovedAccounts(data);
   };
   const handleApprove = async (acc) => {
+    console.log(acc)
     await fetch(`http://localhost:8000/auth/admin/approveaccounts/${acc._id}`);
     window.location.reload();
+    const updatedUnapprovedAccounts=unapprovedAccounts.filter(account=>account._id !==acc._id);
+    console.log(updatedUnapprovedAccounts)
+    setUnapprovedAccounts(updatedUnapprovedAccounts)
   };
   const handleDelete = async (acc) => {
+    console.log(acc)
     await fetch(`http://localhost:8000/auth/admin/deleteunapproveaccount/${acc._id}`);
     window.location.reload();
   };
@@ -32,7 +36,7 @@ const Panel = () => {
     <div className="bg-gray-900 min-h-screen">
       <div className="text-3xl text-center  border-2 mt-5 text-white p-4 bg-blue-700 mb-3">PENDING REQUESTS</div>
       {unapprovedAccounts?.length === 0 ? (
-        <div className="text-3xl text-center  border-2 mt-5 text-white p-4">
+        <div className="text-xl text-center   mt-5 text-white p-4">
           NO PENDING REQUESTS
         </div>
       ) : (

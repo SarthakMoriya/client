@@ -3,9 +3,11 @@ import pic from "../../assets/user.png";
 const TeacherRow = ({ acc }) => {
   const handleApprove = async () => {
     await fetch(`http://localhost:8000/auth/admin/approveaccounts/${acc._id}`);
+    window.location.reload();
   };
   const handleDelete = async ({acc}) => {
     await fetch(`http://localhost:8000/auth/admin/deleteunapproveaccount/${acc._id}`);
+    window.location.reload();
   };
   return (
     <div className=" flex items-center border">

@@ -18,8 +18,9 @@ export const gradeCalculator = (exams) => {
   const marksTotal = totalMarks(exams);
   const marksObt = totalMarksObtained(exams);
   const per = (marksObt / marksTotal) * 100;
+  console.log(per)
 
-  return per > 90 ? "A" : per > 80 ? "B" : per > 70 ? "C" : "D";
+  return per > 90 ? "A" : per > 80 ? "B" : per > 70 ? "C" : isNaN(per)?"Not Graded":"D";
 };
 
 export const percentageCalcuator = (exams) => {
