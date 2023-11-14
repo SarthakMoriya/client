@@ -7,7 +7,8 @@ export const recordSchema=yup.object().shape({
     studentId: yup.string().required("Please enter a studentId"),
     mainExamName: yup.string(),
     mainExamMT: yup.number(),
-    mainExamMO: yup.number()
+    mainExamMO: yup.number(),
+    secretKey: yup.number().required("Please enter a secret key to add record"),
     
 })
 
@@ -18,7 +19,8 @@ export const initialValuesRecord = {
     studentId:"",
     mainExamName: "",
     mainExamMT: "",
-    mainExamMO: ""
+    mainExamMO: "",
+    secretKey:""
   };
 
 export const passcodeSchema=yup.object().shape({

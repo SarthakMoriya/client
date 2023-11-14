@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setLogin } from "../../state";
 import { Formik } from "formik";
 import { initialValuesLogin, loginSchema } from "../../schemas/authSchema";
+import { motion } from "framer-motion";
 
 const Login = () => {
   const distpatch = useDispatch();
@@ -20,31 +21,38 @@ const Login = () => {
     if (data?.user?.isAdminApprovedAccount === false) {
       alert("Account isn't approved by admin");
     } else {
-      if(data.ok){
-
+      if (data.ok) {
         distpatch(setLogin({ user: data.user, token: data.token }));
         localStorage.setItem("is_verified", data.user.verified);
         navigate("/");
-      }else{
-        alert("Invalid credentials...Please Try Again!")
+      } else {
+        alert("Invalid credentials...Please Try Again!");
         onSubmitProps.resetForm();
       }
     }
   };
   return (
     <>
-      <section className="bg-gray-50 dark:bg-gray-900">
-        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-          <Link className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-            <img
+      <motion.section className="bg-gray-50 dark:bg-gray-900">
+        <motion.div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+          <motion.a
+            whileInView={{ opacity: [0, 1] }}
+            transition={{ duration: 1.2, ease: "easeInOut" }}
+            className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
+          >
+            <motion.img
               className="w-8 h-8 mr-2"
               src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
               alt="logo"
             />
             WebCooks
-          </Link>
-          <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-            <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+          </motion.a>
+          <motion.div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+            <motion.div
+              whileInView={{ opacity: [0, 1] }}
+              transition={{ duration: 1, ease: "easeInOut" }}
+              className="p-6 space-y-4 md:space-y-6 sm:p-8"
+            >
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Sign in to your account
               </h1>
@@ -67,7 +75,10 @@ const Login = () => {
                     className="space-y-4 md:space-y-6"
                     onSubmit={handleSubmit}
                   >
-                    <div>
+                    <motion.div
+                      whileInView={{ opacity: [0, 1] }}
+                      transition={{ duration: 1, ease: "easeInOut" }}
+                    >
                       <label
                         htmlFor="email"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -87,12 +98,15 @@ const Login = () => {
                         helperText={touched.email && errors.email}
                       />
                       {touched.email && errors.email && (
-                        <div className="text-blue-700 text-md my-1 ml-2">
+                        <motion.div className="text-blue-700 text-md my-1 ml-2">
                           {errors.email}
-                        </div>
+                        </motion.div>
                       )}
-                    </div>
-                    <div>
+                    </motion.div>
+                    <motion.div
+                      whileInView={{ opacity: [0, 1] }}
+                      transition={{ duration: 1, ease: "easeInOut" }}
+                    >
                       <label
                         htmlFor="password"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -114,23 +128,33 @@ const Login = () => {
                         helperText={touched.password && errors.password}
                       />
                       {touched.password && errors.password && (
-                        <div className="text-blue-700 text-md my-1 ml-2">
+                        <motion.div className="text-blue-700 text-md my-1 ml-2">
                           {errors.password}
-                        </div>
+                        </motion.div>
                       )}
-                    </div>
-                    <div className="flex items-center justify-between">
+                    </motion.div>
+                    <motion.div
+                      whileInView={{ opacity: [0, 1] }}
+                      transition={{ duration: 1, ease: "easeInOut" }}
+                      className="flex items-center justify-between"
+                    >
                       <Link className="text-sm font-medium text-primary-600 hover:underline text-blue-400">
                         Forgot password?
                       </Link>
-                    </div>
-                    <button
+                    </motion.div>
+                    <motion.button
+                      whileInView={{ opacity: [0, 1] }}
+                      transition={{ duration: 1, ease: "easeInOut" }}
                       type="submit"
                       className="w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-blue-500 dark:focus:ring-primary-800"
                     >
                       Sign in
-                    </button>
-                    <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+                    </motion.button>
+                    <motion.p
+                      whileInView={{ opacity: [0, 1] }}
+                      transition={{ duration: 1, ease: "easeInOut" }}
+                      className="text-sm font-light text-gray-500 dark:text-gray-400"
+                    >
                       Don’t have an account yet?{" "}
                       <Link
                         to="/signup"
@@ -138,14 +162,14 @@ const Login = () => {
                       >
                         Sign up
                       </Link>
-                    </p>
+                    </motion.p>
                   </form>
                 )}
               </Formik>
-            </div>
-          </div>
-        </div>
-      </section>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      </motion.section>
     </>
   );
 };

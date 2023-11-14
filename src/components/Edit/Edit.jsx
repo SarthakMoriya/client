@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { notify } from "../../utils/notification";
 import { setRecords } from "../../state/index";
 import { getRecords } from "../../api";
+import { motion } from "framer-motion";
 
 const Edit = () => {
   const id = useParams();
@@ -73,7 +74,7 @@ const Edit = () => {
 
   return (
     <>
-      <div className="  bg-blue-100 h-auto">
+      <motion.div className="  bg-blue-100 h-auto">
         <ToastContainer
           position="top-center"
           autoClose={5000}
@@ -87,14 +88,22 @@ const Edit = () => {
           theme="dark"
         />
         <section className="bg-white dark:bg-gray-900 h-auto">
-          <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
-            <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
+          <motion.div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
+            <motion.h2
+              whileInView={{ opacity: [0, 1] }}
+              transition={{ duration: 1, ease: "easeInOut" }}
+              className="mb-4 text-xl font-bold text-gray-900 dark:text-white"
+            >
               Edit record of studentId: {record.studentId}
-            </h2>
+            </motion.h2>
             <form onSubmit={handleSubmit}>
-              <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
+              <motion.div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
                 {/* STUDENT NAME */}
-                <div className="sm:col-span-2">
+                <motion.div
+                  whileInView={{ opacity: [0, 1] }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  className="sm:col-span-2"
+                >
                   <label
                     htmlFor="name"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -113,9 +122,13 @@ const Edit = () => {
                       setSname(e.target.value);
                     }}
                   />
-                </div>
+                </motion.div>
                 {/* COURSE NAME */}
-                <div className="w-full">
+                <motion.div
+                  whileInView={{ opacity: [0, 1] }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  className="w-full"
+                >
                   <label
                     htmlFor="course"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -132,9 +145,13 @@ const Edit = () => {
                     value={coursename}
                     onChange={(e) => setCoursename(e.target.value)}
                   />
-                </div>
+                </motion.div>
                 {/* DATE ENROLLED */}
-                <div className="w-full">
+                <motion.div
+                  whileInView={{ opacity: [0, 1] }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  className="w-full"
+                >
                   <label
                     htmlFor="date"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -142,7 +159,7 @@ const Edit = () => {
                     Date Enrolled
                   </label>
                   <input
-                    type="date"
+                    type="text"
                     name="date"
                     id="date"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
@@ -151,9 +168,13 @@ const Edit = () => {
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
                   />
-                </div>
+                </motion.div>
                 {/* STUDENT ID */}
-                <div className="sm:col-span-2">
+                <motion.div
+                  whileInView={{ opacity: [0, 1] }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  className="sm:col-span-2"
+                >
                   <label
                     htmlFor="sId"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -176,9 +197,13 @@ const Edit = () => {
                       setStudentId(e.target.value);
                     }}
                   />
-                </div>
+                </motion.div>
                 {/* MAIN EXAM NAME */}
-                <div className="sm:col-span-2">
+                <motion.div
+                  whileInView={{ opacity: [0, 1] }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  className="sm:col-span-2"
+                >
                   <label
                     htmlFor="mainExamName"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -197,9 +222,13 @@ const Edit = () => {
                       setMainExamName(e.target.value);
                     }}
                   />
-                </div>
+                </motion.div>
                 {/* Main Exam Marks Total */}
-                <div className="sm:col-span-2">
+                <motion.div
+                  whileInView={{ opacity: [0, 1] }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  className="sm:col-span-2"
+                >
                   <label
                     htmlFor="mainExamMT"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -218,9 +247,13 @@ const Edit = () => {
                       setMainExamMT(e.target.value);
                     }}
                   />
-                </div>
+                </motion.div>
                 {/* Main Exam Marks Total */}
-                <div className="sm:col-span-2">
+                <motion.div
+                  whileInView={{ opacity: [0, 1] }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  className="sm:col-span-2"
+                >
                   <label
                     htmlFor="mainExamMT"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -239,12 +272,16 @@ const Edit = () => {
                       setMainExamMO(e.target.value);
                     }}
                   />
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
               {/*EXAMS TAKEN */}
-              <h2 className="my-4 text-xl font-bold text-gray-900 dark:text-white">
+              <motion.h2
+                whileInView={{ opacity: [0, 1] }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+                className="my-4 text-xl font-bold text-gray-900 dark:text-white"
+              >
                 Exams Taken:
-              </h2>
+              </motion.h2>
               {examsArr?.map((exam, i) => (
                 <ExamRow
                   key={i}
@@ -254,7 +291,9 @@ const Edit = () => {
                 />
               ))}
               {/* ADD MORE EXAM */}
-              <button
+              <motion.button
+                whileInView={{ opacity: [0, 1] }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
                 onClick={() => {
                   setIsAddingExam(!isAddingExam);
                 }}
@@ -262,7 +301,7 @@ const Edit = () => {
                 className="bg-gray-500 border border-gray-300 text-white text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  "
               >
                 {!isAddingExam ? "Add More Exams" : "Save Exams"}
-              </button>
+              </motion.button>
               {/* ADD EXAM MODAL */}
               {isAddingExam && (
                 <ExamModal
@@ -271,16 +310,18 @@ const Edit = () => {
                 />
               )}
               {/* SAVE RECORD */}
-              <button
+              <motion.button
+                whileInView={{ opacity: [0, 1] }}
+                transition={{ duration: 1, ease: "easeInOut" }}
                 type="submit"
                 className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800 bg-blue-400"
               >
                 Save Record
-              </button>
+              </motion.button>
             </form>
-          </div>
+          </motion.div>
         </section>
-      </div>
+      </motion.div>
     </>
   );
 };

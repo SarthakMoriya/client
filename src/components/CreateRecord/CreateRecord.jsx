@@ -6,6 +6,7 @@ import { notify } from "../../utils/notification";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { setNewRecords } from "../../state";
+import { motion } from "framer-motion";
 
 const CreateRecord = () => {
   const [subs, setSubs] = useState(0);
@@ -17,38 +18,43 @@ const CreateRecord = () => {
   const [isImageUploaded, setIsImageUploaded] = useState(false);
 
   const teacherId = useSelector((state) => state.auth.user._id);
+  const secretKey = useSelector((state) => state.auth.user.passcode);
   const dispatch = useDispatch();
 
   const handleRecordSubmit = async (values, onSubmitProps) => {
-    const res = await fetch("http://localhost:8000/records/createrecord", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        studentName: values.sName,
-        studentCourse: values.coursename,
-        dateEnrolled: values.date,
-        exams: exams,
-        studentId: values.studentId,
-        teacherId: teacherId,
-        imageName: image ? image?.name : "",
-        mainExamName: values.mainExamName,
-        mainExamMT: values.mainExamMT,
-        mainExamMO: values.mainExamMO,
-      }),
-    });
-    const data = await res.json();
-    console.log(data);
-    if (data.ok) {
-      onSubmitProps.resetForm();
-      setExams([]);
-      setSubs("");
-      setImage("")
-      notify("Record Created Successfully", "success");
-      dispatch(setNewRecords({record:data?.record}))
+    if (values.secretKey == secretKey) {
+      const res = await fetch("http://localhost:8000/records/createrecord", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          studentName: values.sName,
+          studentCourse: values.coursename,
+          dateEnrolled: values.date,
+          exams: exams,
+          studentId: values.studentId,
+          teacherId: teacherId,
+          imageName: image ? image?.name : "",
+          mainExamName: values.mainExamName,
+          mainExamMT: values.mainExamMT,
+          mainExamMO: values.mainExamMO,
+        }),
+      });
+      const data = await res.json();
+
+      if (data.ok) {
+        onSubmitProps.resetForm();
+        setExams([]);
+        setSubs("");
+        setImage("");
+        notify("Record Created Successfully", "success");
+        dispatch(setNewRecords({ record: data?.record }));
+      } else {
+        notify("Record Creation Failed, Try using Unique Student ID");
+      }
     } else {
-      notify("Record Creation Failed, Try using Unique Student ID");
+      notify("Please Enter Correct Secret Key To Add Record");
     }
   };
   //To handle tests details of various tests taken
@@ -91,7 +97,7 @@ const CreateRecord = () => {
   };
   return (
     <>
-      <div className="  bg-blue-100 ">
+      <motion.div className="  bg-blue-100 ">
         <ToastContainer
           position="top-center"
           autoClose={5000}
@@ -105,12 +111,19 @@ const CreateRecord = () => {
           theme="dark"
         />
         <section className="bg-white dark:bg-gray-900 h-auto">
-          <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
-            <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
+          <motion.div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
+            <motion.h2
+              whileInView={{ opacity: [0, 1] }}
+              transition={{ duration: 1, ease: "easeInOut" }}
+              className="mb-4 text-xl font-bold text-gray-900 dark:text-white"
+            >
               Add a new Record
-            </h2>
+            </motion.h2>
             {/* IMAGE FIELD */}
-            <div>
+            <motion.div
+              whileInView={{ opacity: [0, 1] }}
+              transition={{ duration: 1, ease: "easeInOut" }}
+            >
               <label
                 htmlFor="picture"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -124,14 +137,16 @@ const CreateRecord = () => {
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 onChange={(e) => setImage(e.target.files[0])}
               />
-            </div>
-            <button
+            </motion.div>
+            <motion.button
+              whileInView={{ opacity: [0, 1] }}
+              transition={{ duration: 1, ease: "easeInOut" }}
               className="w-full mt-2 text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-blue-500 dark:focus:ring-primary-800"
               onClick={handleImageUpload}
               disabled={isImageUploaded ? true : false}
             >
               {isImageUploaded ? "Image Uploaded" : "Upload Image"}
-            </button>
+            </motion.button>
             <Formik
               onSubmit={handleRecordSubmit}
               initialValues={initialValuesRecord}
@@ -148,9 +163,45 @@ const CreateRecord = () => {
                 resetForm,
               }) => (
                 <form onSubmit={handleSubmit}>
-                  <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
-                    {/* STUDENT NAME */}
-                    <div className="sm:col-span-2">
+                  <motion.div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
+                    {/* SECRET KEY */}
+                    <motion.div
+                      whileInView={{ opacity: [0, 1] }}
+                      transition={{ duration: 1, ease: "easeInOut" }}
+                      className="sm:col-span-2 mt-2"
+                    >
+                      <label
+                        htmlFor="secretKey"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Secret Key
+                      </label>
+                      <input
+                        type="text"
+                        name="secretKey"
+                        id="secretKey"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        placeholder="secretKey"
+                        onBlur={handleBlur}
+                        value={values.secretKey}
+                        onChange={handleChange}
+                        error={
+                          Boolean(touched.secretKey) &&
+                          Boolean(errors.secretKey)
+                        }
+                        helperText={touched.secretKey && errors.secretKey}
+                      />
+                      {touched.secretKey && errors.secretKey && (
+                        <motion.div className="text-blue-700 text-md my-1 ml-2">
+                          {errors.secretKey}
+                        </motion.div>
+                      )}
+                    </motion.div>
+                    <motion.div
+                      whileInView={{ opacity: [0, 1] }}
+                      transition={{ duration: 1.2, ease: "easeInOut" }}
+                      className="sm:col-span-2"
+                    >
                       <label
                         for="name"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -170,13 +221,17 @@ const CreateRecord = () => {
                         helperText={touched.sName && errors.sName}
                       />
                       {touched.sName && errors.sName && (
-                        <div className="text-blue-700 text-md my-1 ml-2">
+                        <motion.div className="text-blue-700 text-md my-1 ml-2">
                           {errors.sName}
-                        </div>
+                        </motion.div>
                       )}
-                    </div>
+                    </motion.div>
                     {/* COURSE NAME */}
-                    <div className="w-full">
+                    <motion.div
+                      whileInView={{ opacity: [0, 1] }}
+                      transition={{ duration: 1.4, ease: "easeInOut" }}
+                      className="w-full"
+                    >
                       <label
                         htmlFor="coursename"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -199,13 +254,17 @@ const CreateRecord = () => {
                         helperText={touched.coursename && errors.coursename}
                       />
                       {touched.coursename && errors.coursename && (
-                        <div className="text-blue-700 text-md my-1 ml-2">
+                        <motion.div className="text-blue-700 text-md my-1 ml-2">
                           {errors.coursename}
-                        </div>
+                        </motion.div>
                       )}
-                    </div>
+                    </motion.div>
                     {/* DATE ENROLLED */}
-                    <div className="w-full">
+                    <motion.div
+                      whileInView={{ opacity: [0, 1] }}
+                      transition={{ duration: 1.6, ease: "easeInOut" }}
+                      className="w-full"
+                    >
                       <label
                         for="date"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -213,11 +272,11 @@ const CreateRecord = () => {
                         Date Enrolled
                       </label>
                       <input
-                        type="date"
+                        type="text"
                         name="date"
                         id="date"
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="$2999"
+                        placeholder="dd-mm-yyyy"
                         onBlur={handleBlur}
                         value={values.date}
                         onChange={handleChange}
@@ -225,13 +284,17 @@ const CreateRecord = () => {
                         helperText={touched.date && errors.date}
                       />
                       {touched.date && errors.date && (
-                        <div className="text-blue-700 text-md my-1 ml-2">
+                        <motion.div className="text-blue-700 text-md my-1 ml-2">
                           {errors.date}
-                        </div>
+                        </motion.div>
                       )}
-                    </div>
+                    </motion.div>
                     {/* STUDENT ID */}
-                    <div className="sm:col-span-2">
+                    <motion.div
+                      whileInView={{ opacity: [0, 1] }}
+                      transition={{ duration: 1.7, ease: "easeInOut" }}
+                      className="sm:col-span-2"
+                    >
                       <label
                         htmlFor="studentId"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -254,13 +317,17 @@ const CreateRecord = () => {
                         helperText={touched.studentId && errors.studentId}
                       />
                       {touched.studentId && errors.studentId && (
-                        <div className="text-blue-700 text-md my-1 ml-2">
+                        <motion.div className="text-blue-700 text-md my-1 ml-2">
                           {errors.studentId}
-                        </div>
+                        </motion.div>
                       )}
-                    </div>
+                    </motion.div>
                     {/* MAIN EXAM DETAILS */}
-                    <div className="sm:col-span-2">
+                    <motion.div
+                      whileInView={{ opacity: [0, 1] }}
+                      transition={{ duration: 1.6, ease: "easeInOut" }}
+                      className="sm:col-span-2"
+                    >
                       <label
                         htmlFor="mainExamName"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -282,9 +349,13 @@ const CreateRecord = () => {
                         }
                         helperText={touched.mainExamName && errors.mainExamName}
                       />
-                    </div>
+                    </motion.div>
                     {/* MAIN EXAM MARK TOTAL */}
-                    <div className="sm:col-span-2">
+                    <motion.div
+                      whileInView={{ opacity: [0, 1] }}
+                      transition={{ duration: 1.5, ease: "easeInOut" }}
+                      className="sm:col-span-2"
+                    >
                       <label
                         htmlFor="mainExamMT"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -306,9 +377,13 @@ const CreateRecord = () => {
                         }
                         helperText={touched.mainExamMT && errors.mainExamMT}
                       />
-                    </div>
+                    </motion.div>
                     {/* MAIN EXAM MARKS OBTAINED */}
-                    <div className="sm:col-span-2">
+                    <motion.div
+                      whileInView={{ opacity: [0, 1] }}
+                      transition={{ duration: 1.4, ease: "easeInOut" }}
+                      className="sm:col-span-2"
+                    >
                       <label
                         htmlFor="mainExamMO"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -330,14 +405,13 @@ const CreateRecord = () => {
                         }
                         helperText={touched.mainExamMO && errors.mainExamMO}
                       />
-                      {/* {touched.mainExamName && errors.mainExamName && (
-                        <div className="text-blue-700 text-md my-1 ml-2">
-                          {errors?.mainExamName}
-                        </div>
-                      )} */}
-                    </div>
+                    </motion.div>
                     {/* NUMBER OF TESTS */}
-                    <div className="sm:col-span-2">
+                    <motion.div
+                      whileInView={{ opacity: [0, 1] }}
+                      transition={{ duration: 1.4, ease: "easeInOut" }}
+                      className="sm:col-span-2"
+                    >
                       <label
                         for="name"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -356,11 +430,14 @@ const CreateRecord = () => {
                           setSubs(e.target.value);
                         }}
                       />
-                    </div>
+                    </motion.div>
                     {/* EXAMS DETAILS */}
                     {subs >= 1 && (
-                      <>
-                        <div className=" w-full">
+                      <motion.div
+                        whileInView={{ opacity: [0, 1] }}
+                        transition={{ duration: 1.4, ease: "easeInOut" }}
+                      >
+                        <motion.div className=" w-full">
                           <label
                             for="examname"
                             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -377,8 +454,8 @@ const CreateRecord = () => {
                             value={examname}
                             onChange={(e) => setExamname(e.target.value)}
                           />
-                        </div>
-                        <div className="w-full">
+                        </motion.div>
+                        <motion.div className="w-full">
                           <label
                             for="tmakrs"
                             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -395,8 +472,8 @@ const CreateRecord = () => {
                             value={totalmarks}
                             onChange={(e) => setTotalmarks(e.target.value)}
                           />
-                        </div>
-                        <div className="w-full">
+                        </motion.div>
+                        <motion.div className="w-full">
                           <label
                             for="obtmarks"
                             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -413,8 +490,8 @@ const CreateRecord = () => {
                             value={marksobtained}
                             onChange={(e) => setMarksobtained(e.target.value)}
                           />
-                        </div>
-                        <div className="w-full">
+                        </motion.div>
+                        <motion.div className="w-full">
                           <input
                             type="button"
                             name="MarksObtainer"
@@ -425,22 +502,24 @@ const CreateRecord = () => {
                             value="Add"
                             onClick={handleExamDetails}
                           />
-                        </div>
-                      </>
+                        </motion.div>
+                      </motion.div>
                     )}
-                  </div>
-                  <button
+                  </motion.div>
+                  <motion.button
+                    whileInView={{ opacity: [0, 1] }}
+                    transition={{ duration: 1.4, ease: "easeInOut" }}
                     type="submit"
                     className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800 bg-blue-400"
                   >
                     Add Record
-                  </button>
+                  </motion.button>
                 </form>
               )}
             </Formik>
-          </div>
+          </motion.div>
         </section>
-      </div>
+      </motion.div>
     </>
   );
 };

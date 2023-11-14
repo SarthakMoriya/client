@@ -18,7 +18,7 @@ const GetRecords = () => {
     getRecords([]);
   }, []);
   return (
-    <div className="w-[70%]">
+    <div className="w-[100%] md:w-[70%]">
       <div className="mb-4 mt-4">
         <SearchBar searchRecords={getRecords} />
       </div>

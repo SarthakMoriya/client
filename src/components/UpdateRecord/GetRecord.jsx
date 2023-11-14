@@ -7,9 +7,11 @@ import user from "../../assets/user.png";
 import RecordTable from "./RecordTable";
 import {
   gradeCalculator,
+  overallGrade,
   overallPercentage,
 } from "../../utils/gradeCalculator";
 import { notify } from "../../utils/notification";
+import { motion } from "framer-motion";
 
 const GetRecord = () => {
   const [record, setRecord] = useState("");
@@ -35,7 +37,6 @@ const GetRecord = () => {
   };
 
   const handleDownload = async () => {
-    console.log(record);
     const data = {
       studentName: record.studentName,
       enrolledAt: record.dateEnrolled,
@@ -50,9 +51,10 @@ const GetRecord = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ data: data }),
     });
+    notify("Downloading Record in 5 seconds", "success");
     setTimeout(() => {
       window.open(`http://localhost:8000/pdfs/${id}.png`);
-    }, 2000);
+    }, 5000);
   };
 
   const handleCertificate = async () => {
@@ -75,7 +77,10 @@ const GetRecord = () => {
 
         if (response.ok) {
           console.log("Image uploaded successfully");
-          // notify("Image uploaded successfully","success")
+          notify("Certificate uploaded successfully", "success");
+          setTimeout(() => {
+            window.location.reload();
+          }, 3000);
         } else {
           console.error("Error uploading image");
         }
@@ -103,11 +108,19 @@ const GetRecord = () => {
   return (
     <>
       {error && (
-        <div className="h-screen flex items-center justify-center text-5xl font-extrabold text-center bg-gray-800 text-white">
+        <motion.div
+          whileInView={{ scale: [0, 1], opacity: [0, 1] }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          className="h-screen flex items-center justify-center text-5xl font-extrabold text-center bg-gray-800 text-white"
+        >
           NO RESULT FOUND WITH ID {id}
-        </div>
+        </motion.div>
       )}
-      <div className="bg-gray-900 min-h-[100vh] mt-5">
+      <motion.div
+        whileInView={{  opacity: [0, 1] }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
+        className="bg-gray-900 min-h-[100vh] mt-5"
+      >
         <ToastContainer
           position="top-center"
           autoClose={5000}
@@ -121,9 +134,9 @@ const GetRecord = () => {
           theme="dark"
         />
         {record?._id && (
-          <div className="flex   border-2 ">
-            <div className="flex m-2 w-[100%] h-[40vh] border ">
-              <div className="image flex p-4 rounded-full text-white">
+          <motion.div className="flex   border-2 ">
+            <motion.div className="flex m-2 w-[100%] h-[40vh] border ">
+              <motion.div className="image flex p-4 rounded-full text-white">
                 <img
                   src={
                     record?.imageName
@@ -133,28 +146,28 @@ const GetRecord = () => {
                   alt=""
                   className="rounded-full"
                 />
-              </div>
-              <div className="info flex flex-col  justify-center  text-white">
-                <div className="mx-4 my-2 font-normal  text-3xl">
+              </motion.div>
+              <motion.div className="info flex flex-col  justify-center  text-white">
+                <motion.div className="mx-4 my-2 font-normal  text-3xl">
                   Name: {record?.studentName}
-                </div>
-                <div className="mx-4 my-2 font-normal text-xl capitalize text-white">
+                </motion.div>
+                <motion.div className="mx-4 my-2 font-normal text-xl capitalize text-white">
                   Course: {record?.studentCourse}
-                </div>
-                <div className="mx-4 my-2 font-normal text-xl text-white">
+                </motion.div>
+                <motion.div className="mx-4 my-2 font-normal text-xl text-white">
                   Grade:{" "}
-                  {isNaN(gradeCalculator(record?.exams))
-                    ? gradeCalculator(record?.exams)
+                  {isNaN(overallGrade(record))
+                    ? overallGrade(record)
                     : "Not Graded"}
-                </div>
-                <div className="mx-4 my-2 font-normal text-xl text-white">
+                </motion.div>
+                <motion.div className="mx-4 my-2 font-normal text-xl text-white">
                   Overall Percentage:{" "}
                   {isNaN(overallPercentage(record))
                     ? "Not Graded"
-                    : overallPercentage(record) + "%"}
-                </div>
-              </div>
-              <div className="text-white  mt-2">
+                    : Math.floor(overallPercentage(record)) + "%"}
+                </motion.div>
+              </motion.div>
+              <motion.div className="text-white  mt-2">
                 <button
                   type="button"
                   onClick={() => {
@@ -184,8 +197,9 @@ const GetRecord = () => {
                   <>
                     <input
                       type="file"
-                      onClick={(e) => {
+                      onChange={(e) => {
                         setCertificate(e.target.files[0]);
+                        console.log(certificate);
                       }}
                       className="text-white mx-2 bg-blue-800 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg "
                     />
@@ -205,9 +219,9 @@ const GetRecord = () => {
                     View Certificate
                   </button>
                 )}
-              </div>
-            </div>
-          </div>
+              </motion.div>
+            </motion.div>
+          </motion.div>
         )}
         {record?.exams?.length && (
           <RecordTable
@@ -224,32 +238,36 @@ const GetRecord = () => {
         )}
         {/* MAIN EXAM DETAILS */}
         {record?.mainExamMT > 0 && (
-          <div className="w-full items-center justify-center border mt-7">
-            <div className="flex items-center justify-center uppercase">
-              <div className="bg-blue-900 text-gray-100 text-center px-2 py-4 w-[30%] border ">
+          <motion.div
+            whileInView={{ scale: [0, 1], opacity: [0, 1] }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="w-full items-center justify-center border mt-7"
+          >
+            <motion.div className="flex items-center justify-center uppercase">
+              <motion.div className="bg-blue-900 text-gray-100 text-center px-2 py-4 w-[30%] border ">
                 Main Exam : {record?.mainExamName}
-              </div>
-              <div className="bg-blue-900 text-gray-100 text-center px-2 py-4 w-[30%] border">
+              </motion.div>
+              <motion.div className="bg-blue-900 text-gray-100 text-center px-2 py-4 w-[30%] border">
                 Marks Obtained : {record?.mainExamMO}
-              </div>
-              <div className="bg-blue-900 text-gray-100 text-center px-2 py-4 w-[30%] border">
+              </motion.div>
+              <motion.div className="bg-blue-900 text-gray-100 text-center px-2 py-4 w-[30%] border">
                 Marks Total : {record?.mainExamMT}
-              </div>
-              <div className="bg-blue-900 text-gray-100 text-center px-2 py-4 w-[30%] border">
+              </motion.div>
+              <motion.div className="bg-blue-900 text-gray-100 text-center px-2 py-4 w-[30%] border">
                 Grade :{" "}
                 {gradeCalculator([
                   { mt: record?.mainExamMT, mo: record?.mainExamMO },
                 ])}
-              </div>
-            </div>
-          </div>
+              </motion.div>
+            </motion.div>
+          </motion.div>
         )}
         {!record?.mainExamMT > 0 && (
           <p className="text-center text-white text-3xl font-bold my-4 border p-4">
             No Main Exam Found Please Add using Edit button
           </p>
         )}
-      </div>
+      </motion.div>
     </>
   );
 };

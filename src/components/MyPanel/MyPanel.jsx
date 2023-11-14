@@ -78,12 +78,12 @@ const MyPanel = () => {
               >
                 Update Passcode
               </button>
-              <button
+              {/* <button
                 type="button"
                 className="w-full text-white  bg-blue-800 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg "
               >
                 Edit Account
-              </button>
+              </button> */}
               {isVerified === false && (
                 <span
                   type="button"

@@ -9,6 +9,7 @@ import {
   registerSchema,
 } from "../../schemas/authSchema";
 import { notify } from "../../utils/notification";
+import { motion } from "framer-motion";
 
 const Signup = () => {
   const [image, setImage] = useState(null);
@@ -24,10 +25,13 @@ const Signup = () => {
     formData.append("passcode", values.secretkey);
     formData.append("picturePath", image ? image.name : "");
 
-    const res = await fetch("http://localhost:8000/auth/signup", {
-      method: "POST",
-      body: formData,
-    });
+    const res = await fetch(
+      "https://smsbackend-4pi2.onrender.com/auth/signup",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
     const data = await res.json();
 
     if (data.ok === false) {
@@ -47,10 +51,13 @@ const Signup = () => {
       imageForm.append("image", image);
 
       try {
-        const response = await fetch("http://localhost:8000/upload", {
-          method: "POST",
-          body: imageForm,
-        });
+        const response = await fetch(
+          "https://smsbackend-4pi2.onrender.com/upload",
+          {
+            method: "POST",
+            body: imageForm,
+          }
+        );
 
         if (response.ok) {
           notify("Image uploaded successfully", "success");
@@ -83,8 +90,10 @@ const Signup = () => {
           pauseOnHover
           theme="dark"
         />
-        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-auto lg:py-0 h-auto">
-          <Link
+        <motion.div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-auto lg:py-0 h-auto">
+          <motion.a
+            whileInView={{ opacity: [0, 1] }}
+            transition={{ duration: 1, ease: "easeInOut" }}
             href="#"
             className="flex items-center mb-6 mt-4 text-2xl font-semibold text-gray-900 dark:text-white"
           >
@@ -94,14 +103,21 @@ const Signup = () => {
               alt="logo"
             />
             WebCooks
-          </Link>
-          <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-            <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-              <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+          </motion.a>
+          <motion.div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+            <motion.div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+              <motion.h1
+                whileInView={{ opacity: [0, 1] }}
+                transition={{ duration: 1, ease: "easeInOut" }}
+                className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
+              >
                 Create your account
-              </h1>
+              </motion.h1>
               {/* IMAGE FIELD */}
-              <div>
+              <motion.div
+                whileInView={{ opacity: [0, 1] }}
+                transition={{ duration: 1, ease: "easeInOut" }}
+              >
                 <label
                   htmlFor="picture"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -122,7 +138,7 @@ const Signup = () => {
                 >
                   {isImageUploaded ? "Image Uploaded" : "Upload Image"}
                 </button>
-              </div>
+              </motion.div>
               <Formik
                 onSubmit={handleSignup}
                 initialValues={initialValuesRegister}
@@ -144,7 +160,10 @@ const Signup = () => {
                     onSubmit={handleSubmit}
                   >
                     {/* USERNAME FIELD */}
-                    <div>
+                    <motion.div
+                      whileInView={{ opacity: [0, 1] }}
+                      transition={{ duration: 1, ease: "easeInOut" }}
+                    >
                       <label
                         htmlFor="username"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -166,13 +185,16 @@ const Signup = () => {
                         helperText={touched.username && errors.username}
                       />
                       {touched.username && errors.username && (
-                        <div className="text-blue-700 text-md my-1 ml-2">
+                        <motion.div className="text-blue-700 text-md my-1 ml-2">
                           {errors.username}
-                        </div>
+                        </motion.div>
                       )}
-                    </div>
+                    </motion.div>
                     {/* EMAIL FIELD */}
-                    <div>
+                    <motion.div
+                      whileInView={{ opacity: [0, 1] }}
+                      transition={{ duration: 1.2, ease: "easeInOut" }}
+                    >
                       <label
                         htmlFor="email"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -192,13 +214,16 @@ const Signup = () => {
                         helperText={touched.email && errors.email}
                       />
                       {touched.email && errors.email && (
-                        <div className="text-blue-700 text-md my-1 ml-2">
+                        <motion.div className="text-blue-700 text-md my-1 ml-2">
                           {errors.email}
-                        </div>
+                        </motion.div>
                       )}
-                    </div>
+                    </motion.div>
                     {/* PASSWORD FIELD */}
-                    <div>
+                    <motion.div
+                      whileInView={{ opacity: [0, 1] }}
+                      transition={{ duration: 1.4, ease: "easeInOut" }}
+                    >
                       <label
                         htmlFor="password"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -220,13 +245,16 @@ const Signup = () => {
                         helperText={touched.password && errors.password}
                       />
                       {touched.password && errors.password && (
-                        <div className="text-blue-700 text-md my-1 ml-2">
+                        <motion.div className="text-blue-700 text-md my-1 ml-2">
                           {errors.password}
-                        </div>
+                        </motion.div>
                       )}
-                    </div>
+                    </motion.div>
                     {/* SECRET KEY FIELD */}
-                    <div>
+                    <motion.div
+                      whileInView={{ opacity: [0, 1] }}
+                      transition={{ duration: 1.6, ease: "easeInOut" }}
+                    >
                       <label
                         htmlFor="secretkey"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -249,19 +277,25 @@ const Signup = () => {
                         helperText={touched.secretkey && errors.secretkey}
                       />
                       {touched.secretkey && errors.secretkey && (
-                        <div className="text-blue-700 text-md my-1 ml-2">
+                        <motion.div className="text-blue-700 text-md my-1 ml-2">
                           {errors.secretkey}
-                        </div>
+                        </motion.div>
                       )}
-                    </div>
+                    </motion.div>
                     {/* SIGNUP BUTTON */}
-                    <button
+                    <motion.button
+                      whileInView={{ opacity: [0, 1] }}
+                      transition={{ duration: 1.9, ease: "easeInOut" }}
                       type="submit"
                       className="w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-blue-500 dark:focus:ring-primary-800"
                     >
                       Sign up
-                    </button>
-                    <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+                    </motion.button>
+                    <motion.p
+                      whileInView={{ opacity: [0, 1] }}
+                      transition={{ duration: 1, ease: "easeInOut" }}
+                      className="text-sm font-light text-gray-500 dark:text-gray-400"
+                    >
                       Already have an account?{" "}
                       <Link
                         to="/login"
@@ -270,22 +304,22 @@ const Signup = () => {
                       >
                         Sign In
                       </Link>
-                    </p>
+                    </motion.p>
                   </form>
                 )}
               </Formik>
-            </div>
-          </div>
-        </div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
       </section>
       {isOpen && (
-        <div
+        <motion.div
           id="default-modal"
           className=" absolute w-1/2 translate-x-[50%] translate-y-[90%]"
         >
-          <div className="relative ">
-            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
-              <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+          <motion.div className="relative ">
+            <motion.div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+              <motion.div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                   Terms of Service
                 </h3>
@@ -314,14 +348,14 @@ const Signup = () => {
                   </svg>
                   <span className="sr-only">Close modal</span>
                 </button>
-              </div>
-              <div className="p-6 space-y-6">
+              </motion.div>
+              <motion.div className="p-6 space-y-6">
                 <p className="text-base leading-relaxed   text-white">
                   Your account request has been sent to admin. Wait for your
                   account's approval by the Admin
                 </p>
-              </div>
-              <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+              </motion.div>
+              <motion.div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
                 <button
                   onClick={() => {
                     setIsOpen(false);
@@ -331,10 +365,10 @@ const Signup = () => {
                 >
                   Ok
                 </button>
-              </div>
-            </div>
-          </div>
-        </div>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
       )}
     </>
   );

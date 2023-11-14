@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-
 import user from "../../assets/user.png";
 
 const Sidebar = () => {
   const [records, setRecords] = useState([]);
   const navigate = useNavigate();
 
-  const fetchRecords=async()=>{
-    const results=await fetch("http://localhost:8000/records/getrecords")
-    const res=await results.json();
+  const fetchRecords = async () => {
+    const results = await fetch("http://localhost:8000/records/getrecords");
+    const res = await results.json();
     setRecords(res);
-  }
+  };
   useEffect(() => {
     fetchRecords();
   }, []);
@@ -20,11 +19,15 @@ const Sidebar = () => {
     navigate(`/record/${id}`);
   };
   return (
-    <div className="w-[30%] border-2">
+    <motion.div
+      className="w-[30%] border-2 hidden md:block"
+    >
       {records?.length > 0 &&
         records?.map((record) => {
           return (
-            <div
+            <motion.div
+              whileInView={{ y: [100, 0], opacity: [0, 1] }}
+              transition={{ duration: 0.5 }}
               className=" flex items-center border"
               key={record?._id}
               onClick={() => {
@@ -56,11 +59,15 @@ const Sidebar = () => {
                   View
                 </button>
               </div>
-            </div>
+            </motion.div>
           );
         })}
-        {records?.length===0 && <div className="text-3xl text-center text-white w-full p-2">NO RECORDS </div>}
-    </div>
+      {records?.length === 0 && (
+        <div className="text-3xl text-center text-white w-full p-2">
+          NO RECORDS{" "}
+        </div>
+      )}
+    </motion.div>
   );
 };
 

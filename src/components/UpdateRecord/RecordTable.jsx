@@ -3,34 +3,51 @@ import ExamRow from "./ExamRow";
 import {
   gradeCalculator,
   percentageCalcuator,
-  totalMarks,
+  total_Marks,
   totalMarksObtained,
 } from "../../utils/gradeCalculator";
 import { useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const RecordTable = ({ exams, studentName, studentCourseName }) => {
   const location = useLocation();
   return (
-    <div className="w-full items-center justify-center border mt-7">
-      <div className="flex items-center uppercase">
-        <div className="bg-gray-900 text-gray-100 text-center p-1 w-[20%] border ">
+    <motion.div className="w-full items-center justify-center border mt-7">
+      <motion.div className="flex items-center uppercase">
+        <motion.div
+          whileInView={{ scale: [0, 1], opacity: [0, 1] }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          className="bg-gray-900 text-gray-100 text-center p-1 w-[20%] border "
+        >
           Exam
-        </div>
-        <div className="bg-gray-900 text-gray-100 text-center p-1 w-[20%] border">
+        </motion.div>
+        <motion.div
+          whileInView={{ scale: [0, 1], opacity: [0, 1] }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          className="bg-gray-900 text-gray-100 text-center p-1 w-[20%] border"
+        >
           Marks Obtained
-        </div>
-        <div className="bg-gray-900 text-gray-100 text-center p-1 w-[20%] border">
+        </motion.div>
+        <motion.div
+          whileInView={{ scale: [0, 1], opacity: [0, 1] }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          className="bg-gray-900 text-gray-100 text-center p-1 w-[20%] border"
+        >
           Marks Total
-        </div>
-        <div className="bg-gray-900 text-gray-100 text-center p-1 w-[20%] border ">
+        </motion.div>
+        <motion.div
+          whileInView={{ scale: [0, 1], opacity: [0, 1] }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          className="bg-gray-900 text-gray-100 text-center p-1 w-[20%] border "
+        >
           Grade
-        </div>
+        </motion.div>
         {!location.pathname.includes("pdf") && (
-          <div className="bg-gray-900 text-gray-100 text-center p-1 border w-[20%]">
+          <motion.div className="bg-gray-900 text-gray-100 text-center p-1 border w-[20%]">
             Modify
-          </div>
+          </motion.div>
         )}
-      </div>
+      </motion.div>
       {exams?.map((exam, i) => (
         <>
           {i >= 0 && (
@@ -45,26 +62,26 @@ const RecordTable = ({ exams, studentName, studentCourseName }) => {
           )}
         </>
       ))}
-      <div className="flex items-center uppercase">
+      <motion.div className="flex items-center uppercase">
         {!location.pathname.includes("pdf") && (
-          <div className="bg-blue-400 text-gray-100 text-center p-1 w-[25%] border py-4 ">
+          <motion.div className="bg-blue-400 text-gray-100 text-center p-1 w-[25%] border py-4 ">
             No. of Exams: {exams?.length}
-          </div>
+          </motion.div>
         )}
-        <div className="bg-blue-400 text-gray-100 text-center p-1 w-[25%] border py-4">
+        <motion.div className="bg-blue-400 text-gray-100 text-center p-1 w-[25%] border py-4">
           Marks Obtained: {totalMarksObtained(exams)}
-        </div>
-        <div className="bg-blue-400 text-gray-100 text-center p-1 w-[25%] border py-4">
-          Total Marks : {totalMarks(exams)}
-        </div>
-        <div className="bg-blue-400 text-gray-100 text-center p-1 w-[25%] border py-4 ">
+        </motion.div>
+        <motion.div className="bg-blue-400 text-gray-100 text-center p-1 w-[25%] border py-4">
+          Total Marks : {total_Marks(exams)}
+        </motion.div>
+        <motion.div className="bg-blue-400 text-gray-100 text-center p-1 w-[25%] border py-4 ">
           Grade: {gradeCalculator(exams)}
-        </div>
-        <div className="bg-blue-400 text-gray-100 text-center p-1 w-[25%] border py-4 ">
+        </motion.div>
+        <motion.div className="bg-blue-400 text-gray-100 text-center p-1 w-[25%] border py-4 ">
           Percentage: {percentageCalcuator(exams)}%
-        </div>
-      </div>
-    </div>
+        </motion.div>
+      </motion.div>
+    </motion.div>
   );
 };
 

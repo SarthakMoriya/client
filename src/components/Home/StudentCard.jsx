@@ -1,12 +1,11 @@
 import React from "react";
 import user from "../../assets/user.png";
 import { Link } from "react-router-dom";
-import { useDispatch } from 'react-redux';
+import { motion } from "framer-motion";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const StudentCard = ({ data, setRecords, records }) => {
-  const dispatch = useDispatch();
   const notify = (message, type = "error") => {
     if (type === "success") toast.success(message);
     else toast.error(message);
@@ -16,12 +15,16 @@ const StudentCard = ({ data, setRecords, records }) => {
       method: "DELETE",
     });
     notify("Record Deleted", "success");
-      const newRecords = records?.filter((rec) => rec?._id !== data?._id);
-      setRecords(newRecords);
-      // dispatch(setRecords({records:newRecords}));
+    const newRecords = records?.filter((rec) => rec?._id !== data?._id);
+    setRecords(newRecords);
+    // dispatch(setRecords({records:newRecords}));
   };
   return (
-    <div className="flex flex-col w-[45%] shadow-2xl rounded-lg mr-4 mb-4 ml-4  bg-gray-800 px-4 py-6 border border-blue-500 min-h-[50%]">
+    <motion.div
+    whileInView={{ scale: [0, 1], opacity: [0, 1] }}
+    transition={{ duration: 0.5, ease: "easeInOut" }}
+      className="flex flex-col w-[45%] shadow-2xl rounded-lg mr-4 mb-4 ml-4  bg-gray-800 px-4 py-6 border border-blue-500 min-h-[50%]"
+    >
       <ToastContainer
         position="top-center"
         autoClose={5000}
@@ -43,7 +46,7 @@ const StudentCard = ({ data, setRecords, records }) => {
                 : user
             }
             alt="studentImage"
-            className="rounded-full"
+            className="rounded-full w-full h-full"
           />
         </div>
         <div className="info flex flex-col  justify-center text-white ">
@@ -57,12 +60,7 @@ const StudentCard = ({ data, setRecords, records }) => {
             Course: {data?.studentCourse}
           </div>
           <div className="mx-4 my-2 font-semibold text-md">
-            Date:{" "}
-            {new Date(data?.dateEnrolled).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-            }) || "A"}
+            Date: {data?.dateEnrolled}
           </div>
         </div>
       </div>
@@ -83,7 +81,7 @@ const StudentCard = ({ data, setRecords, records }) => {
           Delete
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
