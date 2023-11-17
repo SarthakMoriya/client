@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route,useNavigate, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import Home from "./components/Home/Home";
@@ -17,6 +17,7 @@ import Panel from "./components/Admin/Panel";
 import Pdf from "./components/PDF/Pdf";
 import Certificate from "./components/Certificate/Certificate";
 import { getRecords } from "./api";
+import Footer from "./components/Footer/Footer";
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
@@ -25,7 +26,6 @@ localStorage.setItem("is_verified", user ? user?.verified : false);
 const fetchRecords=async()=>{
   const records=await getRecords();
   dispatch(setRecords({records}))
-  console.log(records)
 
 }
   useEffect(() => {
@@ -37,7 +37,7 @@ const fetchRecords=async()=>{
       <br />
       <br />
       <Routes>
-        <Route path="/" element={user ? <Home /> : <Login />} />
+        <Route path="/" element={ <Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route
@@ -46,7 +46,7 @@ const fetchRecords=async()=>{
         />
         <Route
           path="/record/:id"
-          element={user != null ? <GetRecord /> : <Login />}
+          element={<GetRecord /> }
         />
         <Route
           path="/record/edit/:id"
@@ -65,6 +65,7 @@ const fetchRecords=async()=>{
         <Route path="/record/pdf/:id" element={<Pdf />} />
         <Route path="/record/certificate/:id" element={<Certificate />} />
       </Routes>
+      <Footer/>
     </BrowserRouter>
   );
 }

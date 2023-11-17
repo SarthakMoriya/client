@@ -58,7 +58,7 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
     setIsDeleted(exam?.name);
   };
   return (
-    <motion.div className="w-full items-center justify-center border ">
+    <motion.div className="w-full items-center justify-center  ">
       {/* IN EDIT MODE */}
       {edit === exam?.name && isDeleted !== exam?.name && (
         <motion.div className="flex items-center ">
@@ -121,13 +121,11 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
       )}
       {/* NOT IN EDITING MODE */}
       {edit === false && isDeleted !== exam?.name && (
-        <motion.div className="flex items-center ">
+        <motion.div className={`flex  ${!(i&1)?"bg-[#ececec] text-black":"bg-white text-black"}`}>
           <motion.div
             whileInView={{ scale: [0, 1], opacity: [0, 1] }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className={`${
-              i % 2 !== 0 ? "bg-gray-700" : "bg-gray-900"
-            }  text-gray-100 text-center p-1 w-[20%] border-gray-400 border-2 `}
+            className={`   text-center p-1 w-[20%]  `}
           >
             {modifiedExam.oldExam === exam.name
               ? modifiedExam.name
@@ -136,9 +134,7 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
           <motion.div
             whileInView={{ scale: [0, 1], opacity: [0, 1] }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className={`${
-              i % 2 !== 0 ? "bg-gray-700" : "bg-gray-900"
-            }  text-gray-100 text-center p-1 w-[20%] border-gray-400 border-2 `}
+            className={`   text-center p-1 w-[20%]  `}
           >
             {modifiedExam.oldExam === exam.name
               ? modifiedExam.obtMarks
@@ -147,9 +143,7 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
           <motion.div
             whileInView={{ scale: [0, 1], opacity: [0, 1] }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className={`${
-              i % 2 !== 0 ? "bg-gray-700" : "bg-gray-900"
-            }  text-gray-100 text-center p-1 w-[20%] border-gray-400 border-2 `}
+            className={` text-center p-1 w-[20%]  `}
           >
             {modifiedExam.oldExam === exam?.name
               ? modifiedExam?.totalMarks
@@ -158,20 +152,17 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
           <motion.div
             whileInView={{ scale: [0, 1], opacity: [0, 1] }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className={`${
-              i % 2 !== 0 ? "bg-gray-700" : "bg-gray-900"
-            }  text-gray-100 text-center p-1 w-[20%] border-gray-400 border-2 `}
+            className={`   text-center p-1 w-[20%] `}
           >
             {testGradeCalculator({ mt: exam?.mt, mo: exam?.mo })}
           </motion.div>
+          {/* EDIT DELETE EXAM */}
           {!location.pathname.includes("pdf") && (
             <>
               <motion.div
               whileInView={{ scale: [0, 1], opacity: [0, 1] }}
               transition={{ duration: 0.5, ease: "easeInOut" }}
-                className={`${
-                  i % 2 !== 0 ? "bg-gray-700" : "bg-gray-900"
-                }  text-gray-100 text-center p-1 w-[20%] border-gray-400 border-2 flex items-center`}
+                className={` w-[20%] flex `}
               >
                 <motion.div
                 whileInView={{ scale: [0, 1], opacity: [0, 1] }}
@@ -179,7 +170,7 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
                   onClick={() => {
                     handleEdit(exam?.name);
                   }}
-                  className="w-[50%] bg-slate-400  hover:bg-blue-400 duration-500 ease-in rounded-sm border-1 cursor-pointer"
+                  className="w-[50%] bg-blue text-white duration-500 ease-in  cursor-pointer text-center flex justify-center items-center border-2 border-gray-300"
                 >
                   Edit
                 </motion.div>
@@ -187,7 +178,7 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
                 whileInView={{ scale: [0, 1], opacity: [0, 1] }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
                   onClick={handleDeleteExam}
-                  className="w-[50%] bg-gray-600  hover:bg-red-400 duration-500 ease-in rounded-sm border-1 cursor-pointer"
+                  className="w-[50%] bg-blue text-white duration-500 ease-in border- cursor-pointer text-center flex justify-center items-center border-2 border-gray-300"
                 >
                   Delete
                 </motion.div>
@@ -200,43 +191,33 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
       {isDeleted === exam?.name && (
         <motion.div className="flex items-center line-through opacity-50">
           <motion.div
-            className={`${
-              i % 2 !== 0 ? "bg-gray-700" : "bg-gray-900"
-            }  text-gray-100 text-center p-1 w-[20%] border-gray-400 border-2  `}
+            className={`text-gray-100 text-center p-1 w-[20%] border-gray-400 border-2  `}
           >
             {modifiedExam.oldExam === exam.name
               ? modifiedExam.name
               : exam?.name}
           </motion.div>
           <motion.div
-            className={`${
-              i % 2 !== 0 ? "bg-gray-700" : "bg-gray-900"
-            }  text-gray-100 text-center p-1 w-[20%] border-gray-400 border-2 `}
+            className={`  text-gray-100 text-center p-1 w-[20%] border-gray-400 border-2 `}
           >
             {modifiedExam.oldExam === exam.name
               ? modifiedExam.obtMarks
               : exam?.mo}
           </motion.div>
           <motion.div
-            className={`${
-              i % 2 !== 0 ? "bg-gray-700" : "bg-gray-900"
-            }  text-gray-100 text-center p-1 w-[20%] border-gray-400 border-2 `}
+            className={`  text-gray-100 text-center p-1 w-[20%] border-gray-400 border-2 `}
           >
             {modifiedExam.oldExam === exam?.name
               ? modifiedExam?.totalMarks
               : exam?.mt}
           </motion.div>
           <motion.div
-            className={`${
-              i % 2 !== 0 ? "bg-gray-700" : "bg-gray-900"
-            }  text-gray-100 text-center p-1 w-[20%] border-gray-400 border-2 `}
+            className={`  text-gray-100 text-center p-1 w-[20%] border-gray-400 border-2 `}
           >
             {exam?.grade || "A"}
           </motion.div>
           <motion.div
-            className={`${
-              i % 2 !== 0 ? "bg-gray-700" : "bg-gray-900"
-            }  text-gray-100 text-center p-1 w-[20%] border-gray-400 border-2 flex items-center`}
+            className={`  text-gray-100 text-center p-1 w-[20%] border-gray-400 border-2 flex items-center`}
           >
             <motion.div
               onClick={() => {

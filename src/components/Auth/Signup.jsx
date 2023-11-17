@@ -25,13 +25,10 @@ const Signup = () => {
     formData.append("passcode", values.secretkey);
     formData.append("picturePath", image ? image.name : "");
 
-    const res = await fetch(
-      "https://smsbackend-4pi2.onrender.com/auth/signup",
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
+    const res = await fetch("http://localhost:8000/auth/signup", {
+      method: "POST",
+      body: formData,
+    });
     const data = await res.json();
 
     if (data.ok === false) {
@@ -51,13 +48,10 @@ const Signup = () => {
       imageForm.append("image", image);
 
       try {
-        const response = await fetch(
-          "https://smsbackend-4pi2.onrender.com/upload",
-          {
-            method: "POST",
-            body: imageForm,
-          }
-        );
+        const response = await fetch("http://localhost:8000/upload", {
+          method: "POST",
+          body: imageForm,
+        });
 
         if (response.ok) {
           notify("Image uploaded successfully", "success");
@@ -77,7 +71,7 @@ const Signup = () => {
   };
   return (
     <>
-      <section className="bg-gray-50 dark:bg-gray-900  h-auto mt-4 absolute w-full">
+      <section className="bg-gray-50 dark:bg-primary  h-auto mt-4 absolute w-full">
         <ToastContainer
           position="top-center"
           autoClose={5000}
@@ -90,26 +84,14 @@ const Signup = () => {
           pauseOnHover
           theme="dark"
         />
-        <motion.div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-auto lg:py-0 h-auto">
-          <motion.a
-            whileInView={{ opacity: [0, 1] }}
-            transition={{ duration: 1, ease: "easeInOut" }}
-            href="#"
-            className="flex items-center mb-6 mt-4 text-2xl font-semibold text-gray-900 dark:text-white"
-          >
-            <img
-              className="w-8 h-8 mr-2"
-              src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
-              alt="logo"
-            />
-            WebCooks
-          </motion.a>
-          <motion.div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+        <motion.div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-auto lg:py-0 h-auto mt-4 mb-8">
+          
+          <motion.div className="w-full bg-white rounded-lg shadow  md:mt-0 sm:max-w-md xl:p-0 dark:bg-white dark:border-secondary border-2">
             <motion.div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <motion.h1
                 whileInView={{ opacity: [0, 1] }}
                 transition={{ duration: 1, ease: "easeInOut" }}
-                className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
+                className="text-xl font-bold leading-tight tracking-tight text-blue md:text-2xl "
               >
                 Create your account
               </motion.h1>
@@ -120,7 +102,7 @@ const Signup = () => {
               >
                 <label
                   htmlFor="picture"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-blue "
                 >
                   Profile Photo
                 </label>
@@ -132,7 +114,7 @@ const Signup = () => {
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 />
                 <button
-                  className="w-full mt-2 text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-blue-500 dark:focus:ring-primary-800"
+                  className="w-full mt-2 text-blue bg-secondary hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-blue-500 dark:focus:ring-primary-800"
                   onClick={handleImageUpload}
                   disabled={isImageUploaded ? true : false}
                 >
@@ -166,7 +148,7 @@ const Signup = () => {
                     >
                       <label
                         htmlFor="username"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        className="block mb-2 text-sm font-medium text-blue "
                       >
                         Username
                       </label>
@@ -197,7 +179,7 @@ const Signup = () => {
                     >
                       <label
                         htmlFor="email"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        className="block mb-2 text-sm font-medium text-blue "
                       >
                         Your email
                       </label>
@@ -226,7 +208,7 @@ const Signup = () => {
                     >
                       <label
                         htmlFor="password"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        className="block mb-2 text-sm font-medium text-blue "
                       >
                         Password
                       </label>
@@ -245,7 +227,7 @@ const Signup = () => {
                         helperText={touched.password && errors.password}
                       />
                       {touched.password && errors.password && (
-                        <motion.div className="text-blue-700 text-md my-1 ml-2">
+                        <motion.div className="text-blue text-md my-1 ml-2">
                           {errors.password}
                         </motion.div>
                       )}
@@ -257,7 +239,7 @@ const Signup = () => {
                     >
                       <label
                         htmlFor="secretkey"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        className="block mb-2 text-sm font-medium text-blue "
                       >
                         Secret Key
                       </label>
@@ -277,7 +259,7 @@ const Signup = () => {
                         helperText={touched.secretkey && errors.secretkey}
                       />
                       {touched.secretkey && errors.secretkey && (
-                        <motion.div className="text-blue-700 text-md my-1 ml-2">
+                        <motion.div className="text-blue text-md my-1 ml-2">
                           {errors.secretkey}
                         </motion.div>
                       )}
@@ -287,14 +269,14 @@ const Signup = () => {
                       whileInView={{ opacity: [0, 1] }}
                       transition={{ duration: 1.9, ease: "easeInOut" }}
                       type="submit"
-                      className="w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-blue-500 dark:focus:ring-primary-800"
+                      className="w-full text-blue bg-secondary hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:bg-gray-500"
                     >
                       Sign up
                     </motion.button>
                     <motion.p
                       whileInView={{ opacity: [0, 1] }}
                       transition={{ duration: 1, ease: "easeInOut" }}
-                      className="text-sm font-light text-gray-500 dark:text-gray-400"
+                      className="text-sm font-light text-blue dark:text-gray-400"
                     >
                       Already have an account?{" "}
                       <Link

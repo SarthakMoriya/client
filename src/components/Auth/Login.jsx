@@ -6,6 +6,7 @@ import { setLogin } from "../../state";
 import { Formik } from "formik";
 import { initialValuesLogin, loginSchema } from "../../schemas/authSchema";
 import { motion } from "framer-motion";
+import logo from '../../assets/logo.webp'
 
 const Login = () => {
   const distpatch = useDispatch();
@@ -33,27 +34,16 @@ const Login = () => {
   };
   return (
     <>
-      <motion.section className="bg-gray-50 dark:bg-gray-900">
+      <motion.section className="bg-primary ">
         <motion.div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-          <motion.a
-            whileInView={{ opacity: [0, 1] }}
-            transition={{ duration: 1.2, ease: "easeInOut" }}
-            className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
-          >
-            <motion.img
-              className="w-8 h-8 mr-2"
-              src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
-              alt="logo"
-            />
-            WebCooks
-          </motion.a>
-          <motion.div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+          
+          <motion.div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0  border-2 border-secondary">
             <motion.div
               whileInView={{ opacity: [0, 1] }}
               transition={{ duration: 1, ease: "easeInOut" }}
               className="p-6 space-y-4 md:space-y-6 sm:p-8"
             >
-              <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+              <h1 className="text-xl font-bold leading-tight tracking-tight text-blue md:text-2xl ">
                 Sign in to your account
               </h1>
               <Formik
@@ -81,7 +71,7 @@ const Login = () => {
                     >
                       <label
                         htmlFor="email"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        className="block mb-2 text-sm font-medium text-blue "
                       >
                         Your email
                       </label>
@@ -92,7 +82,7 @@ const Login = () => {
                         onBlur={handleBlur}
                         value={values.email}
                         onChange={handleChange}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className="bg-gray-50 border border-gray-300 text-blue sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="name@company.com"
                         error={Boolean(touched.email) && Boolean(errors.email)}
                         helperText={touched.email && errors.email}
@@ -109,7 +99,7 @@ const Login = () => {
                     >
                       <label
                         htmlFor="password"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        className="block mb-2 text-sm font-medium text-blue "
                       >
                         Password
                       </label>
@@ -121,14 +111,14 @@ const Login = () => {
                         value={values.password}
                         onChange={handleChange}
                         placeholder="••••••••"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className="bg-gray-50 border border-gray-300 text-blue sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         error={
                           Boolean(touched.password) && Boolean(errors.password)
                         }
                         helperText={touched.password && errors.password}
                       />
                       {touched.password && errors.password && (
-                        <motion.div className="text-blue-700 text-md my-1 ml-2">
+                        <motion.div className="text-blue text-md my-1 ml-2">
                           {errors.password}
                         </motion.div>
                       )}
@@ -138,7 +128,7 @@ const Login = () => {
                       transition={{ duration: 1, ease: "easeInOut" }}
                       className="flex items-center justify-between"
                     >
-                      <Link className="text-sm font-medium text-primary-600 hover:underline text-blue-400">
+                      <Link className="text-sm font-medium text-primary-600 hover:underline text-blue">
                         Forgot password?
                       </Link>
                     </motion.div>
@@ -146,19 +136,19 @@ const Login = () => {
                       whileInView={{ opacity: [0, 1] }}
                       transition={{ duration: 1, ease: "easeInOut" }}
                       type="submit"
-                      className="w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-blue-500 dark:focus:ring-primary-800"
+                      className="w-full text-white bg-secondary hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-gray-600 dark:focus:ring-primary-800"
                     >
                       Sign in
                     </motion.button>
                     <motion.p
                       whileInView={{ opacity: [0, 1] }}
                       transition={{ duration: 1, ease: "easeInOut" }}
-                      className="text-sm font-light text-gray-500 dark:text-gray-400"
+                      className="text-sm font-light text-blue"
                     >
                       Don’t have an account yet?{" "}
                       <Link
                         to="/signup"
-                        className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                        className="font-medium text-blue hover:underline "
                       >
                         Sign up
                       </Link>

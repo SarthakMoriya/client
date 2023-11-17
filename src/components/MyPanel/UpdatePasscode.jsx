@@ -9,9 +9,6 @@ import {
 } from "../../schemas/recordSchema";
 
 const UpdatePasscode = ({ user, setIsUpdatePasscode }) => {
-  const [oldPasscode, setOldPasscode] = useState("");
-  const [newPasscode, setNewPasscode] = useState("");
-  const [confirmPasscode, setConfirmPasscode] = useState("");
   const handleUpdatePasscode = async (values, onSubmitProps) => {
     const res = await fetch("http://localhost:8000/auth/changepasscode", {
       method: "POST",

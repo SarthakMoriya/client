@@ -20,7 +20,7 @@ const Sidebar = () => {
   };
   return (
     <motion.div
-      className="w-[30%] border-2 hidden md:block"
+      className="w-[30%] border-4 border-primary hidden md:block "
     >
       {records?.length > 0 &&
         records?.map((record) => {
@@ -28,11 +28,12 @@ const Sidebar = () => {
             <motion.div
               whileInView={{ y: [100, 0], opacity: [0, 1] }}
               transition={{ duration: 0.5 }}
-              className=" flex items-center border"
+              className=" flex items-center border border-primary bg-[#e6e6e6]"
               key={record?._id}
               onClick={() => {
                 handleRecordClick(record?._id);
               }}
+            
             >
               <div className="w-[50%] p-2 rounded-lg flex items-center cursor-pointer">
                 <img
@@ -44,7 +45,7 @@ const Sidebar = () => {
                   alt=""
                   className="w-10 h-10 rounded-full"
                 />
-                <div className=" p-2 font-semibold text-white capitalize ml-4">
+                <div className=" p-2 font-semibold text-blue capitalize ml-4">
                   ID:{record?.studentName}
                 </div>
               </div>
@@ -54,7 +55,7 @@ const Sidebar = () => {
                   onClick={() => {
                     handleRecordClick(record?._id);
                   }}
-                  className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-5 py-2.5 text-center mr-2 mb-2 mt-2 w-[95%] rounded-lg  ease-in-out duration-500"
+                  className="text-blue bg-secondary hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-5 py-2.5 text-center mr-2 mb-2 mt-2 w-[95%] rounded-lg  ease-in-out duration-500"
                 >
                   View
                 </button>

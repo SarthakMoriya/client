@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { deleteRecord } from "../../api";
-import user from "../../assets/user.png";
+import userfallback from "../../assets/user.png";
 import RecordTable from "./RecordTable";
 import {
   gradeCalculator,
@@ -12,11 +12,16 @@ import {
 } from "../../utils/gradeCalculator";
 import { notify } from "../../utils/notification";
 import { motion } from "framer-motion";
+import { useSelector } from "react-redux";
+import BarChart from "../Charts/BarChart";
+import PerformanceChart from "../Charts/PerformanceChart";
+import GrowthChart from "../Charts/GrowthChart";
 
 const GetRecord = () => {
   const [record, setRecord] = useState("");
   const [certificate, setCertificate] = useState("");
   const [error, setError] = useState("");
+  const user = useSelector((state) => state?.auth?.user);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -105,21 +110,32 @@ const GetRecord = () => {
   const handleEdit = (id) => {
     navigate("/record/edit/" + id);
   };
+
+  const averageData = {
+    category: "Average Percentage",
+    value: 80,
+  };
+
+  const individualData = {
+    category: "Your Percentage",
+    value: 75,
+  };
+
   return (
     <>
       {error && (
         <motion.div
           whileInView={{ scale: [0, 1], opacity: [0, 1] }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
-          className="h-screen flex items-center justify-center text-5xl font-extrabold text-center bg-gray-800 text-white"
+          className="h-screen flex items-center justify-center text-5xl font-extrabold text-center bg-gray-100"
         >
           NO RESULT FOUND WITH ID {id}
         </motion.div>
       )}
       <motion.div
-        whileInView={{  opacity: [0, 1] }}
+        whileInView={{ opacity: [0, 1] }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
-        className="bg-gray-900 min-h-[100vh] mt-5"
+        className="bg-white text-black min-h-[100vh] mt-5"
       >
         <ToastContainer
           position="top-center"
@@ -134,92 +150,101 @@ const GetRecord = () => {
           theme="dark"
         />
         {record?._id && (
-          <motion.div className="flex   border-2 ">
-            <motion.div className="flex m-2 w-[100%] h-[40vh] border ">
-              <motion.div className="image flex p-4 rounded-full text-white">
+          <motion.div className="flex  ">
+            <motion.div className="flex m-2 w-[100%] h-[40vh]  ">
+              {/* STUDENT IMAGE */}
+              <motion.div className="image flex p-4  text-white w-[30%]">
                 <img
                   src={
                     record?.imageName
                       ? `http://localhost:8000/assets/${record?.imageName}`
-                      : user
+                      : userfallback
                   }
                   alt=""
-                  className="rounded-full"
+                  className="w-full rounded-lg -2 "
                 />
               </motion.div>
-              <motion.div className="info flex flex-col  justify-center  text-white">
-                <motion.div className="mx-4 my-2 font-normal  text-3xl">
-                  Name: {record?.studentName}
+              <div className=" flex flex-col w-[70%] ">
+                {/* STUDENT DETAILS */}
+                <motion.div className="info flex flex-col  justify-center  text-black">
+                  <motion.div className="mx-4 my-2 font-normal  text-3xl">
+                    Name: {record?.studentName}
+                  </motion.div>
+                  <motion.div className="mx-4 my-2 font-normal text-xl capitalize ">
+                    Course: {record?.studentCourse}
+                  </motion.div>
+                  <motion.div className="mx-4 my-2 font-normal text-xl ">
+                    Grade:{" "}
+                    {isNaN(overallGrade(record))
+                      ? overallGrade(record)
+                      : "Not Graded"}
+                  </motion.div>
+                  <motion.div className="mx-4 my-2 font-normal text-xl ">
+                    Percentage:{" "}
+                    {isNaN(overallPercentage(record))
+                      ? "Not Graded"
+                      : Math.floor(overallPercentage(record)) + "%"}
+                  </motion.div>
                 </motion.div>
-                <motion.div className="mx-4 my-2 font-normal text-xl capitalize text-white">
-                  Course: {record?.studentCourse}
-                </motion.div>
-                <motion.div className="mx-4 my-2 font-normal text-xl text-white">
-                  Grade:{" "}
-                  {isNaN(overallGrade(record))
-                    ? overallGrade(record)
-                    : "Not Graded"}
-                </motion.div>
-                <motion.div className="mx-4 my-2 font-normal text-xl text-white">
-                  Overall Percentage:{" "}
-                  {isNaN(overallPercentage(record))
-                    ? "Not Graded"
-                    : Math.floor(overallPercentage(record)) + "%"}
-                </motion.div>
-              </motion.div>
-              <motion.div className="text-white  mt-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    handleEdit(record?._id);
-                  }}
-                  className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-5 py-2.5 text-center mr-2 mb-2 mt-2  rounded-lg  ease-in-out duration-500"
-                >
-                  Edit
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    deleteRecord(record?._id, navigate);
-                  }}
-                  className="text-white bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg "
-                >
-                  Delete
-                </button>
-                <button
-                  type="button"
-                  onClick={handleDownload}
-                  className="text-white mx-2 bg-blue-800 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg "
-                >
-                  Download
-                </button>
-                {record?.certificate === "" ? (
-                  <>
-                    <input
-                      type="file"
-                      onChange={(e) => {
-                        setCertificate(e.target.files[0]);
-                        console.log(certificate);
-                      }}
-                      className="text-white mx-2 bg-blue-800 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg "
-                    />
-                    <button
-                      type="button"
-                      onClick={handleCertificate}
-                      className="text-white mx-2 bg-blue-800 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg "
-                    >
-                      Upload Certificate
-                    </button>
-                  </>
-                ) : (
+                {/* BUTTONS TO DELETE VIEW ... */}
+                <motion.div className="text-white  mt-2 ">
+                  {user && (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          handleEdit(record?._id);
+                        }}
+                        className="w-[20%] text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          deleteRecord(record?._id, navigate);
+                        }}
+                        className="w-[20%] text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg"
+                      >
+                        Delete
+                      </button>
+                    </>
+                  )}
                   <button
-                    onClick={handleCertificateDownload}
-                    className="text-white mx-2 bg-blue-800 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg "
+                    type="button"
+                    onClick={handleDownload}
+                    className="w-[20%] text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg "
                   >
-                    View Certificate
+                    Download Data
                   </button>
-                )}
-              </motion.div>
+                  {user && record?.certificate === "" ? (
+                    <>
+                      <input
+                        type="file"
+                        onChange={(e) => {
+                          setCertificate(e.target.files[0]);
+                          console.log(certificate);
+                        }}
+                        className="w-[20%] text-white mx-2 bg-secondary hover:bg-blue0 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg "
+                      />
+                      <button
+                        type="button"
+                        onClick={handleCertificate}
+                        className="w-[20%] text-white mx-2 bg-secondary hover:bg-blue focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg "
+                      >
+                        Upload Certificate
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      onClick={handleCertificateDownload}
+                      className="w-[20%] text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg  "
+                    >
+                      View Certificate
+                    </button>
+                  )}
+                </motion.div>
+              </div>
             </motion.div>
           </motion.div>
         )}
@@ -231,7 +256,7 @@ const GetRecord = () => {
           />
         )}
         {!record?.exams?.length && (
-          <p className="text-center text-white text-3xl font-bold my-4 border p-4">
+          <p className="text-center text-white text-3xl font-bold my-4  p-4">
             {" "}
             No Tests Found Please Add using Edit button
           </p>
@@ -241,32 +266,45 @@ const GetRecord = () => {
           <motion.div
             whileInView={{ scale: [0, 1], opacity: [0, 1] }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="w-full items-center justify-center border mt-7"
+            className="w-full items-center justify-center  "
           >
-            <motion.div className="flex items-center justify-center uppercase">
-              <motion.div className="bg-blue-900 text-gray-100 text-center px-2 py-4 w-[30%] border ">
+            <motion.div className="flex items-center justify-center uppercase text-black border-b-4 border-l-4 border-r-4">
+              <motion.div className="bg-blue-900  text-center px-2 py-4 w-[30%]  ">
                 Main Exam : {record?.mainExamName}
               </motion.div>
-              <motion.div className="bg-blue-900 text-gray-100 text-center px-2 py-4 w-[30%] border">
+              <motion.div className="bg-blue-900  text-center px-2 py-4 w-[30%] ">
                 Marks Obtained : {record?.mainExamMO}
               </motion.div>
-              <motion.div className="bg-blue-900 text-gray-100 text-center px-2 py-4 w-[30%] border">
+              <motion.div className="bg-blue-900  text-center px-2 py-4 w-[30%] ">
                 Marks Total : {record?.mainExamMT}
               </motion.div>
-              <motion.div className="bg-blue-900 text-gray-100 text-center px-2 py-4 w-[30%] border">
+              <motion.div className="bg-blue-900  text-center px-2 py-4 w-[30%] ">
                 Grade :{" "}
                 {gradeCalculator([
                   { mt: record?.mainExamMT, mo: record?.mainExamMO },
                 ])}
               </motion.div>
+              <motion.div className="bg-blue-900  text-center px-2 py-4 w-[30%] ">
+                Percentage :
+                {Math.floor((record?.mainExamMO / record.mainExamMT) * 100)}%
+              </motion.div>
             </motion.div>
           </motion.div>
         )}
         {!record?.mainExamMT > 0 && (
-          <p className="text-center text-white text-3xl font-bold my-4 border p-4">
+          <p className="text-center text-white text-3xl font-bold my-4  p-4">
             No Main Exam Found Please Add using Edit button
           </p>
         )}
+        <div className="flex flex-wrap gap-5">
+          {console.log(record.exams)}
+          <BarChart data={record?.exams} />
+          <PerformanceChart
+            averageData={averageData}
+            individualData={individualData}
+          />
+          <GrowthChart examData={record?.exams}/>
+        </div>
       </motion.div>
     </>
   );
