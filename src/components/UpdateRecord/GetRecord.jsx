@@ -20,6 +20,7 @@ import GrowthChart from "../Charts/GrowthChart";
 const GetRecord = () => {
   const [record, setRecord] = useState("");
   const [certificate, setCertificate] = useState("");
+  const [isUpdatingCertificate, setIsUpdatingCertificate] = useState(false);
   const [error, setError] = useState("");
   const user = useSelector((state) => state?.auth?.user);
   const { id } = useParams();
@@ -41,7 +42,7 @@ const GetRecord = () => {
     }
   };
 
-  const handleDownload = async () => {
+  const uplodaData = async () => {
     const data = {
       studentName: record.studentName,
       enrolledAt: record.dateEnrolled,
@@ -83,6 +84,7 @@ const GetRecord = () => {
         if (response.ok) {
           console.log("Image uploaded successfully");
           notify("Certificate uploaded successfully", "success");
+          setIsUpdatingCertificate(false);
           setTimeout(() => {
             window.location.reload();
           }, 3000);
@@ -101,6 +103,16 @@ const GetRecord = () => {
     notify("Downloading Certificate ", "success");
     setTimeout(() => {
       window.open(`http://localhost:3000/record/certificate/${id}`);
+    }, 5000);
+  };
+
+  const handleUpdateCertificate = () => {
+    setIsUpdatingCertificate(true);
+  };
+  const handleDownloadRecord = () => {
+    notify("Redirecting to download Page", "success");
+    setTimeout(() => {
+      window.open(`http://localhost:8000/pdfs/${id}.png`);
     }, 5000);
   };
   useEffect(() => {
@@ -210,13 +222,25 @@ const GetRecord = () => {
                       </button>
                     </>
                   )}
-                  <button
-                    type="button"
-                    onClick={handleDownload}
-                    className="w-[20%] text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg "
-                  >
-                    Download Data
-                  </button>
+                  {user && (
+                    <button
+                      type="button"
+                      onClick={uplodaData}
+                      className="w-[20%] text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg "
+                    >
+                      Upload Data
+                    </button>
+                  )}
+                  {!user && (
+                    <button
+                      type="button"
+                      onClick={handleDownloadRecord}
+                      className="w-[20%] text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg "
+                    >
+                      Download Record
+                    </button>
+                  )}
+
                   {user && record?.certificate === "" ? (
                     <>
                       <input
@@ -242,6 +266,33 @@ const GetRecord = () => {
                     >
                       View Certificate
                     </button>
+                  )}
+                  {user && record?.certificate !== "" && (
+                    <button
+                      onClick={handleUpdateCertificate}
+                      className="w-[20%] text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg  "
+                    >
+                      Update Certificate
+                    </button>
+                  )}
+                  {isUpdatingCertificate && (
+                    <>
+                      <input
+                        type="file"
+                        onChange={(e) => {
+                          setCertificate(e.target.files[0]);
+                          console.log(certificate);
+                        }}
+                        className="w-[20%] text-white mx-2 bg-secondary hover:bg-blue0 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg "
+                      />
+                      <button
+                        type="button"
+                        onClick={handleCertificate}
+                        className="w-[20%] text-white mx-2 bg-secondary hover:bg-blue focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg "
+                      >
+                        Upload Certificate
+                      </button>
+                    </>
                   )}
                 </motion.div>
               </div>
@@ -303,7 +354,7 @@ const GetRecord = () => {
             averageData={averageData}
             individualData={individualData}
           />
-          <GrowthChart examData={record?.exams}/>
+          <GrowthChart examData={record?.exams} />
         </div>
       </motion.div>
     </>
