@@ -9,8 +9,6 @@ import { gradeCalculator } from "../../utils/gradeCalculator";
 const Pdf = () => {
   const [record, setRecord] = useState("");
   const { id } = useParams();
-  const navigate = useNavigate();
-
   //Function to fetch particular Record as per Id in URL
   const fetchRecord = async () => {
     try {
@@ -25,32 +23,11 @@ const Pdf = () => {
       console.error("An error occurred:", error);
     }
   };
-
-  const handleDownload = async () => {
-    console.log(record);
-    const data = {
-      studentName: record.studentName,
-      enrolledAt: record.dateEnrolled,
-      teacherName: id,
-      grade: "a",
-      exams: record.exams,
-    };
-
-    await fetch("http://localhost:8000/records/downloadrecord", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data: data }),
-    });
-    console.log(data);
-  };
-
   useEffect(() => {
     fetchRecord();
   }, []);
 
-  const handleEdit = (id) => {
-    navigate("/record/edit/" + id);
-  };
+
   return (
     <div className="absolute w-screen top-[0px]">
       <nav className="bg-white border-gray-200 dark:bg-gray-900 border-b-4 border-b-blue-900  w-full z-10">
@@ -107,16 +84,16 @@ const Pdf = () => {
         {record?.mainExamMT > 0 && (
           <div className="w-full items-center justify-center border mt-7">
             <div className="flex items-center justify-center uppercase">
-              <div className="bg-blue-900 text-gray-100 text-center px-2 py-4 w-[30%] border ">
+              <div className="bg-blue text-gray-100 text-center px-2 py-4 w-[30%] border ">
                 Main Exam : {record?.mainExamName}
               </div>
-              <div className="bg-blue-900 text-gray-100 text-center px-2 py-4 w-[30%] border">
+              <div className="bg-blue text-gray-100 text-center px-2 py-4 w-[30%] border">
                 Marks Obtained : {record?.mainExamMO}
               </div>
-              <div className="bg-blue-900 text-gray-100 text-center px-2 py-4 w-[30%] border">
+              <div className="bg-blue text-gray-100 text-center px-2 py-4 w-[30%] border">
                 Marks Total : {record?.mainExamMT}
               </div>
-              <div className="bg-blue-900 text-gray-100 text-center px-2 py-4 w-[30%] border">
+              <div className="bg-blue text-gray-100 text-center px-2 py-4 w-[30%] border">
                 Grade :{" "}
                 {gradeCalculator([
                   { mt: record?.mainExamMT, mo: record?.mainExamMO },

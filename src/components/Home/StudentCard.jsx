@@ -29,12 +29,12 @@ const StudentCard = ({ data, setRecords, records }) => {
       window.open(`http://localhost:3000/record/certificate/${data?._id}`);
     }
   };
-  console.log(data);
+  console.log(data)
   return (
     <motion.div
-      whileInView={{ scale: [0, 1], opacity: [0, 1] }}
+      whileInView={{ opacity: [0, 1] }}
       transition={{ duration: 0.5, ease: "easeInOut" }}
-      className="flex flex-col w-[45%] shadow-2xl rounded-lg mr-4 mb-4 ml-4  bg-white px-4 py-6 border border-blue min-h-[50%]"
+      className="flex flex-col w-[45%] max-h-[50vh] h-[100%] shadow-2xl rounded-lg mr-4 mb-4 ml-4  bg-white px-4 py-6 border border-blue"
     >
       <ToastContainer
         position="top-center"
@@ -48,8 +48,8 @@ const StudentCard = ({ data, setRecords, records }) => {
         pauseOnHover
         theme="dark"
       />
-      <div className="flex m-2">
-        <div className="image flex items-center justify-center  w-[50%] h-[100%] border-2 border-blue rounded-md">
+      <div className="flex m-2 min-h-[80%] border-2">
+        <div className="image flex items-center justify-center max-w-[50%] max-h-[100%] rounded-md">
           <img
             src={
               data?.imageName
@@ -57,9 +57,10 @@ const StudentCard = ({ data, setRecords, records }) => {
                 : userfallback
             }
             alt="studentImage"
-            className="rounded-full w-full h-full"
+            className="max-w-[150px] max-h-[150px] object-cover"
           />
         </div>
+
         <div className="info flex flex-col  justify-center text-blue ">
           <div className="mx-4 my-2 font-semibold text-md">
             Id: {data?.studentId}

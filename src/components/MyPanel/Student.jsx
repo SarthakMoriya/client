@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 const Student = ({ student }) => {
+  console.log(student)
   const navigate = useNavigate();
   const handleRecordClick = () => {
     navigate(`/record/${student._id}`);
@@ -23,10 +24,10 @@ const Student = ({ student }) => {
           alt=""
           className="w-10 h-10 rounded-full"
         />
-        <div className=" p-2 font-semibold text-white capitalize ml-4">
+        <div className=" p-2 font-semibold text-blue capitalize ml-4">
           ID:{student?.studentId}
         </div>
-        <div className=" p-2 font-semibold text-white capitalize ml-4">
+        <div className=" p-2 font-semibold text-blue capitalize ml-4">
           Name:{student?.studentName}
         </div>
       </div>
@@ -36,7 +37,7 @@ const Student = ({ student }) => {
           onClick={() => {
             handleRecordClick(student?._id);
           }}
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-5 py-2.5 text-center mr-2 mb-2 mt-2 w-[95%] rounded-lg  ease-in-out duration-500"
+          className="text-white bg-secondary  focus:outline-none focus:ring-4 focus:ring-blue font-medium  text-sm px-5 py-2.5 text-center mr-2 mb-2 mt-2 w-[95%] rounded-lg  ease-in-out duration-500"
         >
           View
         </button>
@@ -45,7 +46,7 @@ const Student = ({ student }) => {
           onClick={() => {
             handleRecordClick(student?._id);
           }}
-          className="text-white bg-purple-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-5 py-2.5 text-center mr-2 mb-2 mt-2 w-[95%] rounded-lg  ease-in-out duration-500"
+          className="text-white bg-blue  focus:outline-none focus:ring-4 focus:ring-blue font-medium  text-sm px-5 py-2.5 text-center mr-2 mb-2 mt-2 w-[95%] rounded-lg  ease-in-out duration-500"
         >
           Edit
         </button>
@@ -54,7 +55,7 @@ const Student = ({ student }) => {
           onClick={() => {
             handleRecordClick(student?._id);
           }}
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-5 py-2.5 text-center mr-2 mb-2 mt-2 w-[95%] rounded-lg  ease-in-out duration-500"
+          className="text-white bg-secondary  focus:outline-none focus:ring-4 focus:ring-blue font-medium  text-sm px-5 py-2.5 text-center mr-2 mb-2 mt-2 w-[95%] rounded-lg  ease-in-out duration-500"
         >
           Delete
         </button>

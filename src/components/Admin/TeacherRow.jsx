@@ -10,7 +10,7 @@ const TeacherRow = ({ acc }) => {
     window.location.reload();
   };
   return (
-    <div className=" flex items-center border">
+    <div className=" flex items-center border bg-white">
       <div className="w-[50%] p-2 rounded-lg flex items-center cursor-pointer">
         <img
           src={
@@ -21,25 +21,25 @@ const TeacherRow = ({ acc }) => {
           className="w-10 h-10 rounded-full"
           alt="pic"
         />
-        <div className=" p-2 font-semibold text-white capitalize ml-4">
+        <div className=" p-2 font-semibold text-blue capitalize ml-4">
           Name:{acc?.username}
         </div>
-        <div className=" p-2 font-semibold text-white capitalize ml-4">
-          Email:{acc?.email}
+        <div className=" p-2 font-semibold text-blue  ml-4">
+          email:{acc?.email}
         </div>
       </div>
       <div className="flex items-center w-[50%] p-2">
         <button
           type="button"
           onClick={handleApprove}
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-5 py-2.5 text-center mr-2 mb-2 mt-2 w-[95%] rounded-lg  ease-in-out duration-500"
+          className="text-white bg-blue hover:bg-secondary focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-5 py-2.5 text-center mr-2 mb-2 mt-2 w-[95%] rounded-lg  ease-in-out duration-500"
         >
           Approve
         </button>
         <button
           type="button"
           onClick={handleDelete}
-          className="text-white bg-gray-500 hover:bg-gray-600 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-5 py-2.5 text-center mr-2 mb-2 mt-2 w-[95%] rounded-lg  ease-in-out duration-500"
+          className="text-white bg-secondary hover:bg-blue focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-5 py-2.5 text-center mr-2 mb-2 mt-2 w-[95%] rounded-lg  ease-in-out duration-500"
         >
           Reject
         </button>

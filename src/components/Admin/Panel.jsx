@@ -17,84 +17,103 @@ const Panel = () => {
     setUnapprovedAccounts(data);
   };
   const handleApprove = async (acc) => {
-    console.log(acc)
+    console.log(acc);
     await fetch(`http://localhost:8000/auth/admin/approveaccounts/${acc._id}`);
     window.location.reload();
-    const updatedUnapprovedAccounts=unapprovedAccounts.filter(account=>account._id !==acc._id);
-    console.log(updatedUnapprovedAccounts)
-    setUnapprovedAccounts(updatedUnapprovedAccounts)
+    const updatedUnapprovedAccounts = unapprovedAccounts.filter(
+      (account) => account._id !== acc._id
+    );
+    console.log(updatedUnapprovedAccounts);
+    setUnapprovedAccounts(updatedUnapprovedAccounts);
   };
   const handleDelete = async (acc) => {
-    console.log(acc)
-    await fetch(`http://localhost:8000/auth/admin/deleteunapproveaccount/${acc._id}`);
+    console.log(acc);
+    await fetch(
+      `http://localhost:8000/auth/admin/deleteunapproveaccount/${acc._id}`
+    );
     window.location.reload();
   };
   useEffect(() => {
     fetchAccounts();
   }, []);
   return (
-    <div className="bg-gray-900 min-h-screen">
-      <div className="text-3xl text-center  border-2 mt-5 text-white p-4 bg-blue-700 mb-3">PENDING REQUESTS</div>
-      {unapprovedAccounts?.length === 0 ? (
-        <div className="text-xl text-center   mt-5 text-white p-4">
-          NO PENDING REQUESTS
+    <div className="bg-primary min-h-screen border border-secondary">
+      {unapprovedAccounts?.length !== 0 && (
+        <div className="flex items-center justify-center">
+        <div className="border-secondary border-b-4  text-2xl font-semibold text-white my-4">
+          Pending Requests
         </div>
-      ) : (
+      </div>
+      )}
+      
+      {unapprovedAccounts?.length !== 0 && (
         <div className="bg-gray-900 mt-3">
           {unapprovedAccounts?.map((acc) => (
             <TeacherRow key={acc?._id} acc={acc} />
           ))}
         </div>
       )}
-      <div className="text-3xl text-center  border-2 mt-5 text-white p-4 bg-blue-700 mb-3">
-        ALL ACCOUNTS
-      </div>
-      {accounts?.map((acc) => {
-        return (
-          <div className="" key={acc?._id}>
-            <div className=" flex items-center border">
-              <div className="w-[50%] p-2 rounded-lg flex items-center cursor-pointer">
-                <img
-                  src={
-                    acc.picturePath
-                      ? `http://localhost:8000/assets/${acc?.picturePath}`
-                      : pic
-                  }
-                  className="w-10 h-10 rounded-full"
-                  alt="pic"
-                />
-                <div className=" p-2 font-semibold text-white capitalize ml-4">
-                  Name:{acc?.username}
+      <div className=" p-2">
+        <div className="flex items-center justify-center">
+          <div className="border-secondary border-b-4  text-2xl font-semibold text-white my-4">
+            All Accounts
+          </div>
+        </div>
+        {accounts?.map((acc) => {
+          return (
+            <div className="bg-white text-blue" key={acc?._id}>
+              <div className=" flex items-center border">
+                <div className="w-[50%] p-2 rounded-lg flex items-center cursor-pointer">
+                  <img
+                    src={
+                      acc.picturePath
+                        ? `http://localhost:8000/assets/${acc?.picturePath}`
+                        : pic
+                    }
+                    className="w-10 h-10 rounded-full"
+                    alt="pic"
+                  />
+                  <div className=" p-2 font-semibold  capitalize ml-4">
+                    Name:{acc?.username}
+                  </div>
+                  <div className=" p-2 font-semibold lowercase  ml-4">
+                    Email:{acc?.email}
+                  </div>
                 </div>
-                <div className=" p-2 font-semibold text-white  ml-4">
-                  Email:{acc?.email}
+                <div className="flex items-center w-[50%] p-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleApprove(acc);
+                    }}
+                    disabled={acc.isAdminApprovedAccount ? "true" : "false"}
+                    className={`text-white bg-blue hover:bg-secondary focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-5 py-2.5 text-center mr-2 mb-2 mt-2 w-[95%] rounded-lg  ease-in-out duration-500 ${
+                      acc.isAdminApprovedAccount
+                        ? "cursor-not-allowed"
+                        : "cursor-pointer"
+                    }`}
+                  >
+                    {acc.isAdminApprovedAccount
+                      ? "Approved"
+                      : "Approve Account"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleDelete(acc);
+                    }}
+                    className="text-white bg-secondary hover:bg-blue focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-5 py-2.5 text-center mr-2 mb-2 mt-2 w-[95%] rounded-lg  ease-in-out duration-500"
+                  >
+                    {acc.isAdminApprovedAccount
+                      ? "Delete Account"
+                      : "Reject Account"}
+                  </button>
                 </div>
-              </div>
-              <div className="flex items-center w-[50%] p-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    handleApprove(acc);
-                  }}
-                  disabled={acc.isAdminApprovedAccount ? "true" : "false"}
-                  className={`text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-5 py-2.5 text-center mr-2 mb-2 mt-2 w-[95%] rounded-lg  ease-in-out duration-500 ${acc.isAdminApprovedAccount?"cursor-not-allowed":"cursor-pointer"}`}
-                >
-                  {acc.isAdminApprovedAccount ? "Approved" : "Approve Account"}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    handleDelete(acc);
-                  }}
-                  className="text-white bg-gray-500 hover:bg-gray-600 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-5 py-2.5 text-center mr-2 mb-2 mt-2 w-[95%] rounded-lg  ease-in-out duration-500"
-                >
-                  {acc.isAdminApprovedAccount?"Delete Account":"Reject Account"}
-                </button>
               </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 };

@@ -27,6 +27,8 @@ const Edit = () => {
   const [mainExamName, setMainExamName] = useState(record?.mainExamName);
   const [mainExamMT, setMainExamMT] = useState(record?.mainExamMT);
   const [mainExamMO, setMainExamMO] = useState(record?.mainExamMO);
+  const [image, setImage] = useState(null);
+  const [isImageUploaded, setIsImageUploaded] = useState(false);
   const teacherId = useSelector((state) => state.auth.user._id);
 
   const handleUpdateExam = (result) => {
@@ -50,6 +52,7 @@ const Edit = () => {
           studentId: Number(studentId),
           teacherId,
           id,
+          imageName: image ? image?.name : "",
           mainExamName: mainExamName,
           mainExamMT: Number(mainExamMT),
           mainExamMO: Number(mainExamMO),
@@ -70,7 +73,30 @@ const Edit = () => {
       notify(data.message);
     }
   };
-  //To handle tests details of various tests taken
+  const handleImageUpload = async () => {
+    if (image) {
+      const imageForm = new FormData();
+      imageForm.append("image", image);
+
+      try {
+        const response = await fetch("http://localhost:8000/upload", {
+          method: "POST",
+          body: imageForm,
+        });
+
+        if (response.ok) {
+          notify("Image uploaded successfully", "success");
+          setIsImageUploaded(true);
+        } else {
+          notify("Error uploading Image");
+        }
+      } catch (error) {
+        notify("Error uploading Image");
+      }
+    } else {
+      notify("Error uploading Image");
+    }
+  };
 
   return (
     <>
@@ -96,6 +122,34 @@ const Edit = () => {
             >
               Edit record of studentId: {record.studentId}
             </motion.h2>
+                        {/* IMAGE FIELD */}
+                        <motion.div
+              whileInView={{ opacity: [0, 1] }}
+              transition={{ duration: 1, ease: "easeInOut" }}
+            >
+              <label
+                htmlFor="picture"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Profile Photo
+              </label>
+              <input
+                type="file"
+                name="picture"
+                id="picture"
+                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                onChange={(e) => setImage(e.target.files[0])}
+              />
+            </motion.div>
+            <motion.button
+              whileInView={{ opacity: [0, 1] }}
+              transition={{ duration: 1, ease: "easeInOut" }}
+              className="w-full text-white bg-secondary hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-gray-600 dark:focus:ring-primary-800 mt-1"
+              onClick={handleImageUpload}
+              disabled={isImageUploaded ? true : false}
+            >
+              {isImageUploaded ? "Image Uploaded" : "Upload Image"}
+            </motion.button>
             <form onSubmit={handleSubmit}>
               <motion.div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
                 {/* STUDENT NAME */}
@@ -248,7 +302,7 @@ const Edit = () => {
                     }}
                   />
                 </motion.div>
-                {/* Main Exam Marks Total */}
+                {/* Main Exam Marks Obtained */}
                 <motion.div
                   whileInView={{ opacity: [0, 1] }}
                   transition={{ duration: 0.5, ease: "easeInOut" }}
@@ -298,7 +352,7 @@ const Edit = () => {
                   setIsAddingExam(!isAddingExam);
                 }}
                 type="button"
-                className="bg-gray-500 border border-gray-300 text-white text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  "
+                className="bg-secondary border border-gray-300 text-white text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  "
               >
                 {!isAddingExam ? "Add More Exams" : "Save Exams"}
               </motion.button>
@@ -314,7 +368,7 @@ const Edit = () => {
                 whileInView={{ opacity: [0, 1] }}
                 transition={{ duration: 1, ease: "easeInOut" }}
                 type="submit"
-                className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800 bg-blue-400"
+                className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-secondary rounded-lg focus:ring-4 focus:ring-secondary "
               >
                 Save Record
               </motion.button>

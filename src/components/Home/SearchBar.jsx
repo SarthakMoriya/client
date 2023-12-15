@@ -62,7 +62,7 @@ const SearchBar = ({ searchRecords }) => {
             onChange={(e) => {
               setSearchString(e.target.value);
             }}
-            className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg  focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 placeholder-blue dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg  focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 placeholder-blue"
             placeholder="Search Mockups, Logos..."
           />
           <button

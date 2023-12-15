@@ -22,7 +22,13 @@ const CreateRecord = () => {
   const dispatch = useDispatch();
 
   const handleRecordSubmit = async (values, onSubmitProps) => {
-    if (values.secretKey == secretKey) {
+    // mainExamMT: number | undefined;
+    // mainExamMO
+    if (values.mainExamMO > values.mainExamMT) {
+      alert("Obtained Marks cannot be higher than Total Marks");
+      return;
+    }
+    if (values.secretKey === secretKey) {
       const res = await fetch("http://localhost:8000/records/createrecord", {
         method: "POST",
         headers: {
@@ -60,6 +66,15 @@ const CreateRecord = () => {
   //To handle tests details of various tests taken
   const handleExamDetails = () => {
     //Updating Exams array to add new Exam Details
+    if (totalmarks < marksobtained) {
+      alert(
+        "Please enter marks details properly\n Marks Obtained: " +
+          marksobtained +
+          "\n Total Marks: " +
+          totalmarks
+      );
+      return;
+    }
     setSubs((prev) => prev - 1);
     setExams((prev) => [
       { name: examname, mt: totalmarks, mo: marksobtained },
@@ -110,12 +125,12 @@ const CreateRecord = () => {
           pauseOnHover
           theme="dark"
         />
-        <section className=" bg-gray-900 h-auto border-4 ">
-          <motion.div className=" border-2 bg-white py-8 px-4 mx-auto max-w-2xl lg:py-16 my-4 rounded-md">
+        <section className=" bg-gray-900 h-auto md:border-4 text-xs md:text-base lg:text-lg">
+          <motion.div className=" md:border-2 bg-white py-8 px-4 mx-auto max-w-2xl lg:py-16 my-4 md:rounded-md">
             <motion.h2
               whileInView={{ opacity: [0, 1] }}
               transition={{ duration: 1, ease: "easeInOut" }}
-              className="mb-4 text-xl font-bold text-primary"
+              className="mb-4 text-2xl text-center md:text-left md:text-3xl lg:text-4xl font-bold text-primary"
             >
               Add a new Record
             </motion.h2>

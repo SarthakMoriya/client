@@ -19,9 +19,7 @@ const Sidebar = () => {
     navigate(`/record/${id}`);
   };
   return (
-    <motion.div
-      className="w-[30%] border-4 border-primary hidden md:block "
-    >
+    <motion.div className="w-[30%] border-4 border-primary hidden md:block ">
       {records?.length > 0 &&
         records?.map((record) => {
           return (
@@ -33,7 +31,6 @@ const Sidebar = () => {
               onClick={() => {
                 handleRecordClick(record?._id);
               }}
-            
             >
               <div className="w-[50%] p-2 rounded-lg flex items-center cursor-pointer">
                 <img
@@ -43,19 +40,19 @@ const Sidebar = () => {
                       : user
                   }
                   alt=""
-                  className="w-10 h-10 rounded-full"
+                  className="w-10 h-10  rounded-full"
                 />
-                <div className=" p-2 font-semibold text-blue capitalize ml-4">
-                  ID:{record?.studentName}
+                <div className=" p-1 lg:p-2 lg:font-semibold text-blue capitalize ml-4 text-center">
+                  Id:{record?.studentName}
                 </div>
               </div>
-              <div className="flex items-center w-[50%] p-2">
+              <div className="flex items-center w-[50%] p-2 lg:justify-center justify-end ">
                 <button
                   type="button"
                   onClick={() => {
                     handleRecordClick(record?._id);
                   }}
-                  className="text-blue bg-secondary hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-5 py-2.5 text-center mr-2 mb-2 mt-2 w-[95%] rounded-lg  ease-in-out duration-500"
+                  className="text-blue bg-secondary hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-2.5 py-1  mr-1 mb-1 mt-1 lg:px-5 lg:py-2.5 text-center lg:mr-2 lg:mb-2 lg:mt-2 md:w[50%] lg:w-[95%] lg:rounded-lg  ease-in-out duration-500"
                 >
                   View
                 </button>

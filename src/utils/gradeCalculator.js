@@ -24,7 +24,6 @@ export const gradeCalculator = (exams) => {
     0
   );
   let per = Math.floor((totalMarksObt / totalMarks) * 100);
-  console.log("PERCENTAGE: " + per, totalMarksObt, totalMarks);
   return per > 90
     ? "A"
     : per > 80
@@ -40,29 +39,23 @@ export const gradeCalculator = (exams) => {
 export const percentageCalcuator = (exams) => {
   const marksTotal = total_Marks(exams);
   const marksObt = totalMarksObtained(exams);
-  console.log("Percentage " + Math.floor((marksObt / marksTotal) * 100));
   return Math.floor((marksObt / marksTotal) * 100);
 };
 
 //COMPLETE PERCENTAGE MAIN EXAM PLUS TESTS
 export const overallPercentage = (record) => {
   if (record?.exams?.length > 0 && record?.mainExamMT > 0) {
-    console.log("Record with tests and main exam");
     const less = Math.floor(percentageCalcuator(record?.exams) * 0.4);
     const more =
       Math.floor(((record?.mainExamMO / record?.mainExamMT) * 100) * 0.6);
-    console.log("Less+More" + (less + more));
     return less + more;
   }
   if (!record?.exams?.length > 0 && record?.mainExamMT > 0) {
-    console.log("Record with only Main Exam");
     return Math.floor((record?.mainExamMO / record?.mainExamMT) * 100 * 0.6);
   }
   if (record?.exams?.length > 0 && !record?.mainExamMT > 0) {
-    console.log("Record with only Main Exam");
     return Math.floor(percentageCalcuator(record?.exams));
   }
-  // console.log("Returned NanN");
   return NaN;
 };
 

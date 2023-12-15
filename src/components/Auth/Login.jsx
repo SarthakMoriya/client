@@ -35,7 +35,7 @@ const Login = () => {
   return (
     <>
       <motion.section className="bg-primary ">
-        <motion.div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <motion.div className="flex flex-col items-center justify-center px-6 py-8 mx-auto min-h-screen lg:py-0">
           
           <motion.div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0  border-2 border-secondary">
             <motion.div

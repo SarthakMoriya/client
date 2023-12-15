@@ -64,8 +64,9 @@ const ExamRow = ({ exam, exams, handleUpdateExam }) => {
         transition={{ duration: 1, ease: "easeInOut" }}
         className="bg-gray-500 border border-gray-300 text-white text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  "
         onClick={handleAddExams}
+        type='button'
       >
-        Add
+        Save
       </motion.button>
     </motion.div>
   );

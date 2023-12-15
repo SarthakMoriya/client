@@ -1,9 +1,17 @@
 import React from 'react';
+import {useSelector} from 'react-redux'
+import {useParams} from 'react-router-dom'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { averageCourse } from '../../utils/courseAverageCalculator';
 
-const BarPerformanceChart = ({ averageData, individualData }) => {
+const BarPerformanceChart = ({ averageData, individualData,course }) => {
+  console.log("Course "+course)
+  const records=useSelector(state=>state.record)
+  const id=useParams();
+  const average=averageCourse({records,courseName:course,id});
+  console.log("Average::"+average)
   const data = [
-    { category: 'Category A', average: averageData.value, individual: individualData.value },
+    { category: course, average: average, individual: individualData.value },
     // Add more categories as needed
   ];
 
@@ -15,8 +23,8 @@ const BarPerformanceChart = ({ averageData, individualData }) => {
         <YAxis />
         <Tooltip />
         <Legend />
-        <Bar dataKey="average" fill="#FF6600" barSize={30} name="Average Performance" />
-        <Bar dataKey="individual" fill="#82ca9d" barSize={30} name="Individual Performance" />
+        <Bar dataKey="average" fill="#FFD700" barSize={30} name="Average Performance" />
+        <Bar dataKey="individual" fill="#03173d" barSize={30} name="Your Performance" />
       </BarChart>
     </ResponsiveContainer>
   );

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import { useLocation, useParams } from "react-router-dom";
 import { testGradeCalculator } from "../../utils/gradeCalculator";
@@ -13,6 +14,7 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
 
   const id = useParams();
   const location = useLocation();
+  const user = useSelector((state) => state.auth.user);
 
   const handleEdit = (examId) => {
     // exam id is name of Exam
@@ -21,6 +23,10 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
 
   //HANDLING EDIT EXAM
   const handleSaveExam = async () => {
+    if (examName === "" || marksTotal === "" || marksObt === "") {
+      alert("Please enter all fields");
+      return;
+    }
     setModifiedExam({
       name: examName,
       totalMarks: marksTotal,
@@ -68,6 +74,7 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
             onChange={(e) => {
               setExamName(e.target.value);
             }}
+            required
             placeholder={exam?.name}
             className={`${
               i % 2 !== 0 ? "bg-gray-700" : "bg-gray-900"
@@ -81,6 +88,7 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
             onChange={(e) => {
               setMarksObt(e.target.value);
             }}
+            required
             placeholder={exam?.mo}
             className={`${
               i % 2 !== 0 ? "bg-gray-700" : "bg-gray-900"
@@ -92,6 +100,7 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
             onChange={(e) => {
               setMarksTotal(e.target.value);
             }}
+            required
             placeholder={exam?.mt}
             type="number"
             className={`${
@@ -121,11 +130,17 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
       )}
       {/* NOT IN EDITING MODE */}
       {edit === false && isDeleted !== exam?.name && (
-        <motion.div className={`flex  ${!(i&1)?"bg-[#ececec] text-black":"bg-white text-black"}`}>
+        <motion.div
+          className={`flex  ${
+            !(i & 1) ? "bg-[#ececec] text-black" : "bg-white text-black"
+          }`}
+        >
           <motion.div
             whileInView={{ scale: [0, 1], opacity: [0, 1] }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className={`   text-center p-1 w-[20%]  `}
+            className={`text-center p-1 w-[20%] ${
+              user ? "w-[20%]" : "w-[25%]"
+            }`}
           >
             {modifiedExam.oldExam === exam.name
               ? modifiedExam.name
@@ -134,7 +149,9 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
           <motion.div
             whileInView={{ scale: [0, 1], opacity: [0, 1] }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className={`   text-center p-1 w-[20%]  `}
+            className={`text-center p-1 w-[20%] ${
+              user ? "w-[20%]" : "w-[25%]"
+            }`}
           >
             {modifiedExam.oldExam === exam.name
               ? modifiedExam.obtMarks
@@ -143,7 +160,9 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
           <motion.div
             whileInView={{ scale: [0, 1], opacity: [0, 1] }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className={` text-center p-1 w-[20%]  `}
+            className={`text-center p-1 w-[20%] ${
+              user ? "w-[20%]" : "w-[25%]"
+            }`}
           >
             {modifiedExam.oldExam === exam?.name
               ? modifiedExam?.totalMarks
@@ -152,21 +171,23 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
           <motion.div
             whileInView={{ scale: [0, 1], opacity: [0, 1] }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className={`   text-center p-1 w-[20%] `}
+            className={`text-center p-1 w-[20%] ${
+              user ? "w-[20%]" : "w-[25%]"
+            }`}
           >
             {testGradeCalculator({ mt: exam?.mt, mo: exam?.mo })}
           </motion.div>
           {/* EDIT DELETE EXAM */}
-          {!location.pathname.includes("pdf") && (
+          {!location.pathname.includes("pdf") && user !== null && (
             <>
               <motion.div
-              whileInView={{ scale: [0, 1], opacity: [0, 1] }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
+                whileInView={{ scale: [0, 1], opacity: [0, 1] }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
                 className={` w-[20%] flex `}
               >
                 <motion.div
-                whileInView={{ scale: [0, 1], opacity: [0, 1] }}
-                transition={{ duration: 0.5, ease: "easeInOut" }}
+                  whileInView={{ scale: [0, 1], opacity: [0, 1] }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
                   onClick={() => {
                     handleEdit(exam?.name);
                   }}
@@ -175,8 +196,8 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
                   Edit
                 </motion.div>
                 <motion.div
-                whileInView={{ scale: [0, 1], opacity: [0, 1] }}
-                transition={{ duration: 0.5, ease: "easeInOut" }}
+                  whileInView={{ scale: [0, 1], opacity: [0, 1] }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
                   onClick={handleDeleteExam}
                   className="w-[50%] bg-blue text-white duration-500 ease-in border- cursor-pointer text-center flex justify-center items-center border-2 border-gray-300"
                 >

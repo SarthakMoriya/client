@@ -41,6 +41,9 @@ const OtpModal = ({ otp, setIsOtpSent, setIsVerified }) => {
       localStorage.setItem("is_verified", "true");
     } else notify("Account Verified,Please Login Again", "error");
   };
+  const handleClose=()=>{
+    setIsOtpSent(false);
+  }
   return (
     <Formik
       onSubmit={handleOtpMatching}
@@ -59,7 +62,7 @@ const OtpModal = ({ otp, setIsOtpSent, setIsVerified }) => {
       }) => (
         <form
           onSubmit={handleSubmit}
-          className="w-[50vw]  min-h-[50vh] border-2 rounded-lg bg-gray-900 z-10 relative translate-x-[50%] translate-y-[-50%]"
+          className="w-[50vw] border-2 rounded-lg bg-white z-10 relative translate-x-[50%] translate-y-[-50%]"
         >
           <ToastContainer
             position="top-center"
@@ -73,14 +76,15 @@ const OtpModal = ({ otp, setIsOtpSent, setIsVerified }) => {
             pauseOnHover
             theme="dark"
           />
-          <div className="text-center font-bold text-white text-2xl my-4">
+          <div className="text-blue font-extrabold text-2xl absolute top-4 left-4 cursor-pointer" onClick={handleClose}>X</div>
+          <div className="text-center font-bold text-blue text-2xl my-4">
             Email Verification
           </div>
           {/* OTP */}
           <div className="px-4 py-2">
             <label
               htmlFor="otp"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-blue "
             >
               OTP
             </label>
@@ -88,7 +92,7 @@ const OtpModal = ({ otp, setIsOtpSent, setIsVerified }) => {
               type="text"
               name="otp"
               id="otp"
-              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-blue border border-gray-300 text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
               placeholder="Enter old passcode"
               required={true}
               onBlur={handleBlur}
@@ -107,7 +111,8 @@ const OtpModal = ({ otp, setIsOtpSent, setIsVerified }) => {
           <div className="px-4 py-2">
             <button
               type="submit"
-              className="px-5 py-2.5 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm text-center mr-2 mb-2 mt-2  rounded-lg  ease-in-out duration-500"
+              className="bg-secondary border border-gray-300 text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+
             >
               Verify Account
             </button>

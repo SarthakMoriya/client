@@ -8,7 +8,7 @@ export const deleteRecord = async (id,navigate) => {
 };
 
 export const  getRecords = async () => {
-  const data = await fetch("http://localhost:8000/records/getrecords");
+  const data = await fetch(BASE_URL+"/getrecords");
   const res = await data.json();
   return res;
 };

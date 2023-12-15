@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { Formik } from "formik";
 
@@ -30,6 +30,10 @@ const UpdatePasscode = ({ user, setIsUpdatePasscode }) => {
     if (type === "success") toast.success(message);
     else toast.error(message);
   };
+
+  const handleClose=()=>{
+    setIsUpdatePasscode(false);
+  }
   return (
     <Formik
       onSubmit={handleUpdatePasscode}
@@ -48,7 +52,7 @@ const UpdatePasscode = ({ user, setIsUpdatePasscode }) => {
       }) => (
         <form
           onSubmit={handleSubmit}
-          className="w-[50vw]  min-h-[50vh] border-2 rounded-lg bg-gray-900 z-10 relative translate-x-[50%] translate-y-[-50%]"
+          className="w-[50vw]  min-h-[50vh] border-2 border-secondary rounded-lg bg-white z-10 relative translate-x-[50%] translate-y-[-50%]"
         >
           <ToastContainer
             position="top-center"
@@ -62,14 +66,16 @@ const UpdatePasscode = ({ user, setIsUpdatePasscode }) => {
             pauseOnHover
             theme="dark"
           />
-          <div className="text-center font-bold text-white text-2xl my-4">
+          <div className="text-center font-bold text-blue text-2xl my-4">
             Update Passcode
           </div>
+          <div className="text-blue font-extrabold text-2xl absolute top-4 left-4 cursor-pointer" onClick={handleClose}>X</div>
+
           {/* OLD PASSWORD */}
           <div className="px-4 py-2">
             <label
               htmlFor="passwordold"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-blue"
             >
               Old Passcode
             </label>
@@ -77,7 +83,7 @@ const UpdatePasscode = ({ user, setIsUpdatePasscode }) => {
               type="password"
               name="oldpasscode"
               id="passcode"
-              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-blue border border-secondary text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
               placeholder="Enter old passcode"
               required={true}
               onBlur={handleBlur}
@@ -96,7 +102,7 @@ const UpdatePasscode = ({ user, setIsUpdatePasscode }) => {
           <div className="px-4 py-2">
             <label
               htmlFor="newpasscode"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-blue"
             >
               New Passcode
             </label>
@@ -104,7 +110,7 @@ const UpdatePasscode = ({ user, setIsUpdatePasscode }) => {
               type="password"
               name="newpasscode"
               id="newpasscode"
-              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-blue border border-secondary text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
               placeholder="Enter new passcode"
               required={true}
               onBlur={handleBlur}
@@ -123,7 +129,7 @@ const UpdatePasscode = ({ user, setIsUpdatePasscode }) => {
           <div className="px-4 py-2">
             <label
               htmlFor="confirmpasscode"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-blue"
             >
               Confirm Passcode
             </label>
@@ -131,7 +137,7 @@ const UpdatePasscode = ({ user, setIsUpdatePasscode }) => {
               type="password"
               name="confirmpasscode"
               id="confirmpasscode"
-              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-blue border border-secondary text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
               placeholder="Confirm new passcode"
               required={true}
               onBlur={handleBlur}
@@ -149,7 +155,7 @@ const UpdatePasscode = ({ user, setIsUpdatePasscode }) => {
           <div className="px-4 py-2">
             <button
               type="submit"
-              className="px-5 py-2.5 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm text-center mr-2 mb-2 mt-2  rounded-lg  ease-in-out duration-500"
+              className="bg-secondary border border-secondary text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
             >
               Update Password
             </button>

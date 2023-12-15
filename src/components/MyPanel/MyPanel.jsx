@@ -11,17 +11,15 @@ const MyPanel = () => {
   const [isUpdatePassword, setIsUpdatePassword] = useState(false);
   const [isUpdatePasscode, setIsUpdatePasscode] = useState(false);
   const [teacherRecords, setTeacherRecords] = useState([]);
-  const [isVerified, setIsVerified] = useState(user?.verified);//Boolean(localStorage.getItem('is_verified'))
+  const [isVerified, setIsVerified] = useState(user?.verified); //Boolean(localStorage.getItem('is_verified'))
   const [isOtpSent, setIsOtpSent] = useState(false);
-
+console.log(user)
   const fetchStudents = async () => {
-
     const data = await fetch(
       `http://localhost:8000/records/getstudents/${user?._id}`
     );
     const res = await data.json();
     setTeacherRecords(res.records);
-
   };
   const verifyEmail = async () => {
     const res = await fetch(`http://localhost:8000/auth/verifyemail`, {
@@ -36,11 +34,16 @@ const MyPanel = () => {
     fetchStudents();
   }, []);
   return (
-    <div className="bg-gray-900 min-h-[100vh] mt-5">
+    <div className="bg-background min-h-[100vh] mt-5 mx-6">
+      <div className="flex items-center justify-center">
+        <div className="border-secondary border-b-4  text-2xl font-semibold text-blue mb-4">
+          PERSONAL DETAILS
+        </div>
+      </div>
       {user?._id && (
-        <div className="flex   border-2 ">
-          <div className="flex m-2 w-[100%] h-[40vh] border ">
-            <div className="image flex p-4 rounded-full text-white">
+        <div className="flex">
+          <div className="flex m-2 w-screen h-[40vh] border ">
+            <div className=" flex">
               <img
                 src={
                   user?.picturePath
@@ -48,24 +51,33 @@ const MyPanel = () => {
                     : fallbackPic
                 }
                 alt="user"
-                className="rounded-full"
+                className="w-full"
               />
             </div>
-            <div className="info flex flex-col  justify-center  text-white">
-              <div className="mx-4 my-2 font-normal  text-3xl">
+            <div className="info flex flex-col w-[60%] text-black  ">
+              <div className="px-4 py-2 font-normal  text-xl border">
+                TeacherId: {user?._id}
+              </div>
+              <div className="px-4 py-2 font-normal  text-xl border">
                 Name: {user?.username}
               </div>
-              <div className="mx-4 my-2 font-normal text-xl  text-white">
+              <div className="px-4 py-2 font-normal  text-xl border">
                 Email: {user?.email}
               </div>
+              <div className="px-4 py-2 font-normal  text-xl border">
+                JoinedOn: {user?.createdAt?.slice(0,10)}
+              </div>
+              <div className="px-4 py-2 font-normal  text-xl border">
+                Students Taught: {teacherRecords?.length}
+              </div>
             </div>
-            <div className="text-white  mt-6  flex flex-col">
+            <div className="text-white  w-[20%]  flex flex-col">
               <button
                 type="button"
                 onClick={() => {
                   setIsUpdatePassword(true);
                 }}
-                className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-5 py-2.5 text-center mr-2 mb-2 mt-2  rounded-lg  ease-in-out duration-500"
+                className="text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg"
               >
                 Update Password
               </button>
@@ -74,22 +86,17 @@ const MyPanel = () => {
                 onClick={() => {
                   setIsUpdatePasscode(true);
                 }}
-                className="w-full text-white bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg "
+                className="text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg"
               >
                 Update Passcode
               </button>
-              {/* <button
-                type="button"
-                className="w-full text-white  bg-blue-800 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg "
-              >
-                Edit Account
-              </button> */}
+
               {isVerified === false && (
                 <span
                   type="button"
                   onClick={verifyEmail}
                   disabled={isVerified ? false : true}
-                  className=" cursor-pointer w-full text-white  bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg "
+                  className="text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg"
                 >
                   Unverified Account
                 </span>
@@ -97,7 +104,7 @@ const MyPanel = () => {
               {isVerified === true && (
                 <span
                   type="button"
-                  className=" cursor-pointer w-full text-white  bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg "
+                  className="text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg"
                 >
                   Verifed Account
                 </span>
@@ -121,8 +128,10 @@ const MyPanel = () => {
       )}
 
       {/* TEACHER'S STUDENTS */}
-      <div className="text-center text-3xl text-white w-full uppercase my-4">
-        Your Students
+      <div className="flex items-center justify-center">
+        <div className="border-secondary border-b-4  text-2xl font-semibold text-blue my-4">
+          YOUR STUDENTS
+        </div>
       </div>
       {teacherRecords.length > 0 &&
         teacherRecords.map((stu) => <Student key={stu?._id} student={stu} />)}
