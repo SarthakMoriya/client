@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import BarChart from "../Charts/BarChart";
 import PerformanceChart from "../Charts/PerformanceChart";
 import GrowthChart from "../Charts/GrowthChart";
+import "./style.css";
 
 const GetRecord = () => {
   const [record, setRecord] = useState("");
@@ -44,24 +45,28 @@ const GetRecord = () => {
   };
 
   const uplodaData = async () => {
-    const data = {
-      studentName: record.studentName,
-      enrolledAt: record.dateEnrolled,
-      teacherName: id,
-      grade: "a",
-      exams: record.exams,
-      id,
-    };
-
-    await fetch("http://localhost:8000/records/downloadrecord", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data: data }),
-    });
-    notify("Downloading Record in 5 seconds", "success");
-    setTimeout(() => {
+    if (user===null && record?.isDataUploaded === true) {
       window.open(`http://localhost:8000/pdfs/${id}.pdf`);
-    }, 5000);
+    } else {
+      const data = {
+        studentName: record.studentName,
+        enrolledAt: record.dateEnrolled,
+        teacherName: id,
+        grade: "a",
+        exams: record.exams,
+        id,
+      };
+
+      await fetch("http://localhost:8000/records/downloadrecord", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data: data }),
+      });
+      notify("Downloading Record in 5 seconds", "success");
+      setTimeout(() => {
+        window.open(`http://localhost:8000/pdfs/${id}.pdf`);
+      }, 5000);
+    }
   };
 
   const handleCertificate = async () => {
@@ -113,7 +118,7 @@ const GetRecord = () => {
   };
 
   const handleUpdateCertificate = () => {
-    setIsUpdatingCertificate(true);
+    setIsUpdatingCertificate((prev) => !prev);
   };
 
   useEffect(() => {
@@ -150,7 +155,7 @@ const GetRecord = () => {
       <motion.div
         whileInView={{ opacity: [0, 1] }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
-        className="bg-white text-black min-h-[100vh] mt-5 mx-8"
+        className="bg-white text-black min-h-[100vh] mt-5 mx-6 md:mx-12 lg:mx-24"
       >
         <ToastContainer
           position="top-center"
@@ -172,9 +177,9 @@ const GetRecord = () => {
         </div>
         {record?._id && (
           <motion.div className="flex">
-            <motion.div className="flex w-full border">
+            <motion.div className="flex w-full border md:flex-row flex-col">
               {/* STUDENT IMAGE */}
-              <motion.div className="flex  text-white w-[20%] ">
+              <motion.div className="flex  text-white md:w-[20%]  w-full">
                 <img
                   src={
                     record?.imageName
@@ -187,26 +192,26 @@ const GetRecord = () => {
               </motion.div>
 
               {/* STUDENT DETAILS */}
-              <motion.div className="info flex flex-col w-[60%] text-black  ">
-                <motion.div className="px-4 py-2 font-normal  text-xl border">
+              <motion.div className="info flex flex-col md:w-[60%] w-full text-black  ">
+                <motion.div className="px-4 py-2 font-normal  text-sm md:text-base lg:text-xl border">
                   StudentId: {record?.studentId}
                 </motion.div>
-                <motion.div className="px-4 py-2 font-normal  text-xl border">
+                <motion.div className="px-4 py-2 font-normal  text-sm md:text-base lg:text-xl border">
                   Name: {record?.studentName}
                 </motion.div>
-                <motion.div className="px-4 py-2 font-normal text-xl capitalize  border">
+                <motion.div className="px-4 py-2 font-normal text-sm md:text-base lg:text-xl capitalize  border">
                   Course: {record?.studentCourse}
                 </motion.div>
-                <motion.div className="px-4 py-2 font-normal text-xl capitalize  border">
+                <motion.div className="px-4 py-2 font-normal text-sm md:text-base lg:text-xl capitalize  border">
                   DOJ: {record?.dateEnrolled}
                 </motion.div>
-                <motion.div className="px-4 py-2 font-normal text-xl  border">
+                <motion.div className="px-4 py-2 font-normal text-sm md:text-base lg:text-xl  border">
                   Grade:{" "}
                   {isNaN(overallGrade(record))
                     ? overallGrade(record)
                     : "Not Graded"}
                 </motion.div>
-                <motion.div className="px-4 py-2 font-normal text-xl  border">
+                <motion.div className="px-4 py-2 font-normal text-sm md:text-base lg:text-xl  border">
                   Percentage:{" "}
                   {isNaN(overallPercentage(record))
                     ? "Not Graded"
@@ -214,7 +219,7 @@ const GetRecord = () => {
                 </motion.div>
               </motion.div>
               {/* BUTTONS TO DELETE VIEW ... */}
-              <motion.div className="text-white  w-[20%]  flex flex-col">
+              <motion.div className="text-white  md:w-[20%] w-full flex-wrap flex md:flex-col ">
                 {user && (
                   <>
                     <button
@@ -222,7 +227,7 @@ const GetRecord = () => {
                       onClick={() => {
                         handleEdit(record?._id);
                       }}
-                      className="text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg"
+                      className="record_event_btn"
                     >
                       Edit
                     </button>
@@ -231,7 +236,7 @@ const GetRecord = () => {
                       onClick={() => {
                         deleteRecord(record?._id, navigate);
                       }}
-                      className=" text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg"
+                      className="record_event_btn"
                     >
                       Delete
                     </button>
@@ -241,7 +246,7 @@ const GetRecord = () => {
                   <button
                     type="button"
                     onClick={uplodaData}
-                    className=" text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg "
+                    className="record_event_btn"
                   >
                     Upload Data
                   </button>
@@ -250,7 +255,7 @@ const GetRecord = () => {
                   <button
                     type="button"
                     onClick={uplodaData}
-                    className=" text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg "
+                    className="record_event_btn"
                   >
                     Download Record
                   </button>
@@ -264,12 +269,12 @@ const GetRecord = () => {
                         setCertificate(e.target.files[0]);
                         console.log(certificate);
                       }}
-                      className=" text-white mx-2 bg-secondary hover:bg-blue0 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg "
+                      className="record_event_btn"
                     />
                     <button
                       type="button"
                       onClick={handleCertificate}
-                      className=" text-white mx-2 bg-secondary hover:bg-blue focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg "
+                      className="record_event_btn"
                     >
                       Upload Certificate
                     </button>
@@ -277,7 +282,7 @@ const GetRecord = () => {
                 ) : (
                   <button
                     onClick={handleCertificateDownload}
-                    className=" text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg  "
+                    className="record_event_btn"
                   >
                     View Certificate
                   </button>
@@ -285,7 +290,7 @@ const GetRecord = () => {
                 {user && record?.certificate !== "" && (
                   <button
                     onClick={handleUpdateCertificate}
-                    className=" text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg  "
+                    className="record_event_btn"
                   >
                     Update Certificate
                   </button>
@@ -298,12 +303,12 @@ const GetRecord = () => {
                         setCertificate(e.target.files[0]);
                         console.log(certificate);
                       }}
-                      className=" text-white mx-2 bg-secondary hover:bg-blue0 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg "
+                      className="record_event_btn"
                     />
                     <button
                       type="button"
                       onClick={handleCertificate}
-                      className=" text-white mx-2 bg-secondary hover:bg-blue focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg "
+                      className="record_event_btn"
                     >
                       Upload Certificate
                     </button>
@@ -331,35 +336,48 @@ const GetRecord = () => {
           </p>
         )}
         {/* MAIN EXAM DETAILS */}
+        <div className="flex items-center justify-center">
+          <div className="border-secondary border-b-4  text-2xl font-semibold text-blue my-8">
+            MAIN EXAM DETAILS
+          </div>
+        </div>
         {record?.mainExamMT > 0 && (
           <motion.div
             whileInView={{ scale: [0, 1], opacity: [0, 1] }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
             className="w-full items-center justify-center  "
           >
-            <motion.div className="flex items-center justify-center uppercase text-black border  ">
-              <motion.div className="bg-blue-900  text-center px-2 py-4 w-[30%] border">
-                Main Exam : {record?.mainExamName}
+            <motion.div className="flex items-center justify-center  text-black border  ">
+              {["Exam", "Marks Obt", "Marks Total", "Grade", "Percentage"].map(
+                (val) => (
+                  <motion.div className="text-blue text-center px-1 sm:px-2 py-2 sm:py-4 max-w-[20%] w-[20%] border whitespace-nowrap overflow-ellipsis text-xs sm:text-base">
+                    {`${val}`}
+                  </motion.div>
+                )
+              )}
+            </motion.div>
+            <motion.div className="flex items-center justify-center uppercase text-black border mb-6">
+              <motion.div className="text-xs sm:text-base  text-center px-1 py-2 max-w-[20%] w-[20%] border text-ellipsis">
+                {record?.mainExamName}
               </motion.div>
-              <motion.div className="bg-blue-900  text-center px-2 py-4 w-[30%] border">
-                Marks Obtained : {record?.mainExamMO}
+              <motion.div className="text-xs sm:text-base  text-center px-1 py-2 max-w-[20%] w-[20%] border">
+                {record?.mainExamMO}
               </motion.div>
-              <motion.div className="bg-blue-900  text-center px-2 py-4 w-[30%] border">
-                Marks Total : {record?.mainExamMT}
+              <motion.div className="text-xs sm:text-base  text-center px-1 py-2 max-w-[20%] w-[20%] border">
+                {record?.mainExamMT}
               </motion.div>
-              <motion.div className="bg-blue-900  text-center px-2 py-4 w-[30%] border">
-                Grade :{" "}
+              <motion.div className="text-xs sm:text-base  text-center px-1 py-2 max-w-[20%] w-[20%] border">
                 {gradeCalculator([
                   { mt: record?.mainExamMT, mo: record?.mainExamMO },
                 ])}
               </motion.div>
-              <motion.div className="bg-blue-900  text-center px-2 py-4 w-[30%] border">
-                Percentage :
+              <motion.div className="text-xs sm:text-base  text-center px-1 py-2 max-w-[20%] w-[20%] border">
                 {Math.floor((record?.mainExamMO / record.mainExamMT) * 100)}%
               </motion.div>
             </motion.div>
           </motion.div>
         )}
+
         {!record?.mainExamMT > 0 && (
           <p className="text-center text-blue text-3xl font-bold my-4  p-4">
             No Main Exam Found Please Add using Edit button
@@ -368,7 +386,10 @@ const GetRecord = () => {
         <div className="flex flex-wrap gap-5  items-center justify-center">
           {record?.exams?.length > 0 && (
             <>
-              <BarChart data={record?.exams} />
+              <div className="hidden lg:block">
+                <BarChart data={record?.exams} />
+              </div>
+
               <PerformanceChart
                 averageData={averageData}
                 individualData={individualData}

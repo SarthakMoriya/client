@@ -1,16 +1,8 @@
-export const convertDateFormat = (inputDateString) => {
-  const inputDate = new Date(inputDateString);
-
-  const day = String(inputDate.getUTCDate()).padStart(2, "0");
-  const month = String(inputDate.getUTCMonth() + 1).padStart(2, "0");
-  const year = inputDate.getUTCFullYear();
-
-  return `${day}/${month}/${year}`;
-};
-
-export const convertBackToISODateString = (inputDateString) => {
-  const [day, month, year] = inputDateString.split("/").map(Number);
-  const dateObject = new Date(Date.UTC(year, month - 1, day)); // Month is 0-based in JavaScript Date object
-
-  return dateObject.toISOString().split("T")[0];
-};
+ export const getMaxDate=()=>{
+ let year=new Date().getFullYear()
+ let month=new Date().getMonth()+1
+ let day=new Date().getDay()<10?"0"+new Date().getDay():new Date().getDay()
+ console.log(`"${year}-${month}-${day}"`)
+ console.log(month)
+ return `${year}-${month}-${day}`
+}

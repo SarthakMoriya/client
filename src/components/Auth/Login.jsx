@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -6,11 +6,13 @@ import { setLogin } from "../../state";
 import { Formik } from "formik";
 import { initialValuesLogin, loginSchema } from "../../schemas/authSchema";
 import { motion } from "framer-motion";
-import logo from '../../assets/logo.webp'
+import ForgotPassword from "./ForgotPassword";
+
 
 const Login = () => {
   const distpatch = useDispatch();
   const navigate = useNavigate();
+  const [forgot, setForgot] = useState(false)
 
   const handleLogin = async (values, onSubmitProps) => {
     const res = await fetch("http://localhost:8000/auth/login", {
@@ -34,6 +36,7 @@ const Login = () => {
   };
   return (
     <>
+    {forgot && <ForgotPassword setForgot={setForgot} forgot={forgot}/>}
       <motion.section className="bg-primary ">
         <motion.div className="flex flex-col items-center justify-center px-6 py-8 mx-auto min-h-screen lg:py-0">
           
@@ -128,9 +131,10 @@ const Login = () => {
                       transition={{ duration: 1, ease: "easeInOut" }}
                       className="flex items-center justify-between"
                     >
-                      <Link className="text-sm font-medium text-primary-600 hover:underline text-blue">
+                      <Link className="text-sm font-medium text-primary-600 hover:underline text-blue" onClick={()=>{setForgot(true)}}>
                         Forgot password?
                       </Link>
+                      
                     </motion.div>
                     <motion.button
                       whileInView={{ opacity: [0, 1] }}

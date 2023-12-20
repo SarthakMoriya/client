@@ -22,7 +22,7 @@ const GetRecords = () => {
       <div className="mb-4 mt-4">
         <SearchBar searchRecords={getRecords} />
       </div>
-      <div className="flex  flex-wrap">
+      <div className="flex flex-wrap md:justify-center justify-normal">
         {records.length === 0 && (
           <div className="text-3xl text-center text-white w-full">
             NO RECORDS{" "}

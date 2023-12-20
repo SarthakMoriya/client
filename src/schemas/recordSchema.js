@@ -27,10 +27,20 @@ export const passcodeSchema=yup.object().shape({
     oldpasscode: yup.string().required("Please enter a old passcode"),
     newpasscode: yup.string().required("Please enter a new passcode"),
     confirmpasscode: yup.string().required("Plese enter new passcode again"),
-   
-    
+})
+export const OTPSchema=yup.object().shape({
+    otp: yup.string().required("Please enter OTP recieved"),
+    newpassword: yup.string().required("Please enter a new password"),
+    confirmpassword: yup.string().required("Plese enter new password again"),
+    email: yup.string().required("Plese enter Email"),
 })
 
+export const initialValuesOTP = {
+    otp: "",
+    newpassword: "",
+    confirmpassword: "",    
+    email:""
+  };
 export const initialValuesPasscode = {
     oldpasscode: "",
     newpasscode: "",

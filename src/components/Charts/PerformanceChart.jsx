@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {useSelector} from 'react-redux'
 import {useParams} from 'react-router-dom'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { averageCourse } from '../../utils/courseAverageCalculator';
 
 const BarPerformanceChart = ({ averageData, individualData,course }) => {
+  const [isValidAverage, setIsValidAverage] = useState(false)
   console.log("Course "+course)
   const records=useSelector(state=>state.record)
   const id=useParams();
   const average=averageCourse({records,courseName:course,id});
   console.log("Average::"+average)
+  console.log(isNaN(average))
+
   const data = [
     { category: course, average: average, individual: individualData.value },
     // Add more categories as needed
@@ -23,7 +26,7 @@ const BarPerformanceChart = ({ averageData, individualData,course }) => {
         <YAxis />
         <Tooltip />
         <Legend />
-        <Bar dataKey="average" fill="#FFD700" barSize={30} name="Average Performance" />
+        <Bar dataKey="average" fill="#FFD700" barSize={30} name={!isNaN(average)?"Average Performance":"No Records Founds"} />
         <Bar dataKey="individual" fill="#03173d" barSize={30} name="Your Performance" />
       </BarChart>
     </ResponsiveContainer>

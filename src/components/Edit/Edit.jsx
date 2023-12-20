@@ -9,6 +9,7 @@ import { notify } from "../../utils/notification";
 import { setRecords } from "../../state/index";
 import { getRecords } from "../../api";
 import { motion } from "framer-motion";
+import { getMaxDate } from "../../utils/dateFormatter";
 
 const Edit = () => {
   const id = useParams();
@@ -17,7 +18,7 @@ const Edit = () => {
   const record = useSelector((state) => {
     return state?.record?.records?.find((rec) => rec._id === id?.id);
   });
-
+  console.log(record)
   const [sName, setSname] = useState(record?.studentName);
   const [coursename, setCoursename] = useState(record?.studentCourse);
   const [date, setDate] = useState(record?.dateEnrolled);
@@ -61,11 +62,12 @@ const Edit = () => {
     );
 
     const data = await res.json();
-    console.log(data);
+    console.log(data.ok);
     if (data.ok) {
       notify("Record Updated", "success");
       const newRecords = await getRecords();
       dispatch(setRecords({ records: newRecords }));
+      console.log(newRecords);
       setTimeout(() => {
         navigate(`/record/${record?._id}`);
       }, 2000);
@@ -122,8 +124,8 @@ const Edit = () => {
             >
               Edit record of studentId: {record.studentId}
             </motion.h2>
-                        {/* IMAGE FIELD */}
-                        <motion.div
+            {/* IMAGE FIELD */}
+            <motion.div
               whileInView={{ opacity: [0, 1] }}
               transition={{ duration: 1, ease: "easeInOut" }}
             >
@@ -213,9 +215,12 @@ const Edit = () => {
                     Date Enrolled
                   </label>
                   <input
-                    type="text"
+                    type="date"
                     name="date"
                     id="date"
+                    min="2021-01-11"
+                    max={getMaxDate()}
+                    // max="2021-01-11"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="dd-mm-yyyy"
                     required="true"

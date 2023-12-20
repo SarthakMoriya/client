@@ -6,7 +6,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Login from "./components/Auth/Login";
 import Signup from "./components/Auth/Signup";
 import CreateRecord from "./components/CreateRecord/CreateRecord";
-import GetRecord from "./components/UpdateRecord/GetRecord";
+import GetRecord from "./components/Record/GetRecord";
 import { useEffect } from "react";
 import { setRecords } from "./state";
 import { useDispatch } from "react-redux";

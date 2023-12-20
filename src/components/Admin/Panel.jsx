@@ -37,7 +37,7 @@ const Panel = () => {
     fetchAccounts();
   }, []);
   return (
-    <div className="bg-primary min-h-screen border border-secondary">
+    <div className="bg-primary min-h-screen border border-secondary ">
       {unapprovedAccounts?.length !== 0 && (
         <div className="flex items-center justify-center">
         <div className="border-secondary border-b-4  text-2xl font-semibold text-white my-4">
@@ -73,10 +73,10 @@ const Panel = () => {
                     className="w-10 h-10 rounded-full"
                     alt="pic"
                   />
-                  <div className=" p-2 font-semibold  capitalize ml-4">
+                  <div className="md:hidden lg:block p-2 sm:font-semibold  capitalize sm:ml-4 text-sm sm:text-base">
                     Name:{acc?.username}
                   </div>
-                  <div className=" p-2 font-semibold lowercase  ml-4">
+                  <div className="hidden md:block p-2 sm:font-semibold lowercase  sm:ml-4 text-sm sm:text-base">
                     Email:{acc?.email}
                   </div>
                 </div>
@@ -87,7 +87,7 @@ const Panel = () => {
                       handleApprove(acc);
                     }}
                     disabled={acc.isAdminApprovedAccount ? "true" : "false"}
-                    className={`text-white bg-blue hover:bg-secondary focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-5 py-2.5 text-center mr-2 mb-2 mt-2 w-[95%] rounded-lg  ease-in-out duration-500 ${
+                    className={`text-white bg-blue hover:bg-secondary focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-2.5 sm:px-5 py-2.5 text-center mr-2 mb-2 mt-2 md:w-[95%] w-[50%] rounded-lg  ease-in-out duration-500 ${
                       acc.isAdminApprovedAccount
                         ? "cursor-not-allowed"
                         : "cursor-pointer"
@@ -102,7 +102,7 @@ const Panel = () => {
                     onClick={() => {
                       handleDelete(acc);
                     }}
-                    className="text-white bg-secondary hover:bg-blue focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-5 py-2.5 text-center mr-2 mb-2 mt-2 w-[95%] rounded-lg  ease-in-out duration-500"
+                    className="text-white bg-secondary hover:bg-blue focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-2.5 sm:px-5 py-2.5 text-center mr-2 mb-2 mt-2 md:w-[95%] w-[50%] rounded-lg  ease-in-out duration-500"
                   >
                     {acc.isAdminApprovedAccount
                       ? "Delete Account"

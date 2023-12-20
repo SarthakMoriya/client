@@ -3,7 +3,8 @@ import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import { useLocation, useParams } from "react-router-dom";
 import { testGradeCalculator } from "../../utils/gradeCalculator";
-
+import edit_icon from '../../assets/edit.png'
+import delete_icon from '../../assets/delete.png'
 const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
   const [edit, setEdit] = useState(false);
   const [modifiedExam, setModifiedExam] = useState("");
@@ -63,6 +64,10 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
     });
     setIsDeleted(exam?.name);
   };
+
+  const handleCancelExam=()=>{
+    setEdit(false);    
+  }
   return (
     <motion.div className="w-full items-center justify-center  ">
       {/* IN EDIT MODE */}
@@ -78,7 +83,7 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
             placeholder={exam?.name}
             className={`${
               i % 2 !== 0 ? "bg-gray-700" : "bg-gray-900"
-            }  text-gray-100 text-center p-1 w-[20%] border-gray-400 border-2 `}
+            }  text-gray-100 text-center sm:p-1 p-[2px] sm:text-base text-xs w-[20%] border-gray-400 border-2 `}
           />
 
           {/* MARKS OBTAINED  */}
@@ -92,7 +97,7 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
             placeholder={exam?.mo}
             className={`${
               i % 2 !== 0 ? "bg-gray-700" : "bg-gray-900"
-            }  text-gray-100 text-center p-1 w-[20%] border-gray-400 border-2 `}
+            }  text-gray-100 text-center sm:p-1 p-[2px] sm:text-base text-xs w-[20%] border-gray-400 border-2 `}
           />
           {/* MARKS TOTAL */}
           <input
@@ -105,25 +110,31 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
             type="number"
             className={`${
               i % 2 !== 0 ? "bg-gray-700" : "bg-gray-900"
-            }  text-gray-100 text-center p-1 w-[20%] border-gray-400 border-2 `}
+            }  text-gray-100 text-center sm:p-1 p-[2px] sm:text-base text-xs w-[20%] border-gray-400 border-2 `}
           />
           <motion.div
             className={`${
               i % 2 !== 0 ? "bg-gray-700" : "bg-gray-900"
-            }  text-gray-100 text-center p-1 w-[20%] border-gray-400 border-2 `}
+            }  text-gray-100 text-center sm:p-1 p-[2px] sm:text-base text-xs w-[20%] border-gray-400 border-2 `}
           >
             {exam?.grade || "A"}
           </motion.div>
           <motion.div
             className={`${
               i % 2 !== 0 ? "bg-gray-700" : "bg-gray-900"
-            }  text-gray-100 text-center p-1 w-[20%] border-gray-400 border-2 flex items-center`}
+            }  text-gray-100 text-center sm:p-1 p-[2px] sm:text-base text-xs w-[20%] border-gray-400 border-2 flex items-center`}
           >
             <motion.div
               onClick={handleSaveExam}
               className="w-[100%] bg-slate-400  hover:bg-blue-400 duration-500 ease-in rounded-sm border-1 cursor-pointer"
             >
               Save
+            </motion.div>
+            <motion.div
+              onClick={handleCancelExam}
+              className="w-[100%] bg-slate-400  hover:bg-blue-400 duration-500 ease-in rounded-sm border-1 cursor-pointer"
+            >
+              Cancel
             </motion.div>
           </motion.div>
         </motion.div>
@@ -138,7 +149,7 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
           <motion.div
             whileInView={{ scale: [0, 1], opacity: [0, 1] }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className={`text-center p-1 w-[20%] ${
+            className={`text-center sm:p-1 p-[2px] sm:text-base text-xs w-[20%] ${
               user ? "w-[20%]" : "w-[25%]"
             }`}
           >
@@ -149,7 +160,7 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
           <motion.div
             whileInView={{ scale: [0, 1], opacity: [0, 1] }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className={`text-center p-1 w-[20%] ${
+            className={`text-center sm:p-1 p-[2px] sm:text-base text-xs w-[20%] ${
               user ? "w-[20%]" : "w-[25%]"
             }`}
           >
@@ -160,7 +171,7 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
           <motion.div
             whileInView={{ scale: [0, 1], opacity: [0, 1] }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className={`text-center p-1 w-[20%] ${
+            className={`text-center sm:p-1 p-[2px] sm:text-base text-xs w-[20%] ${
               user ? "w-[20%]" : "w-[25%]"
             }`}
           >
@@ -171,7 +182,7 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
           <motion.div
             whileInView={{ scale: [0, 1], opacity: [0, 1] }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className={`text-center p-1 w-[20%] ${
+            className={`text-center sm:p-1 p-[2px] sm:text-base text-xs w-[20%] ${
               user ? "w-[20%]" : "w-[25%]"
             }`}
           >
@@ -183,7 +194,7 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
               <motion.div
                 whileInView={{ scale: [0, 1], opacity: [0, 1] }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
-                className={` w-[20%] flex `}
+                className={` w-[20%] flex justify-center sm:justify-normal`}
               >
                 <motion.div
                   whileInView={{ scale: [0, 1], opacity: [0, 1] }}
@@ -191,18 +202,36 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
                   onClick={() => {
                     handleEdit(exam?.name);
                   }}
-                  className="w-[50%] bg-blue text-white duration-500 ease-in  cursor-pointer text-center flex justify-center items-center border-2 border-gray-300"
+                  className="hidden w-[50%] bg-blue text-white duration-500 ease-in  cursor-pointer text-center sm:flex justify-center items-center border-2 border-gray-300"
                 >
                   Edit
                 </motion.div>
+                <motion.img
+                  whileInView={{ scale: [0, 1], opacity: [0, 1] }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  onClick={() => {
+                    handleEdit(exam?.name);
+                  }}
+                  src={edit_icon}
+                  alt="edit"
+                  className="sm:hidden w-[25px]  text-white duration-500 ease-in  cursor-pointer text-center flex justify-center items-center border-2 border-gray-300"
+                />
                 <motion.div
                   whileInView={{ scale: [0, 1], opacity: [0, 1] }}
                   transition={{ duration: 0.5, ease: "easeInOut" }}
                   onClick={handleDeleteExam}
-                  className="w-[50%] bg-blue text-white duration-500 ease-in border- cursor-pointer text-center flex justify-center items-center border-2 border-gray-300"
+                  className="hidden w-[50%] sm:bg-blue text-white duration-500 ease-in border- cursor-pointer text-center sm:flex justify-center items-center border-2 border-gray-300"
                 >
                   Delete
                 </motion.div>
+                <motion.img
+                  whileInView={{ scale: [0, 1], opacity: [0, 1] }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  onClick={handleDeleteExam}
+                  src={delete_icon}
+                  className="sm:hidden w-[25px] text-white duration-500 ease-in border- cursor-pointer text-center flex justify-center items-center border-2 border-gray-300"
+                />
+
               </motion.div>
             </>
           )}

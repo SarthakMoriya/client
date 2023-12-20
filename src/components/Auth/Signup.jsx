@@ -71,7 +71,7 @@ const Signup = () => {
   };
   return (
     <>
-      <section className="bg-gray-50 dark:bg-primary  h-auto mt-4 absolute w-full">
+      <section className="bg-gray-50 dark:bg-primary h-auto w-full">
         <ToastContainer
           position="top-center"
           autoClose={5000}
@@ -84,7 +84,7 @@ const Signup = () => {
           pauseOnHover
           theme="dark"
         />
-        <motion.div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-auto lg:py-0 h-auto mt-4 mb-8">
+        <motion.div className="flex flex-col items-center justify-center px-6 py-8  md:h-auto  h-auto md:mt-4 md:mb-8">
           
           <motion.div className="w-full bg-white rounded-lg shadow  md:mt-0 sm:max-w-md xl:p-0 dark:bg-white dark:border-secondary border-2">
             <motion.div className="p-6 space-y-4 md:space-y-6 sm:p-8">

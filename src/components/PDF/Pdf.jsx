@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { deleteRecord } from "../../api";
 import user from "../../assets/user.png";
-import RecordTable from "../UpdateRecord/RecordTable";
+import RecordTable from "../Record/RecordTable";
 import { gradeCalculator } from "../../utils/gradeCalculator";
 
 const Pdf = () => {
@@ -44,11 +44,11 @@ const Pdf = () => {
           </Link>
         </div>
       </nav>
-      <div className="bg-gray-900 min-h-[100vh] ">
+      <div className=" min-h-[100vh] ">
         {record?._id && (
           <div className="flex   border-2 ">
             <div className="flex m-2 w-[100%] h-[40vh] border ">
-              <div className="image flex p-4 rounded-full text-white">
+              <div className="image flex p-4 rounded-full text-blue">
                 <img
                   src={
                     record?.imageName
@@ -59,14 +59,14 @@ const Pdf = () => {
                   className="rounded-full"
                 />
               </div>
-              <div className="info flex flex-col  justify-center  text-white">
+              <div className="info flex flex-col  justify-center  text-blue">
                 <div className="mx-4 my-2 font-normal  text-3xl">
                   Name: {record?.studentName}
                 </div>
-                <div className="mx-4 my-2 font-normal text-xl capitalize text-white">
+                <div className="mx-4 my-2 font-normal text-xl capitalize text-blue">
                   Course: {record?.studentCourse}
                 </div>
-                <div className="mx-4 my-2 font-normal text-xl text-white">
+                <div className="mx-4 my-2 font-normal text-xl text-blue">
                   Grade: {gradeCalculator(record?.exams)}
                 </div>
               </div>
