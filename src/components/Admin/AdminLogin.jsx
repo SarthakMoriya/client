@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -10,10 +10,12 @@ import {
 } from "../../schemas/authSchema";
 import { notify } from "../../utils/notification";
 import { ToastContainer } from "react-toastify";
+import Warning from "../Icons/Warning";
 
 const AdminLogin = () => {
   const distpatch = useDispatch();
   const navigate = useNavigate();
+  const [error, setError] = useState("");
 
   const handleLogin = async (values, onSubmitProps) => {
     const res = await fetch("http://localhost:8000/auth/admin/login", {
@@ -22,27 +24,28 @@ const AdminLogin = () => {
       body: JSON.stringify({ email: values.email, password: values.password }),
     });
     const data = await res.json();
-    if (data === "Invalid credentials") {
-      notify("Invalid Credentials");
+    console.log(data);
+    if (data === "Invalid Credentials") {
+      setError("Invalid Credentials");
     } else {
+      setError("");
       distpatch(
         setLogin({
           user: data.user,
           token: data.token,
           secretkey: data.secretkey,
         })
-      );
+      ); 
+      localStorage.setItem("is_verified", data?.user?.verified);
+      navigate("/");
     }
-
-    localStorage.setItem("is_verified", data.user.verified);
-    navigate("/");
   };
   return (
     <>
       <section className="bg-primary ">
         <ToastContainer
           position="top-center"
-          autoClose={5000}
+          autoClose={3000}
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick
@@ -66,6 +69,12 @@ const AdminLogin = () => {
               <h1 className="text-xl font-bold leading-tight tracking-tight  md:text-2xl text-blue capitalize">
                 Sign in to your Admin account
               </h1>
+              {error && (
+                <div className="flex items-center gap-4">
+                  <Warning className="text-red-600 text-sm" />
+                  <div className="text-red-600 text-sm">{error}</div>
+                </div>
+              )}
               <Formik
                 onSubmit={handleLogin}
                 initialValues={initialValuesAdminLogin}

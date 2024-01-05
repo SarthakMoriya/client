@@ -52,11 +52,7 @@ const StudentCard = ({ data, setRecords, records }) => {
       <div className="flex m-2 min-h-[80%] ">
         <div className="image flex items-center justify-center max-w-[50%] max-h-[100%] rounded-md">
           <img
-            src={
-              data?.imageName
-                ? `http://localhost:8000/assets/${data?.imageName}`
-                : userfallback
-            }
+            src={`${data?.imageName}`}
             alt="studentImage"
             className="max-w-[150px] max-h-[150px] object-cover"
           />
@@ -100,7 +96,7 @@ const StudentCard = ({ data, setRecords, records }) => {
           <button
             type="button"
             onClick={handleDeleteRecord}
-            className="text-white bg-blue hover:bg-primary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2  w-[50%]  ease-in-out duration-500 rounded-lg "
+            className="text-white bg-secondary hover:bg-blue focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-2.5 py-2.5 text-center mb-2 sm:mr-2 w-[100%] rounded-lg  ease-in-out duration-500"
           >
             Delete
           </button>

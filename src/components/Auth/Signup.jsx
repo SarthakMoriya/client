@@ -10,11 +10,20 @@ import {
 } from "../../schemas/authSchema";
 import { notify } from "../../utils/notification";
 import { motion } from "framer-motion";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { app } from "../../firebase/firebase";
 
 const Signup = () => {
   const [image, setImage] = useState(null);
   const [isImageUploaded, setIsImageUploaded] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [url, setUrl] = useState("");
   const navigate = useNavigate();
 
   const handleSignup = async (values, onSubmitProps) => {
@@ -23,7 +32,7 @@ const Signup = () => {
       formData.append(value, values[value]);
     }
     formData.append("passcode", values.secretkey);
-    formData.append("picturePath", image ? image.name : "");
+    formData.append("picturePath", url);
 
     const res = await fetch("http://localhost:8000/auth/signup", {
       method: "POST",
@@ -41,34 +50,34 @@ const Signup = () => {
       setIsOpen(true);
     }
   };
-
-  const handleImageUpload = async () => {
-    if (image) {
-      const imageForm = new FormData();
-      imageForm.append("image", image);
-
-      try {
-        const response = await fetch("http://localhost:8000/upload", {
-          method: "POST",
-          body: imageForm,
+  const handleFileUpload = async () => {
+    setLoading(true);
+    const storage = getStorage(app);
+    const fileName = new Date().getTime() + image.name; // So no two users have same file
+    const storageRef = ref(storage, fileName); //location+filename
+    const uploadTask = uploadBytesResumable(storageRef, image); //finalStep
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      },
+      (err) => {
+        notify("Image Size must be less than 2mb");
+        setLoading(false);
+        setIsImageUploaded(false)
+        return;
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
+          setUrl(downloadUrl);
+          setLoading(false);
+          setIsImageUploaded(true)
         });
-
-        if (response.ok) {
-          notify("Image uploaded successfully", "success");
-          setIsImageUploaded(true);
-        } else {
-          notify("Error uploading image");
-          console.error("Error uploading image");
-        }
-      } catch (error) {
-        notify("Error uploading image");
-        console.error("Error uploading image", error);
       }
-    } else {
-      notify("No File Selected");
-      console.error("No file selected");
-    }
+    );
   };
+
   return (
     <>
       <section className="bg-gray-50 dark:bg-primary h-auto w-full">
@@ -85,7 +94,6 @@ const Signup = () => {
           theme="dark"
         />
         <motion.div className="flex flex-col items-center justify-center px-6 py-8  md:h-auto  h-auto md:mt-4 md:mb-8">
-          
           <motion.div className="w-full bg-white rounded-lg shadow  md:mt-0 sm:max-w-md xl:p-0 dark:bg-white dark:border-secondary border-2">
             <motion.div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <motion.h1
@@ -106,6 +114,15 @@ const Signup = () => {
                 >
                   Profile Photo
                 </label>
+                {url && (
+                  <div className="flex items-center p-2">
+                    <img
+                      src={url}
+                      alt="profile"
+                      className="w-32 h-32 flex items-center justify-center border rounded-lg "
+                    />
+                  </div>
+                )}
                 <input
                   type="file"
                   name="picture"
@@ -115,7 +132,7 @@ const Signup = () => {
                 />
                 <button
                   className="w-full mt-2 text-blue bg-secondary hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-blue-500 dark:focus:ring-primary-800"
-                  onClick={handleImageUpload}
+                  onClick={handleFileUpload}
                   disabled={isImageUploaded ? true : false}
                 >
                   {isImageUploaded ? "Image Uploaded" : "Upload Image"}

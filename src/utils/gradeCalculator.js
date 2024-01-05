@@ -50,10 +50,11 @@ export const overallPercentage = (record) => {
       Math.floor(((record?.mainExamMO / record?.mainExamMT) * 100) * 0.6);
     return less + more;
   }
-  if (!record?.exams?.length > 0 && record?.mainExamMT > 0) {
-    return Math.floor((record?.mainExamMO / record?.mainExamMT) * 100 * 0.6);
+  else if (record?.exams?.length === 0 && record?.mainExamMT > 0) {
+    console.log("ONLY MAIN EXAM FOUND")
+    return Math.floor((record?.mainExamMO / record?.mainExamMT) * 100);
   }
-  if (record?.exams?.length > 0 && !record?.mainExamMT > 0) {
+  else if (record?.exams?.length > 0 && !record?.mainExamMT > 0) {
     return Math.floor(percentageCalcuator(record?.exams));
   }
   return NaN;

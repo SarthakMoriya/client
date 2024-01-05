@@ -7,14 +7,16 @@ import { Formik } from "formik";
 import { initialValuesLogin, loginSchema } from "../../schemas/authSchema";
 import { motion } from "framer-motion";
 import ForgotPassword from "./ForgotPassword";
-
+import Warning from "../Icons/Warning";
 
 const Login = () => {
   const distpatch = useDispatch();
   const navigate = useNavigate();
-  const [forgot, setForgot] = useState(false)
+  const [forgot, setForgot] = useState(false);
+  const [error, setError] = useState("");
 
   const handleLogin = async (values, onSubmitProps) => {
+    setError("")
     const res = await fetch("http://localhost:8000/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -22,24 +24,24 @@ const Login = () => {
     });
     const data = await res.json();
     if (data?.user?.isAdminApprovedAccount === false) {
-      alert("Account isn't approved by admin");
+      setError("Account isn't approved by admin");
     } else {
       if (data.ok) {
         distpatch(setLogin({ user: data.user, token: data.token }));
         localStorage.setItem("is_verified", data.user.verified);
         navigate("/");
-      } else {
-        alert("Invalid credentials...Please Try Again!");
+        setError("");
         onSubmitProps.resetForm();
+      } else {
+        setError("Invalid credentials...Please Try Again!");
       }
     }
   };
   return (
     <>
-    {forgot && <ForgotPassword setForgot={setForgot} forgot={forgot}/>}
+      {forgot && <ForgotPassword setForgot={setForgot} forgot={forgot} />}
       <motion.section className="bg-primary ">
         <motion.div className="flex flex-col items-center justify-center px-6 py-8 mx-auto min-h-screen lg:py-0">
-          
           <motion.div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0  border-2 border-secondary">
             <motion.div
               whileInView={{ opacity: [0, 1] }}
@@ -49,6 +51,12 @@ const Login = () => {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-blue md:text-2xl ">
                 Sign in to your account
               </h1>
+              {error && (
+                <div className="flex items-center gap-4">
+                  <Warning className="text-red-600 text-sm" />
+                  <div className="text-red-600 text-sm">{error}</div>
+                </div>
+              )}
               <Formik
                 onSubmit={handleLogin}
                 initialValues={initialValuesLogin}
@@ -131,10 +139,14 @@ const Login = () => {
                       transition={{ duration: 1, ease: "easeInOut" }}
                       className="flex items-center justify-between"
                     >
-                      <Link className="text-sm font-medium text-primary-600 hover:underline text-blue" onClick={()=>{setForgot(true)}}>
+                      <Link
+                        className="text-sm font-medium text-primary-600 hover:underline text-blue"
+                        onClick={() => {
+                          setForgot(true);
+                        }}
+                      >
                         Forgot password?
                       </Link>
-                      
                     </motion.div>
                     <motion.button
                       whileInView={{ opacity: [0, 1] }}

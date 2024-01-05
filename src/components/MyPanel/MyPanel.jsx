@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import fallbackPic from "./user.png";
+import { useLocation } from "react-router-dom";
 import UpdatePassword from "./UpdatePassword";
 import UpdatePasscode from "./UpdatePasscode";
 import Student from "./Student";
 import OtpModal from "./OtpModal";
+import { motion } from "framer-motion";
 import "./MyPanel.css";
-
+import { notify } from "../../utils/notification";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { app } from "../../firebase/firebase";
 const MyPanel = () => {
   const { user } = useSelector((state) => state.auth);
   const [isUpdatePassword, setIsUpdatePassword] = useState(false);
@@ -14,7 +22,17 @@ const MyPanel = () => {
   const [teacherRecords, setTeacherRecords] = useState([]);
   const [isVerified, setIsVerified] = useState(user?.verified); //Boolean(localStorage.getItem('is_verified'))
   const [isOtpSent, setIsOtpSent] = useState(false);
-  console.log(user);
+  const [image, setImage] = useState("");
+  const [url, setUrl] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [isImageUploaded, setIsImageUploaded] = useState(false);
+  const location = useLocation();
+  console.log(user)
+  useEffect(() => {
+    // Update the title based on the current route
+    document.title = `Webcooks | MyPanel - ${user?.username}`;
+  }, [location.pathname]);
+
   const fetchStudents = async () => {
     const data = await fetch(
       `http://localhost:8000/records/getstudents/${user?._id}`
@@ -31,6 +49,61 @@ const MyPanel = () => {
     const data = await res.json();
     setIsOtpSent(data.otp);
   };
+  const handleFileUpload = async () => {
+    setLoading(true);
+    const storage = getStorage(app);
+    const fileName = new Date().getTime() + image.name; // So no two users have same file
+    const storageRef = ref(storage, fileName); //location+filename
+    const uploadTask = uploadBytesResumable(storageRef, image); //finalStep
+    console.log(uploadTask);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      },
+      (err) => {
+        notify("Image Size must be less than 2mb");
+        alert("Image Size must be less than 2mb");
+        setLoading(false);
+        setIsImageUploaded(false);
+        console.log("eroooooooooooooor");
+        return;
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then(async (downloadUrl) => {
+          setUrl(downloadUrl);
+          setLoading(false);
+          setIsImageUploaded(true);
+        });
+      }
+    );
+  };
+  const handleSaveImage = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `http://localhost:8000/auth/editimage/${user._id}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ picturePath: url }),
+        }
+      );
+
+      if (response.ok) {
+        alert("Image uploaded successfully", "success");
+        setIsImageUploaded(false);
+        setLoading(false);
+      } else {
+        alert("Error uploading Image");
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+      alert("Error uploading Image");
+    }
+  };
   useEffect(() => {
     fetchStudents();
   }, []);
@@ -46,13 +119,9 @@ const MyPanel = () => {
           <div className="flex m-2 w-screen lg:h-[40vh] border flex-col sm:flex-row">
             <div className=" flex">
               <img
-                src={
-                  user?.picturePath
-                    ? `http://localhost:8000/assets/${user?.picturePath}`
-                    : fallbackPic
-                }
+                src={url ? url : user.picturePath}
                 alt="user"
-                className="w-full"
+                className=" object-cover"
               />
             </div>
             <div className="info flex flex-col sm:w-[60%] text-black  ">
@@ -72,13 +141,13 @@ const MyPanel = () => {
                 Students Taught: {teacherRecords?.length}
               </div>
             </div>
-            <div className="text-white  sm:w-[20%]  flex flex-col">
+            <div className="text-white  sm:w-[20%]  flex flex-col border">
               <button
                 type="button"
                 onClick={() => {
                   setIsUpdatePassword(true);
                 }}
-                className="text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg"
+                className="text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg lg:w-56"
               >
                 Update Password
               </button>
@@ -87,17 +156,16 @@ const MyPanel = () => {
                 onClick={() => {
                   setIsUpdatePasscode(true);
                 }}
-                className="text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg"
+                className="text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg lg:w-56"
               >
                 Update Passcode
               </button>
-
               {isVerified === false && (
                 <span
                   type="button"
                   onClick={verifyEmail}
                   disabled={isVerified ? false : true}
-                  className="text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg"
+                  className="text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg lg:w-56"
                 >
                   Unverified Account
                 </span>
@@ -105,10 +173,41 @@ const MyPanel = () => {
               {isVerified === true && (
                 <span
                   type="button"
-                  className="text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg"
+                  className="text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2 ease-in-out duration-500 rounded-lg lg:w-56"
                 >
                   Verifed Account
                 </span>
+              )}
+              <label
+                htmlFor="picture"
+                className="text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2 ease-in-out duration-500 rounded-lg lg:w-56"
+              >
+                <input
+                  type="file"
+                  name="picture"
+                  id="picture"
+                  className="hidden"
+                  onChange={(e) => setImage(e.target.files[0])}
+                />
+                Select Image
+              </label>
+              {image && <button
+                type="button"
+                onClick={handleFileUpload}
+                disabled={loading}
+                className="text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2 ease-in-out duration-500 rounded-lg lg:w-56"
+              >
+                {loading ? "Uploading..." : "Upload Image"}
+              </button>}
+              {url && isImageUploaded && (
+                <button
+                  type="button"
+                  onClick={handleSaveImage}
+                  disabled={!isImageUploaded}
+                  className="text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2 ease-in-out duration-500 rounded-lg lg:w-56"
+                >
+                  {loading ? "Saving..." : " Save Image"}
+                </button>
               )}
             </div>
           </div>

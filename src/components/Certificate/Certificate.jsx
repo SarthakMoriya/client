@@ -8,11 +8,13 @@ const Certificate = () => {
   const fetchCertificate = async () => {
     const record = await fetch(`http://localhost:8000/records/getrecord/${id}`);
     const data = await record.json();
+    console.log(data)
     setRecord(data.data);
+    console.log(record)
   };
   const handleDownload = () => {
     // Replace 'http://localhost:8000/assets/${record?.certificate}' with the actual file URL
-    const fileUrl = `http://localhost:8000/assets/${record?.certificate}`;
+    const fileUrl = `${record?.certificate}`;
 
     // Create a link element
     const link = document.createElement("a");
@@ -21,7 +23,7 @@ const Certificate = () => {
     link.href = fileUrl;
 
     // Set the download attribute with the desired file name
-    link.download = "downloaded_file.txt";
+    link.download = `${record?.certificate}`;
 
     // Append the link to the document
     document.body.appendChild(link);
@@ -46,7 +48,7 @@ const Certificate = () => {
       </button>
       {record ? (
         <img
-          src={`http://localhost:8000/assets/${record?.certificate}`}
+          src={`${record?.certificate}`}
           alt="Certificate"
           className="w-[70%] h-[70%]"
         />

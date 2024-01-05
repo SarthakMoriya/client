@@ -1,5 +1,5 @@
 .record_event_btn{
-    @apply text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-xs lg:text-sm 
+    @apply text-white mx-2 md:mx-0 lg:mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-xs lg:text-sm 
     md:px-1.5 md:py-1.5 lg:px-2.5 lg:py-2.5 px-2 py-2 
     text-center mb-2 mt-2 ease-in-out duration-500 rounded-md 
     sm:w-[100%] w-[25%]

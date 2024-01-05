@@ -13,19 +13,35 @@ import {
 import { notify } from "../../utils/notification";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import BarChart from "../Charts/BarChart";
 import PerformanceChart from "../Charts/PerformanceChart";
 import GrowthChart from "../Charts/GrowthChart";
 import "./style.css";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { app } from "../../firebase/firebase";
 
 const GetRecord = () => {
   const [record, setRecord] = useState("");
   const [certificate, setCertificate] = useState("");
   const [isUpdatingCertificate, setIsUpdatingCertificate] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [url, setUrl] = useState(false);
   const user = useSelector((state) => state?.auth?.user);
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    // Update the title based on the current route
+    document.title = `Webcooks | Record`;
+  }, [location.pathname]);
 
   //Function to fetch particular Record as per Id in URL
   const fetchRecord = async () => {
@@ -43,9 +59,8 @@ const GetRecord = () => {
       console.error("An error occurred:", error);
     }
   };
-
   const uplodaData = async () => {
-    if (user===null && record?.isDataUploaded === true) {
+    if (user === null && record?.isDataUploaded === true) {
       window.open(`http://localhost:8000/pdfs/${id}.pdf`);
     } else {
       const data = {
@@ -68,43 +83,53 @@ const GetRecord = () => {
       }, 5000);
     }
   };
-
+  // TO UPLOAD URL TO MONGODB
   const handleCertificate = async () => {
     if (certificate) {
+      setLoading(true);
       await fetch(`http://localhost:8000/records/certificate`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, certificate: certificate.name }),
+        body: JSON.stringify({ id, certificate: url }),
+      }).then(async (res) => {
+        alert("CERTIFICATE UPLOADED");
+        setLoading(false)
       });
 
       //
-      const imageForm = new FormData();
-      imageForm.append("image", certificate);
-
-      try {
-        const response = await fetch("http://localhost:8000/upload", {
-          method: "POST",
-          body: imageForm,
-        });
-
-        if (response.ok) {
-          console.log("Image uploaded successfully");
-          notify("Certificate uploaded successfully", "success");
-          setIsUpdatingCertificate(false);
-          setTimeout(() => {
-            window.location.reload();
-          }, 3000);
-        } else {
-          console.error("Error uploading image");
-        }
-      } catch (error) {
-        console.error("Error uploading image", error);
-      }
     } else {
       console.error("No file selected");
+      setLoading(false)
     }
   };
-
+  // TO GET URL FROM FIREBASE
+  const handleCertificateUpload = async () => {
+    setLoading(true);
+    const storage = getStorage(app);
+    const fileName = new Date().getTime() + certificate.name; // So no two users have same file
+    const storageRef = ref(storage, fileName); //location+filename
+    const uploadTask = uploadBytesResumable(storageRef, certificate); //finalStep
+    console.log(uploadTask);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      },
+      (err) => {
+        notify("Image Size must be less than 2mb");
+        setLoading(false);
+        return;
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
+          setUrl(downloadUrl);
+          setLoading(false);
+        });
+      }
+    );
+  };
+  // TO ONLY DOWNLOAD CERTIFICATE
   const handleCertificateDownload = () => {
     console.log(record.certificate, user);
     if (record.certificate === "" && user === null) {
@@ -116,7 +141,6 @@ const GetRecord = () => {
       window.open(`http://localhost:3000/record/certificate/${id}`);
     }, 5000);
   };
-
   const handleUpdateCertificate = () => {
     setIsUpdatingCertificate((prev) => !prev);
   };
@@ -182,9 +206,7 @@ const GetRecord = () => {
               <motion.div className="flex  text-white md:w-[20%]  w-full">
                 <img
                   src={
-                    record?.imageName
-                      ? `http://localhost:8000/assets/${record?.imageName}`
-                      : userfallback
+                    record?.imageName ? `${record?.imageName}` : userfallback
                   }
                   alt=""
                   className="w-full"
@@ -273,11 +295,20 @@ const GetRecord = () => {
                     />
                     <button
                       type="button"
-                      onClick={handleCertificate}
+                      onClick={handleCertificateUpload}
                       className="record_event_btn"
                     >
                       Upload Certificate
                     </button>
+                    {url && (
+                      <button
+                        type="button"
+                        onClick={handleCertificate}
+                        className="record_event_btn"
+                      >
+                        Save Certificate
+                      </button>
+                    )}
                   </>
                 ) : (
                   <button
@@ -287,14 +318,16 @@ const GetRecord = () => {
                     View Certificate
                   </button>
                 )}
-                {user && record?.certificate !== "" && (
-                  <button
-                    onClick={handleUpdateCertificate}
-                    className="record_event_btn"
-                  >
-                    Update Certificate
-                  </button>
-                )}
+                {user &&
+                  record?.certificate !== "" &&
+                  !isUpdatingCertificate && (
+                    <button
+                      onClick={handleUpdateCertificate}
+                      className="record_event_btn"
+                    >
+                      Update Certificate
+                    </button>
+                  )}
                 {isUpdatingCertificate && (
                   <>
                     <input
@@ -307,11 +340,23 @@ const GetRecord = () => {
                     />
                     <button
                       type="button"
-                      onClick={handleCertificate}
+                      onClick={handleCertificateUpload}
                       className="record_event_btn"
                     >
-                      Upload Certificate
+                      {loading?"Uploading...":"Upload Certificate"}
                     </button>
+                    {user && record?.certificate !== "" && (
+                      <button
+                        onClick={handleCertificate}
+                        className="text-white mx-2 md:mx-0 lg:mx-2 bg-primary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-xs lg:text-sm 
+                        md:px-1.5 md:py-1.5 lg:px-2.5 lg:py-2.5 px-2 py-2 
+                        text-center mb-2 mt-2 ease-in-out duration-500 rounded-md 
+                        sm:w-[100%] w-[25%]"
+                        hidden={loading}
+                      >
+                        Save Certificate
+                      </button>
+                    )}
                   </>
                 )}
               </motion.div>

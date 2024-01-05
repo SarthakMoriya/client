@@ -66,8 +66,8 @@ const Panel = () => {
                 <div className="w-[50%] p-2 rounded-lg flex items-center cursor-pointer">
                   <img
                     src={
-                      acc.picturePath
-                        ? `http://localhost:8000/assets/${acc?.picturePath}`
+                      acc?.picturePath
+                        ? `${acc?.picturePath}`
                         : pic
                     }
                     className="w-10 h-10 rounded-full"
@@ -86,9 +86,9 @@ const Panel = () => {
                     onClick={() => {
                       handleApprove(acc);
                     }}
-                    disabled={acc.isAdminApprovedAccount ? "true" : "false"}
-                    className={`text-white bg-blue hover:bg-secondary focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-2.5 sm:px-5 py-2.5 text-center mr-2 mb-2 mt-2 md:w-[95%] w-[50%] rounded-lg  ease-in-out duration-500 ${
-                      acc.isAdminApprovedAccount
+                    disabled={acc?.isAdminApprovedAccount ? "true" : "false"}
+                    className={`text-white bg-blue hover:bg-secondary focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-2.5 sm:px-5 py-2.5 text-center mr-2 mb-2 mt-2 w-48 rounded-lg  ease-in-out duration-500 ${
+                      acc?.isAdminApprovedAccount
                         ? "cursor-not-allowed"
                         : "cursor-pointer"
                     }`}
@@ -102,9 +102,9 @@ const Panel = () => {
                     onClick={() => {
                       handleDelete(acc);
                     }}
-                    className="text-white bg-secondary hover:bg-blue focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-2.5 sm:px-5 py-2.5 text-center mr-2 mb-2 mt-2 md:w-[95%] w-[50%] rounded-lg  ease-in-out duration-500"
+                    className="text-white bg-secondary hover:bg-blue focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-2.5 sm:px-5 py-2.5 text-center mr-2 mb-2 mt-2 w-48 rounded-lg  ease-in-out duration-500"
                   >
-                    {acc.isAdminApprovedAccount
+                    {acc?.isAdminApprovedAccount
                       ? "Delete Account"
                       : "Reject Account"}
                   </button>

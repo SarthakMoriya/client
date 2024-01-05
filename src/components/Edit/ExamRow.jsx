@@ -8,18 +8,28 @@ const ExamRow = ({ exam, exams, handleUpdateExam }) => {
 
   let oldName = exam?.name;
   const handleAddExams = () => {
-    let newExams = [];
-    exams?.forEach((ex, i) => {
-      if (ex.name === oldName) {
-        console.log("EXAM UPDATED");
-        newExams.push({ name: examName, mt: totalMarks, mo: obtMarks });
-      } else {
-        newExams.push(ex);
-      }
-    });
-    exams = newExams;
-    console.log("EXAMS ARRAY IN EXAMROW COMPONENT:");
-    handleUpdateExam(exams);
+    if (totalMarks < obtMarks) {
+      alert(
+        "Total marks must be greater than Marks Obtained! \n " +
+          " Total Marks: " +
+          totalMarks +
+          "\n Marks Obtained: " +
+          obtMarks
+      );
+    } else {
+      let newExams = [];
+      exams?.forEach((ex, i) => {
+        if (ex.name === oldName) {
+          console.log("EXAM UPDATED");
+          newExams.push({ name: examName, mt: totalMarks, mo: obtMarks });
+        } else {
+          newExams.push(ex);
+        }
+      });
+      exams = newExams;
+      console.log("EXAMS ARRAY IN EXAMROW COMPONENT:");
+      handleUpdateExam(exams);
+    }
   };
   return (
     <motion.div
@@ -64,7 +74,7 @@ const ExamRow = ({ exam, exams, handleUpdateExam }) => {
         transition={{ duration: 1, ease: "easeInOut" }}
         className="bg-gray-500 border border-gray-300 text-white text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  "
         onClick={handleAddExams}
-        type='button'
+        type="button"
       >
         Save
       </motion.button>

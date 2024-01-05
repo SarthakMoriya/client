@@ -29,15 +29,16 @@ export const recordsSlice = createSlice({
   reducers: {
     setRecords: (state, action) => {
       state.records = action?.payload?.records;
+      // console.log(action.payload.records);
     },
     setNewRecords: (state, action) => {
       state.records = [...state.records, action.payload.record];
       console.log("NEW RECORDS" + state.records);
     },
-
-    
   },
 });
+
+
 
 //Functions to use in Application to handle auth
 export const { setLogin, setLogout } = authSlice.actions;

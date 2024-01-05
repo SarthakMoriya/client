@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import ExamRow from "./ExamRow";
 import ExamModal from "./ExamModal";
 import { ToastContainer } from "react-toastify";
@@ -10,15 +10,28 @@ import { setRecords } from "../../state/index";
 import { getRecords } from "../../api";
 import { motion } from "framer-motion";
 import { getMaxDate } from "../../utils/dateFormatter";
-
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { app } from "../../firebase/firebase";
 const Edit = () => {
   const id = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    // Update the title based on the current route
+    document.title = `Webcooks | Edit - ${record.studentId}`;
+  }, [location.pathname]);
+
   const record = useSelector((state) => {
     return state?.record?.records?.find((rec) => rec._id === id?.id);
   });
-  console.log(record)
+
   const [sName, setSname] = useState(record?.studentName);
   const [coursename, setCoursename] = useState(record?.studentCourse);
   const [date, setDate] = useState(record?.dateEnrolled);
@@ -30,6 +43,8 @@ const Edit = () => {
   const [mainExamMO, setMainExamMO] = useState(record?.mainExamMO);
   const [image, setImage] = useState(null);
   const [isImageUploaded, setIsImageUploaded] = useState(false);
+  const [url, setUrl] = useState("");
+  const [loading, setLoading] = useState(false);
   const teacherId = useSelector((state) => state.auth.user._id);
 
   const handleUpdateExam = (result) => {
@@ -37,68 +52,81 @@ const Edit = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    if (
+      mainExamName !== "" &&
+      (Number(mainExamMT) < Number(mainExamMO) || mainExamMO === "" || mainExamMT === "")
+    ) {
+      alert("Please enter Main exam details Properly");
+      setLoading(false);
+      return;
+    } else {
+      console.log(url)
+      const res = await fetch(
+        `http://localhost:8000/records/updatefullrecord/${id.id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            studentName: sName,
+            studentCourse: coursename,
+            dateEnrolled: date,
+            exams: examsArr,
+            studentId: Number(studentId),
+            teacherId,
+            id,
+            imageName: url,
+            mainExamName: mainExamName,
+            mainExamMT: Number(mainExamMT),
+            mainExamMO: Number(mainExamMO),
+          }),
+        }
+      );
 
-    const res = await fetch(
-      `http://localhost:8000/records/updatefullrecord/${id.id}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          studentName: sName,
-          studentCourse: coursename,
-          dateEnrolled: date,
-          exams: examsArr,
-          studentId: Number(studentId),
-          teacherId,
-          id,
-          imageName: image ? image?.name : "",
-          mainExamName: mainExamName,
-          mainExamMT: Number(mainExamMT),
-          mainExamMO: Number(mainExamMO),
-        }),
+      const data = await res.json();
+      if (data.ok) {
+        notify("Record Updated", "success");
+        const newRecords = await getRecords();
+        dispatch(setRecords({ records: newRecords }));
+        setLoading(false);
+        setTimeout(() => {
+          navigate(`/record/${record?._id}`);
+        }, 2000);
+      } else {
+        notify(data.message);
+        setLoading(false);
+      }
+    }
+  };
+  const handleFileUpload = async () => {
+    setLoading(true);
+    const storage = getStorage(app);
+    const fileName = new Date().getTime() + image.name; // So no two users have same file
+    const storageRef = ref(storage, fileName); //location+filename
+    const uploadTask = uploadBytesResumable(storageRef, image); //finalStep
+    console.log(uploadTask);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      },
+      (err) => {
+        notify("Image Size must be less than 2mb");
+        setLoading(false);
+        return;
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
+          setUrl(downloadUrl);
+          setLoading(false);
+        });
       }
     );
-
-    const data = await res.json();
-    console.log(data.ok);
-    if (data.ok) {
-      notify("Record Updated", "success");
-      const newRecords = await getRecords();
-      dispatch(setRecords({ records: newRecords }));
-      console.log(newRecords);
-      setTimeout(() => {
-        navigate(`/record/${record?._id}`);
-      }, 2000);
-    } else {
-      notify(data.message);
-    }
   };
-  const handleImageUpload = async () => {
-    if (image) {
-      const imageForm = new FormData();
-      imageForm.append("image", image);
-
-      try {
-        const response = await fetch("http://localhost:8000/upload", {
-          method: "POST",
-          body: imageForm,
-        });
-
-        if (response.ok) {
-          notify("Image uploaded successfully", "success");
-          setIsImageUploaded(true);
-        } else {
-          notify("Error uploading Image");
-        }
-      } catch (error) {
-        notify("Error uploading Image");
-      }
-    } else {
-      notify("Error uploading Image");
-    }
-  };
+  console.log(record)
 
   return (
     <>
@@ -129,6 +157,11 @@ const Edit = () => {
               whileInView={{ opacity: [0, 1] }}
               transition={{ duration: 1, ease: "easeInOut" }}
             >
+              <img
+                src={url ? url : record.imageName}
+                alt=""
+                className="w-32 h-32 "
+              />
               <label
                 htmlFor="picture"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -147,8 +180,8 @@ const Edit = () => {
               whileInView={{ opacity: [0, 1] }}
               transition={{ duration: 1, ease: "easeInOut" }}
               className="w-full text-white bg-secondary hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-gray-600 dark:focus:ring-primary-800 mt-1"
-              onClick={handleImageUpload}
-              disabled={isImageUploaded ? true : false}
+              onClick={handleFileUpload}
+              disabled={loading}
             >
               {isImageUploaded ? "Image Uploaded" : "Upload Image"}
             </motion.button>
@@ -341,38 +374,49 @@ const Edit = () => {
               >
                 Exams Taken:
               </motion.h2>
-              {examsArr?.map((exam, i) => (
-                <ExamRow
-                  key={i}
-                  exam={exam}
-                  exams={examsArr}
-                  handleUpdateExam={handleUpdateExam}
-                />
-              ))}
-              {/* ADD MORE EXAM */}
-              <motion.button
-                whileInView={{ opacity: [0, 1] }}
-                transition={{ duration: 0.5, ease: "easeInOut" }}
-                onClick={() => {
-                  setIsAddingExam(!isAddingExam);
-                }}
-                type="button"
-                className="bg-secondary border border-gray-300 text-white text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  "
-              >
-                {!isAddingExam ? "Add More Exams" : "Save Exams"}
-              </motion.button>
-              {/* ADD EXAM MODAL */}
-              {isAddingExam && (
-                <ExamModal
-                  exams={examsArr}
-                  handleUpdateExam={handleUpdateExam}
-                />
-              )}
+              <div className="flex flex-col border-2 p-2">
+                {examsArr.length > 0 && (
+                  <div className="flex my-4 text-xl font-bold text-gray-900 dark:text-white w-full  items-center justify-around">
+                    <div className="ml-2 py-2">Exam</div>
+                    <div className="ml-4 py-2">Marks Total</div>
+                    <div className=" py-2">Marks Obt</div>
+                    <div className="opacity-0">Marks Obt</div>
+                  </div>
+                )}
+                {examsArr?.map((exam, i) => (
+                  <ExamRow
+                    key={i}
+                    exam={exam}
+                    exams={examsArr}
+                    handleUpdateExam={handleUpdateExam}
+                  />
+                ))}
+                {/* ADD MORE EXAM */}
+                <motion.button
+                  whileInView={{ opacity: [0, 1] }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  onClick={() => {
+                    setIsAddingExam(!isAddingExam);
+                  }}
+                  type="button"
+                  className="bg-secondary border border-gray-300 text-white text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  "
+                >
+                  {!isAddingExam ? "Add More Exams" : "Save Exams"}
+                </motion.button>
+                {/* ADD EXAM MODAL */}
+                {isAddingExam && (
+                  <ExamModal
+                    exams={examsArr}
+                    handleUpdateExam={handleUpdateExam}
+                  />
+                )}
+              </div>
               {/* SAVE RECORD */}
               <motion.button
                 whileInView={{ opacity: [0, 1] }}
                 transition={{ duration: 1, ease: "easeInOut" }}
                 type="submit"
+                disabled={loading}
                 className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-secondary rounded-lg focus:ring-4 focus:ring-secondary "
               >
                 Save Record

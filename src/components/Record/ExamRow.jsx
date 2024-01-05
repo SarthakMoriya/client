@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { motion } from "framer-motion";
 import { useLocation, useParams } from "react-router-dom";
 import { testGradeCalculator } from "../../utils/gradeCalculator";
-import edit_icon from '../../assets/edit.png'
-import delete_icon from '../../assets/delete.png'
+import edit_icon from "../../assets/edit.png";
+import delete_icon from "../../assets/delete.png";
+import { getRecords } from "../../api";
+import { setRecords } from "../../state";
 const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
   const [edit, setEdit] = useState(false);
   const [modifiedExam, setModifiedExam] = useState("");
@@ -16,6 +18,7 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
   const id = useParams();
   const location = useLocation();
   const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
 
   const handleEdit = (examId) => {
     // exam id is name of Exam
@@ -62,12 +65,16 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
         examToBeDeleted,
       }),
     });
+
+    const newRecords = await getRecords();
+    console.log(newRecords);
+    dispatch(setRecords({ records: newRecords }));
     setIsDeleted(exam?.name);
   };
 
-  const handleCancelExam=()=>{
-    setEdit(false);    
-  }
+  const handleCancelExam = () => {
+    setEdit(false);
+  };
   return (
     <motion.div className="w-full items-center justify-center  ">
       {/* IN EDIT MODE */}
@@ -231,7 +238,6 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
                   src={delete_icon}
                   className="sm:hidden w-[25px] text-white duration-500 ease-in border- cursor-pointer text-center flex justify-center items-center border-2 border-gray-300"
                 />
-
               </motion.div>
             </>
           )}

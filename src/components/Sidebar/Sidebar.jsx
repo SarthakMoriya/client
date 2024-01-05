@@ -36,7 +36,7 @@ const Sidebar = () => {
                 <img
                   src={
                     record?.imageName
-                      ? `http://localhost:8000/assets/${record?.imageName}`
+                      ? `${record?.imageName}`
                       : user
                   }
                   alt=""

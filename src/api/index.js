@@ -13,12 +13,17 @@ export const getRecords = async () => {
   return res;
 };
 
+export const getRecord = async (id) => {
+  const data = await fetch(BASE_URL + "/records/" + id);
+  const res = await data.json();
+  return res;
+};
+
 export const viewRecord = async (navigate, id) => {
   navigate(`/record/${id}`);
-  return;;
+  return;
 };
 export const editRecord = async (navigate, id) => {
   navigate(`/record/edit/${id}`);
-  return;;
+  return;
 };
-
