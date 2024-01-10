@@ -27,7 +27,7 @@ const MyPanel = () => {
   const [loading, setLoading] = useState(false);
   const [isImageUploaded, setIsImageUploaded] = useState(false);
   const location = useLocation();
-  console.log(user)
+  console.log(user);
   useEffect(() => {
     // Update the title based on the current route
     document.title = `Webcooks | MyPanel - ${user?.username}`;
@@ -191,14 +191,16 @@ const MyPanel = () => {
                 />
                 Select Image
               </label>
-              {image && <button
-                type="button"
-                onClick={handleFileUpload}
-                disabled={loading}
-                className="text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2 ease-in-out duration-500 rounded-lg lg:w-56"
-              >
-                {loading ? "Uploading..." : "Upload Image"}
-              </button>}
+              {image && (
+                <button
+                  type="button"
+                  onClick={handleFileUpload}
+                  disabled={loading}
+                  className="text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2 ease-in-out duration-500 rounded-lg lg:w-56"
+                >
+                  {loading ? "Uploading..." : "Upload Image"}
+                </button>
+              )}
               {url && isImageUploaded && (
                 <button
                   type="button"
@@ -213,20 +215,6 @@ const MyPanel = () => {
           </div>
         </div>
       )}
-      {isUpdatePassword && (
-        <UpdatePassword user={user} setIsUpdatePassword={setIsUpdatePassword} />
-      )}
-      {isUpdatePasscode && (
-        <UpdatePasscode user={user} setIsUpdatePasscode={setIsUpdatePasscode} />
-      )}
-      {isOtpSent && (
-        <OtpModal
-          otp={isOtpSent}
-          setIsOtpSent={setIsOtpSent}
-          setIsVerified={setIsVerified}
-        />
-      )}
-
       {/* TEACHER'S STUDENTS */}
       <div className="flex items-center justify-center">
         <div className="border-secondary border-b-4 text-xl md:text-xl lg:text-2xl font-semibold text-blue mb-4">
@@ -244,6 +232,19 @@ const MyPanel = () => {
         <div className="text-center text-3xl text-white w-full ">
           No Student Records Found!
         </div>
+      )}
+      {isUpdatePassword && (
+        <UpdatePassword user={user} setIsUpdatePassword={setIsUpdatePassword} />
+      )}
+      {isUpdatePasscode && (
+        <UpdatePasscode user={user} setIsUpdatePasscode={setIsUpdatePasscode} />
+      )}
+      {isOtpSent && (
+        <OtpModal
+          otp={isOtpSent}
+          setIsOtpSent={setIsOtpSent}
+          setIsVerified={setIsVerified}
+        />
       )}
     </div>
   );

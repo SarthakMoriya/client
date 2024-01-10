@@ -101,16 +101,18 @@ const CreateRecord = () => {
   };
 
   const handleFileUpload = async () => {
-    console.log(image)
+    console.log(image);
     const storage = getStorage(app);
     const fileName = new Date().getTime() + image.name; // So no two users have same file
     const storageRef = ref(storage, fileName); //location+filename
     const uploadTask = uploadBytesResumable(storageRef, image); //finalStep
-    console.log(uploadTask)
+    console.log(uploadTask);
     uploadTask.on(
       "state_changed",
-      (snapshot) => {const progress =
-        (snapshot.bytesTransferred / snapshot.totalBytes) * 100;},
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      },
       (err) => {
         console.log(true);
       },
@@ -118,7 +120,7 @@ const CreateRecord = () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
           setUrl(downloadUrl);
           console.log(downloadUrl);
-          console.log(url)
+          console.log(url);
         });
       }
     );
@@ -152,6 +154,7 @@ const CreateRecord = () => {
               whileInView={{ opacity: [0, 1] }}
               transition={{ duration: 1, ease: "easeInOut" }}
             >
+              <img src={url} alt="" />
               <label
                 htmlFor="picture"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"

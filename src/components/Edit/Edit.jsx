@@ -43,7 +43,7 @@ const Edit = () => {
   const [mainExamMO, setMainExamMO] = useState(record?.mainExamMO);
   const [image, setImage] = useState(null);
   const [isImageUploaded, setIsImageUploaded] = useState(false);
-  const [url, setUrl] = useState("");
+  const [url, setUrl] = useState(record?.imageName);
   const [loading, setLoading] = useState(false);
   const teacherId = useSelector((state) => state.auth.user._id);
 
@@ -102,6 +102,7 @@ const Edit = () => {
   };
   const handleFileUpload = async () => {
     setLoading(true);
+    setIsImageUploaded(false)
     const storage = getStorage(app);
     const fileName = new Date().getTime() + image.name; // So no two users have same file
     const storageRef = ref(storage, fileName); //location+filename
@@ -116,17 +117,18 @@ const Edit = () => {
       (err) => {
         notify("Image Size must be less than 2mb");
         setLoading(false);
+        setIsImageUploaded(false)
         return;
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
           setUrl(downloadUrl);
           setLoading(false);
+          setIsImageUploaded(true)
         });
       }
     );
   };
-  console.log(record)
 
   return (
     <>

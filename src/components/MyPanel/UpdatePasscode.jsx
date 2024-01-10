@@ -52,7 +52,7 @@ const UpdatePasscode = ({ user, setIsUpdatePasscode }) => {
       }) => (
         <form
           onSubmit={handleSubmit}
-          className="w-[50vw]  min-h-[50vh] border-2 border-secondary rounded-lg bg-white z-10 relative translate-x-[50%] translate-y-[-50%]"
+          className="w-screen  min-h-[50vh] border-2 border-secondary rounded-lg bg-white z-10 absolute top-[25%] left-0"
         >
           <ToastContainer
             position="top-center"

@@ -62,7 +62,7 @@ const OtpModal = ({ otp, setIsOtpSent, setIsVerified }) => {
       }) => (
         <form
           onSubmit={handleSubmit}
-          className="w-[50vw] border-2 rounded-lg bg-white z-10 relative translate-x-[50%] translate-y-[-50%]"
+          className=" w-screen border-2 rounded-lg bg-white z-10 absolute top-[25%] left-0"
         >
           <ToastContainer
             position="top-center"

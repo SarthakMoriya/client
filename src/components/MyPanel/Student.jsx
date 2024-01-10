@@ -11,11 +11,7 @@ const Student = ({ student }) => {
     <div className=" flex items-center border justify-between">
       <div className="sm:w-[50%] p-2 rounded-lg flex items-center cursor-pointer">
         <img
-          src={
-            student?.imageName
-              ? `http://localhost:8000/assets/${student?.imageName}`
-              : ""
-          }
+          src={student?.imageName}
           alt="stdImg"
           className="w-10 h-10 rounded-full"
         />
