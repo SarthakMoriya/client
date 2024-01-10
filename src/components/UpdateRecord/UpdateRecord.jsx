@@ -11,7 +11,7 @@ const UpdateRecord = () => {
   const [exams, setExams] = useState([{}]);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await fetch("http://localhost:8000/records/createrecord", {
+    await fetch("https://backendstudentmag.onrender.com/records/createrecord", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

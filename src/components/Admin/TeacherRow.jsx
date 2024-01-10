@@ -3,12 +3,12 @@ import pic from "../../assets/user.png";
 const TeacherRow = ({ acc }) => {
   console.log(acc)
   const handleApprove = async () => {
-    await fetch(`http://localhost:8000/auth/admin/approveaccounts/${acc._id}`);
+    await fetch(`https://backendstudentmag.onrender.com/auth/admin/approveaccounts/${acc._id}`);
     window.location.reload();
   };
   const handleDelete = async ({ acc }) => {
     await fetch(
-      `http://localhost:8000/auth/admin/deleteunapproveaccount/${acc._id}`
+      `https://backendstudentmag.onrender.com/auth/admin/deleteunapproveaccount/${acc._id}`
     );
     window.location.reload();
   };

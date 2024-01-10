@@ -9,7 +9,7 @@ const GetRecords = () => {
     if (searchResults.length > 0) {
       setRecords(searchResults);
     } else {
-      const data = await fetch("http://localhost:8000/records/getrecords");
+      const data = await fetch("https://backendstudentmag.onrender.com/records/getrecords");
       const res = await data.json();
       setRecords(res);
     }

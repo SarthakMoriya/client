@@ -12,7 +12,7 @@ const Pdf = () => {
   //Function to fetch particular Record as per Id in URL
   const fetchRecord = async () => {
     try {
-      const res = await fetch(`http://localhost:8000/records/getrecord/${id}`);
+      const res = await fetch(`https://backendstudentmag.onrender.com/records/getrecord/${id}`);
       if (res.ok) {
         const { data } = await res.json();
         setRecord(data); //Sets the complete record data to state --> record
@@ -52,7 +52,7 @@ const Pdf = () => {
                 <img
                   src={
                     record?.imageName
-                      ? `http://localhost:8000/assets/${record?.imageName}`
+                      ? `https://backendstudentmag.onrender.com/assets/${record?.imageName}`
                       : user
                   }
                   alt=""

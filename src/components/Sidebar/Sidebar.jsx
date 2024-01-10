@@ -8,7 +8,7 @@ const Sidebar = () => {
   const navigate = useNavigate();
 
   const fetchRecords = async () => {
-    const results = await fetch("http://localhost:8000/records/getrecords");
+    const results = await fetch("https://backendstudentmag.onrender.com/records/getrecords");
     const res = await results.json();
     setRecords(res);
   };

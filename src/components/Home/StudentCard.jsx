@@ -14,7 +14,7 @@ const StudentCard = ({ data, setRecords, records }) => {
     else toast.error(message);
   };
   const handleDeleteRecord = async () => {
-    await fetch(`http://localhost:8000/records/deleterecord/${data?._id}`, {
+    await fetch(`https://backendstudentmag.onrender.com/records/deleterecord/${data?._id}`, {
       method: "DELETE",
     });
     notify("Record Deleted", "success");

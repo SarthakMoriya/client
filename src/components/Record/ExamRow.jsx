@@ -37,7 +37,7 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
       obtMarks: marksObt,
       oldExam: edit, //name of exam that was edited
     });
-    await fetch("http://localhost:8000/records/updaterecord", {
+    await fetch("https://backendstudentmag.onrender.com/records/updaterecord", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -56,7 +56,7 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
   // HANDLING DELETE EXAM
   const handleDeleteExam = async () => {
     const examToBeDeleted = exam?.name;
-    await fetch("http://localhost:8000/records/deleterecordexam", {
+    await fetch("https://backendstudentmag.onrender.com/records/deleterecordexam", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

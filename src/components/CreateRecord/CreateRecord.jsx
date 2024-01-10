@@ -42,7 +42,7 @@ const CreateRecord = () => {
       return;
     }
     if (values.secretKey === secretKey) {
-      const res = await fetch("http://localhost:8000/records/createrecord", {
+      const res = await fetch("https://backendstudentmag.onrender.com/records/createrecord", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

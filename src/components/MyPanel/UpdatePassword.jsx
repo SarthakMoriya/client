@@ -14,7 +14,7 @@ const UpdatePassword = ({ user, setIsUpdatePassword }) => {
       alert("Please enter new password correctly")
       return;
     }
-    const res = await fetch("http://localhost:8000/auth/changepassword", {
+    const res = await fetch("https://backendstudentmag.onrender.com/auth/changepassword", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

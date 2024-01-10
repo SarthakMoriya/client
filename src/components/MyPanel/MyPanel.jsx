@@ -35,13 +35,13 @@ const MyPanel = () => {
 
   const fetchStudents = async () => {
     const data = await fetch(
-      `http://localhost:8000/records/getstudents/${user?._id}`
+      `https://backendstudentmag.onrender.com/records/getstudents/${user?._id}`
     );
     const res = await data.json();
     setTeacherRecords(res.records);
   };
   const verifyEmail = async () => {
-    const res = await fetch(`http://localhost:8000/auth/verifyemail`, {
+    const res = await fetch(`https://backendstudentmag.onrender.com/auth/verifyemail`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: user?.email }),
@@ -83,7 +83,7 @@ const MyPanel = () => {
     try {
       setLoading(true);
       const response = await fetch(
-        `http://localhost:8000/auth/editimage/${user._id}`,
+        `https://backendstudentmag.onrender.com/auth/editimage/${user._id}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

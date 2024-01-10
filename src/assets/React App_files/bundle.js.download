@@ -1706,7 +1706,7 @@ const ExamRow = ({
       oldExam: edit
     });
     console.log(modifiedExam);
-    await fetch("http://localhost:8000/records/updaterecord", {
+    await fetch("https://backendstudentmag.onrender.comrecords/updaterecord", {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json"
