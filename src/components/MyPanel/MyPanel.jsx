@@ -15,6 +15,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../../firebase/firebase";
+import { formatDate } from "../../utils/dateFormatter";
 const MyPanel = () => {
   const { user } = useSelector((state) => state.auth);
   const [isUpdatePassword, setIsUpdatePassword] = useState(false);
@@ -35,13 +36,13 @@ const MyPanel = () => {
 
   const fetchStudents = async () => {
     const data = await fetch(
-      `https://backendstudentmag.onrender.com/records/getstudents/${user?._id}`
+      `http://localhost:8000/records/getstudents/${user?._id}`
     );
     const res = await data.json();
     setTeacherRecords(res.records);
   };
   const verifyEmail = async () => {
-    const res = await fetch(`https://backendstudentmag.onrender.com/auth/verifyemail`, {
+    const res = await fetch(`http://localhost:8000/auth/verifyemail`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: user?.email }),
@@ -83,7 +84,7 @@ const MyPanel = () => {
     try {
       setLoading(true);
       const response = await fetch(
-        `https://backendstudentmag.onrender.com/auth/editimage/${user._id}`,
+        `http://localhost:8000/auth/editimage/${user._id}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -135,7 +136,7 @@ const MyPanel = () => {
                 Email: {user?.email}
               </div>
               <div className="px-4 py-2 font-normal text-sm sm:text-base md:text-xl border">
-                JoinedOn: {user?.createdAt?.slice(0, 10)}
+                JoinedOn: {formatDate(user?.createdAt)}
               </div>
               <div className="px-4 py-2 font-normal text-sm sm:text-base md:text-xl border">
                 Students Taught: {teacherRecords?.length}
@@ -229,7 +230,7 @@ const MyPanel = () => {
         </div>
       )}
       {teacherRecords.length === 0 && (
-        <div className="text-center text-3xl text-white w-full ">
+        <div className="text-center text-3xl text-blue-800 w-full ">
           No Student Records Found!
         </div>
       )}

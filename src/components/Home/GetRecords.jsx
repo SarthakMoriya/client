@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import StudentCard from "./StudentCard";
 import SearchBar from "./SearchBar";
+import { BASE_URL } from "../../api";
 
 const GetRecords = () => {
   const [records, setRecords] = useState([]);
@@ -9,7 +10,7 @@ const GetRecords = () => {
     if (searchResults.length > 0) {
       setRecords(searchResults);
     } else {
-      const data = await fetch("https://backendstudentmag.onrender.com/records/getrecords");
+      const data = await fetch(BASE_URL+"/records/getrecords");
       const res = await data.json();
       setRecords(res);
     }

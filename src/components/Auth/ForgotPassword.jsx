@@ -9,7 +9,7 @@ const ForgotPassword = ({ forgot, setForgot }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const handleSendOtp = async () => {
-    const res = await fetch("https://backendstudentmag.onrender.com/auth/verifyemail", {
+    const res = await fetch("http://localhost:8000/auth/verifyemail", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -35,7 +35,7 @@ const ForgotPassword = ({ forgot, setForgot }) => {
         alert("Please Enter Same Passwords");
       } else {
         //request
-        const res = await fetch("https://backendstudentmag.onrender.com/auth/forgotpassword", {
+        const res = await fetch("http://localhost:8000/auth/forgotpassword", {
           headers: { "Content-Type": "application/json" },
           method: "POST",
           body: JSON.stringify({ password, email }),

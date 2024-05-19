@@ -10,7 +10,7 @@ import {
 
 const UpdatePasscode = ({ user, setIsUpdatePasscode }) => {
   const handleUpdatePasscode = async (values, onSubmitProps) => {
-    const res = await fetch("https://backendstudentmag.onrender.com/auth/changepasscode", {
+    const res = await fetch("http://localhost:8000/auth/changepasscode", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ oldPasscode:values.oldpasscode, newPasscode:values.newpasscode, id: user?._id }),

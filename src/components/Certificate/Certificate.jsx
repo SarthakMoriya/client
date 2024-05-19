@@ -6,14 +6,14 @@ const Certificate = () => {
   const { id } = useParams();
 
   const fetchCertificate = async () => {
-    const record = await fetch(`https://backendstudentmag.onrender.com/records/getrecord/${id}`);
+    const record = await fetch(`http://localhost:8000/records/getrecord/${id}`);
     const data = await record.json();
     console.log(data)
     setRecord(data.data);
     console.log(record)
   };
   const handleDownload = () => {
-    // Replace 'https://backendstudentmag.onrender.com/assets/${record?.certificate}' with the actual file URL
+    // Replace 'http://localhost:8000/assets/${record?.certificate}' with the actual file URL
     const fileUrl = `${record?.certificate}`;
 
     // Create a link element

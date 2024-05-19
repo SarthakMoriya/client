@@ -1,5 +1,5 @@
-// const BASE_URL = "http://localhost:8000";
-const BASE_URL="https://backendstudentmag.onrender.com"
+export const BASE_URL = "http://localhost:8000";
+// export const BASE_URL="https://backendstudentmag.onrender.com"
 export const deleteRecord = async (id, navigate) => {
   await fetch(`${BASE_URL}/records/deleterecord/${id}`, {
     method: "DELETE",

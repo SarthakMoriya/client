@@ -15,6 +15,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../../firebase/firebase";
+import { BASE_URL } from "../../api";
 
 const CreateRecord = () => {
   const [subs, setSubs] = useState(0);
@@ -41,8 +42,9 @@ const CreateRecord = () => {
       alert("Obtained Marks cannot be higher than Total Marks");
       return;
     }
+    console.log(values.secretKey,values.studentId)
     if (values.secretKey === secretKey) {
-      const res = await fetch("https://backendstudentmag.onrender.com/records/createrecord", {
+      const res = await fetch(BASE_URL+"/records/createrecord", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -63,7 +65,7 @@ const CreateRecord = () => {
       const data = await res.json();
 
       if (data.ok) {
-        onSubmitProps.resetForm();
+        // onSubmitProps.resetForm();
         setExams([]);
         setSubs("");
         setImage("");

@@ -18,7 +18,7 @@ const AdminLogin = () => {
   const [error, setError] = useState("");
 
   const handleLogin = async (values, onSubmitProps) => {
-    const res = await fetch("https://backendstudentmag.onrender.com/auth/admin/login", {
+    const res = await fetch("http://localhost:8000/auth/admin/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: values.email, password: values.password }),

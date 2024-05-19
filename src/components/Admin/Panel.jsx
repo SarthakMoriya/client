@@ -8,17 +8,17 @@ const Panel = () => {
   const [accounts, setAccounts] = useState([]);
   const fetchAccounts = async () => {
     const res = await fetch(
-      "https://backendstudentmag.onrender.com/auth/admin/getunapprovedaccounts"
+      "http://localhost:8000/auth/admin/getunapprovedaccounts"
     );
     const data = await res.json();
-    const acc = await fetch("https://backendstudentmag.onrender.com/auth/admin/getallaccounts");
+    const acc = await fetch("http://localhost:8000/auth/admin/getallaccounts");
     const accs = await acc.json();
     setAccounts(accs);
     setUnapprovedAccounts(data);
   };
   const handleApprove = async (acc) => {
     console.log(acc);
-    await fetch(`https://backendstudentmag.onrender.com/auth/admin/approveaccounts/${acc._id}`);
+    await fetch(`http://localhost:8000/auth/admin/approveaccounts/${acc._id}`);
     window.location.reload();
     const updatedUnapprovedAccounts = unapprovedAccounts.filter(
       (account) => account._id !== acc._id
@@ -29,7 +29,7 @@ const Panel = () => {
   const handleDelete = async (acc) => {
     console.log(acc);
     await fetch(
-      `https://backendstudentmag.onrender.com/auth/admin/deleteunapproveaccount/${acc._id}`
+      `http://localhost:8000/auth/admin/deleteunapproveaccount/${acc._id}`
     );
     window.location.reload();
   };

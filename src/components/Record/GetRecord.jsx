@@ -46,7 +46,7 @@ const GetRecord = () => {
   //Function to fetch particular Record as per Id in URL
   const fetchRecord = async () => {
     try {
-      const res = await fetch(`https://backendstudentmag.onrender.com/records/getrecord/${id}`);
+      const res = await fetch(`http://localhost:8000/records/getrecord/${id}`);
       if (res.ok) {
         const { data } = await res.json();
         setRecord(data); //Sets the complete record data to state --> record
@@ -61,7 +61,7 @@ const GetRecord = () => {
   };
   const uplodaData = async () => {
     if (user === null && record?.isDataUploaded === true) {
-      window.open(`https://backendstudentmag.onrender.com/pdfs/${id}.pdf`);
+      window.open(`http://localhost:8000/pdfs/${id}.pdf`);
     } else {
       const data = {
         studentName: record.studentName,
@@ -72,14 +72,14 @@ const GetRecord = () => {
         id,
       };
 
-      await fetch("https://backendstudentmag.onrender.com/records/downloadrecord", {
+      await fetch("http://localhost:8000/records/downloadrecord", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ data: data }),
       });
       notify("Downloading Record in 5 seconds", "success");
       setTimeout(() => {
-        window.open(`https://backendstudentmag.onrender.com/pdfs/${id}.pdf`);
+        window.open(`http://localhost:8000/pdfs/${id}.pdf`);
       }, 5000);
     }
   };
@@ -87,7 +87,7 @@ const GetRecord = () => {
   const handleCertificate = async () => {
     if (certificate) {
       setLoading(true);
-      await fetch(`https://backendstudentmag.onrender.com/records/certificate`, {
+      await fetch(`http://localhost:8000/records/certificate`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, certificate: url }),

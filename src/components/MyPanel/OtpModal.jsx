@@ -28,7 +28,7 @@ const OtpModal = ({ otp, setIsOtpSent, setIsVerified }) => {
     if (otp === values.otp) {
       notify("Account Verified,Please Login Again", "success");
 
-      await fetch("https://backendstudentmag.onrender.com/auth/verifyaccount", {
+      await fetch("http://localhost:8000/auth/verifyaccount", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id }),

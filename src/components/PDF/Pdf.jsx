@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link,  useParams } from "react-router-dom";
 
-import { deleteRecord } from "../../api";
 import user from "../../assets/user.png";
 import RecordTable from "../Record/RecordTable";
 import { gradeCalculator } from "../../utils/gradeCalculator";
@@ -12,7 +11,7 @@ const Pdf = () => {
   //Function to fetch particular Record as per Id in URL
   const fetchRecord = async () => {
     try {
-      const res = await fetch(`https://backendstudentmag.onrender.com/records/getrecord/${id}`);
+      const res = await fetch(`http://localhost:8000/records/getrecord/${id}`);
       if (res.ok) {
         const { data } = await res.json();
         setRecord(data); //Sets the complete record data to state --> record
@@ -52,7 +51,7 @@ const Pdf = () => {
                 <img
                   src={
                     record?.imageName
-                      ? `https://backendstudentmag.onrender.com/assets/${record?.imageName}`
+                      ? `http://localhost:8000/assets/${record?.imageName}`
                       : user
                   }
                   alt=""

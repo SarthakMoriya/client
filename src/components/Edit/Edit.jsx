@@ -63,7 +63,7 @@ const Edit = () => {
     } else {
       console.log(url)
       const res = await fetch(
-        `https://backendstudentmag.onrender.com/records/updatefullrecord/${id.id}`,
+        `http://localhost:8000/records/updatefullrecord/${id.id}`,
         {
           method: "PATCH",
           headers: {

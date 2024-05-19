@@ -6,15 +6,18 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../../api";
+import { formatDateOnCard } from "../../utils/dateFormatter";
 
 const StudentCard = ({ data, setRecords, records }) => {
+  console.log(records);
   const navigate = useNavigate();
   const notify = (message, type = "error") => {
     if (type === "success") toast.success(message);
     else toast.error(message);
   };
   const handleDeleteRecord = async () => {
-    await fetch(`https://backendstudentmag.onrender.com/records/deleterecord/${data?._id}`, {
+    await fetch(`${BASE_URL}/records/deleterecord/${data?._id}`, {
       method: "DELETE",
     });
     notify("Record Deleted", "success");
@@ -69,7 +72,7 @@ const StudentCard = ({ data, setRecords, records }) => {
             Course: {data?.studentCourse}
           </div>
           <div className="mx-4 my-2 font-semibold text-md">
-            Date: {data?.dateEnrolled}
+            Date: {formatDateOnCard(data?.dateEnrolled)}
           </div>
         </div>
       </div>

@@ -34,7 +34,7 @@ const Signup = () => {
     formData.append("passcode", values.secretkey);
     formData.append("picturePath", url);
 
-    const res = await fetch("https://backendstudentmag.onrender.com/auth/signup", {
+    const res = await fetch("http://localhost:8000/auth/signup", {
       method: "POST",
       body: formData,
     });
