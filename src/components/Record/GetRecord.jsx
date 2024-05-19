@@ -25,6 +25,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../../firebase/firebase";
+import QRCodeComponent from "../QR/QrGenerator";
 
 const GetRecord = () => {
   const [record, setRecord] = useState("");
@@ -360,6 +361,9 @@ const GetRecord = () => {
                   </>
                 )}
               </motion.div>
+              <div className="m-2 border rounded-lg p-2">
+              <QRCodeComponent url={`http://localhost:3000/record/${record?._id}`}/>
+              </div>
             </motion.div>
           </motion.div>
         )}

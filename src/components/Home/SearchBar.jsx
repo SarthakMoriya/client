@@ -21,11 +21,13 @@ const SearchBar = ({ searchRecords }) => {
         searchResults.push(rec);
       }
     });
-    console.log(searchResults)
-    if (searchResults.length > 0) {searchRecords(searchResults); setIsValidSearch("true");}
-    else{
-      searchRecords([])
-      setIsValidSearch(false)
+    console.log(searchResults);
+    if (searchResults.length > 0) {
+      searchRecords(searchResults);
+      setIsValidSearch("true");
+    } else {
+      searchRecords([]);
+      setIsValidSearch(false);
     }
   };
   return (
@@ -63,7 +65,7 @@ const SearchBar = ({ searchRecords }) => {
               setSearchString(e.target.value);
             }}
             className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg  focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 placeholder-blue"
-            placeholder="Search Mockups, Logos..."
+            placeholder="Search Student name , Id..."
           />
           <button
             type="submit"
@@ -73,8 +75,17 @@ const SearchBar = ({ searchRecords }) => {
           </button>
         </div>
       </form>
-      {!isValidSearch && <div className="text-center text-primary font-bold text-2xl py-4">NO RECORDS FOUND</div>}
-      {isValidSearch==="true" && <div className="px-4 text-primary font-bold text-2xl py-4"> RECORDS FOUND</div>}
+      {!isValidSearch && (
+        <div className="text-center text-primary font-bold text-2xl py-4">
+          NO RECORDS FOUND
+        </div>
+      )}
+      {isValidSearch === "true" && (
+        <div className="px-4 text-primary font-bold text-2xl py-4">
+          {" "}
+          RECORDS FOUND
+        </div>
+      )}
     </>
   );
 };
