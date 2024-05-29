@@ -7,7 +7,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { notify } from "../../utils/notification";
 import { setRecords } from "../../state/index";
-import { getRecords } from "../../api";
+import { BASE_URL, getRecords } from "../../api";
 import { motion } from "framer-motion";
 import { getMaxDate } from "../../utils/dateFormatter";
 import {
@@ -63,7 +63,7 @@ const Edit = () => {
     } else {
       console.log(url)
       const res = await fetch(
-        `http://localhost:8000/records/updatefullrecord/${id.id}`,
+        `${BASE_URL}/records/updatefullrecord/${id.id}`,
         {
           method: "PATCH",
           headers: {

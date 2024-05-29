@@ -7,6 +7,7 @@ import {
   initialValuesPassword,
   passwordSchema,
 } from "../../schemas/recordSchema";
+import { BASE_URL } from "../../api";
 
 const UpdatePassword = ({ user, setIsUpdatePassword }) => {
   const handleUpdatePassword = async (values, onSubmitProps) => {
@@ -14,7 +15,7 @@ const UpdatePassword = ({ user, setIsUpdatePassword }) => {
       alert("Please enter new password correctly")
       return;
     }
-    const res = await fetch("http://localhost:8000/auth/changepassword", {
+    const res = await fetch(`${BASE_URL}/auth/changepassword`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

@@ -8,6 +8,7 @@ import { initialValuesLogin, loginSchema } from "../../schemas/authSchema";
 import { motion } from "framer-motion";
 import ForgotPassword from "./ForgotPassword";
 import Warning from "../Icons/Warning";
+import { BASE_URL } from "../../api";
 
 const Login = () => {
   const distpatch = useDispatch();
@@ -17,7 +18,7 @@ const Login = () => {
 
   const handleLogin = async (values, onSubmitProps) => {
     setError("")
-    const res = await fetch("http://localhost:8000/auth/login", {
+    const res = await fetch(`${BASE_URL}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: values.email, password: values.password }),

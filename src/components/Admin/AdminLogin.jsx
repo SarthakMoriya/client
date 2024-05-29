@@ -8,9 +8,9 @@ import {
   initialValuesAdminLogin,
   adminloginSchema,
 } from "../../schemas/authSchema";
-import { notify } from "../../utils/notification";
 import { ToastContainer } from "react-toastify";
 import Warning from "../Icons/Warning";
+import { BASE_URL } from "../../api";
 
 const AdminLogin = () => {
   const distpatch = useDispatch();
@@ -18,7 +18,7 @@ const AdminLogin = () => {
   const [error, setError] = useState("");
 
   const handleLogin = async (values, onSubmitProps) => {
-    const res = await fetch("http://localhost:8000/auth/admin/login", {
+    const res = await fetch(`${BASE_URL}/auth/admin/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: values.email, password: values.password }),

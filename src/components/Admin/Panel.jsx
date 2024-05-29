@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import pic from "../../assets/user.png";
 import {useSelector} from 'react-redux'
 import TeacherRow from "./TeacherRow";
+import { BASE_URL } from "../../api";
 
 const Panel = () => {
   const {token}=useSelector(state=>state.auth);
@@ -10,17 +11,17 @@ const Panel = () => {
   const [accounts, setAccounts] = useState([]);
   const fetchAccounts = async () => {
     const res = await fetch(
-      "http://localhost:8000/auth/admin/getunapprovedaccounts"
+      `${BASE_URL}/auth/admin/getunapprovedaccounts`
     );
     const data = await res.json();
-    const acc = await fetch("http://localhost:8000/auth/admin/getallaccounts");
+    const acc = await fetch(`${BASE_URL}/auth/admin/getallaccounts`);
     const accs = await acc.json();
     setAccounts(accs);
     setUnapprovedAccounts(data);
   };
   const handleApprove = async (acc) => {
     console.log(acc);
-    await fetch(`http://localhost:8000/auth/admin/approveaccounts/${acc._id}`,{
+    await fetch(`${BASE_URL}/auth/admin/approveaccounts/${acc._id}`,{
       headers: {'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       }
@@ -35,7 +36,7 @@ const Panel = () => {
   const handleDelete = async (acc) => {
     console.log(acc);
     await fetch(
-      `http://localhost:8000/auth/admin/deleteunapproveaccount/${acc._id}`
+      `${BASE_URL}/auth/admin/deleteunapproveaccount/${acc._id}`
     );
     window.location.reload();
   };

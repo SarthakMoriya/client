@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { deleteRecord } from "../../api";
+import { BASE_URL, deleteRecord } from "../../api";
 import userfallback from "../../assets/user.png";
 import RecordTable from "./RecordTable";
 import {
@@ -47,7 +47,7 @@ const GetRecord = () => {
   //Function to fetch particular Record as per Id in URL
   const fetchRecord = async () => {
     try {
-      const res = await fetch(`http://localhost:8000/records/getrecord/${id}`);
+      const res = await fetch(`${BASE_URL}/records/getrecord/${id}`);
       if (res.ok) {
         const { data } = await res.json();
         setRecord(data); //Sets the complete record data to state --> record
@@ -62,7 +62,7 @@ const GetRecord = () => {
   };
   const uplodaData = async () => {
     if (user === null && record?.isDataUploaded === true) {
-      window.open(`http://localhost:8000/pdfs/${id}.pdf`);
+      window.open(`${BASE_URL}/pdfs/${id}.pdf`);
     } else {
       const data = {
         studentName: record.studentName,
@@ -73,14 +73,14 @@ const GetRecord = () => {
         id,
       };
 
-      await fetch("http://localhost:8000/records/downloadrecord", {
+      await fetch(`${BASE_URL}/records/downloadrecord`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ data: data }),
       });
       notify("Downloading Record in 5 seconds", "success");
       setTimeout(() => {
-        window.open(`http://localhost:8000/pdfs/${id}.pdf`);
+        window.open(`${BASE_URL}/pdfs/${id}.pdf`);
       }, 5000);
     }
   };
@@ -88,7 +88,7 @@ const GetRecord = () => {
   const handleCertificate = async () => {
     if (certificate) {
       setLoading(true);
-      await fetch(`http://localhost:8000/records/certificate`, {
+      await fetch(`${BASE_URL}/records/certificate`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, certificate: url }),

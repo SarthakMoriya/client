@@ -5,7 +5,7 @@ import { useLocation, useParams } from "react-router-dom";
 import { testGradeCalculator } from "../../utils/gradeCalculator";
 import edit_icon from "../../assets/edit.png";
 import delete_icon from "../../assets/delete.png";
-import { getRecords } from "../../api";
+import { BASE_URL, getRecords } from "../../api";
 import { setRecords } from "../../state";
 const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
   const [edit, setEdit] = useState(false);
@@ -37,7 +37,7 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
       obtMarks: marksObt,
       oldExam: edit, //name of exam that was edited
     });
-    await fetch("http://localhost:8000/records/updaterecord", {
+    await fetch(`${BASE_URL}/records/updaterecord`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -56,7 +56,7 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
   // HANDLING DELETE EXAM
   const handleDeleteExam = async () => {
     const examToBeDeleted = exam?.name;
-    await fetch("http://localhost:8000/records/deleterecordexam", {
+    await fetch(`${BASE_URL}/records/deleterecordexam`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

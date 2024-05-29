@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import user from "../../assets/user.png";
+import { BASE_URL } from "../../api";
 
 const Sidebar = () => {
   const [records, setRecords] = useState([]);
   const navigate = useNavigate();
 
   const fetchRecords = async () => {
-    const results = await fetch("http://localhost:8000/records/getrecords");
+    const results = await fetch(`${BASE_URL}/records/getrecords`);
     const res = await results.json();
     setRecords(res);
   };

@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { BASE_URL } from "../../api";
 
 const Certificate = () => {
   const [record, setRecord] = useState("");
   const { id } = useParams();
 
   const fetchCertificate = async () => {
-    const record = await fetch(`http://localhost:8000/records/getrecord/${id}`);
+    const record = await fetch(`${BASE_URL}/records/getrecord/${id}`);
     const data = await record.json();
     console.log(data)
     setRecord(data.data);
     console.log(record)
   };
   const handleDownload = () => {
-    // Replace 'http://localhost:8000/assets/${record?.certificate}' with the actual file URL
+    // Replace 'BASE_URL/assets/${record?.certificate}' with the actual file URL
     const fileUrl = `${record?.certificate}`;
 
     // Create a link element

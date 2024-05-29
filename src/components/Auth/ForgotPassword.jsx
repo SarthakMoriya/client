@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { BASE_URL } from "../../api";
 
 const ForgotPassword = ({ forgot, setForgot }) => {
   const [otp, setOtp] = useState("");
@@ -9,7 +10,7 @@ const ForgotPassword = ({ forgot, setForgot }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const handleSendOtp = async () => {
-    const res = await fetch("http://localhost:8000/auth/verifyemail", {
+    const res = await fetch(`${BASE_URL}/auth/verifyemail`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -35,7 +36,7 @@ const ForgotPassword = ({ forgot, setForgot }) => {
         alert("Please Enter Same Passwords");
       } else {
         //request
-        const res = await fetch("http://localhost:8000/auth/forgotpassword", {
+        const res = await fetch(`${BASE_URL}/auth/forgotpassword`, {
           headers: { "Content-Type": "application/json" },
           method: "POST",
           body: JSON.stringify({ password, email }),

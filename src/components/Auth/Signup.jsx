@@ -17,6 +17,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../../firebase/firebase";
+import { BASE_URL } from "../../api";
 
 const Signup = () => {
   const [image, setImage] = useState(null);
@@ -34,7 +35,7 @@ const Signup = () => {
     formData.append("passcode", values.secretkey);
     formData.append("picturePath", url);
 
-    const res = await fetch("http://localhost:8000/auth/signup", {
+    const res = await fetch(`${BASE_URL}/auth/signup`, {
       method: "POST",
       body: formData,
     });

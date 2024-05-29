@@ -7,6 +7,7 @@ import * as yup from "yup";
 
 import "react-toastify/dist/ReactToastify.css";
 import { setLogout } from "../../state";
+import { BASE_URL } from "../../api";
 
 const otpSchema = yup.object().shape({
   otp: yup.string().required("Please enter OTP"),
@@ -28,7 +29,7 @@ const OtpModal = ({ otp, setIsOtpSent, setIsVerified }) => {
     if (otp === values.otp) {
       notify("Account Verified,Please Login Again", "success");
 
-      await fetch("http://localhost:8000/auth/verifyaccount", {
+      await fetch(`${BASE_URL}/auth/verifyaccount`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id }),

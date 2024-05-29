@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { BASE_URL } from "../../api";
 
 const UpdateRecord = () => {
   const [subs, setSubs] = useState(0);
@@ -11,7 +12,7 @@ const UpdateRecord = () => {
   const [exams, setExams] = useState([{}]);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await fetch("http://localhost:8000/records/createrecord", {
+    await fetch(`${BASE_URL}/records/createrecord`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
