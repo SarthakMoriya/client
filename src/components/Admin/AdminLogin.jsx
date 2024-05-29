@@ -28,6 +28,7 @@ const AdminLogin = () => {
     if (data === "Invalid Credentials") {
       setError("Invalid Credentials");
     } else {
+      console.log(data)
       setError("");
       distpatch(
         setLogin({

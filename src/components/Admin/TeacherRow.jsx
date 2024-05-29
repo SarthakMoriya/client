@@ -1,14 +1,26 @@
 import React from "react";
 import pic from "../../assets/user.png";
+import { useSelector } from "react-redux";
 const TeacherRow = ({ acc }) => {
-  console.log(acc)
+  const { token } = useSelector((state) => state.auth);
   const handleApprove = async () => {
-    await fetch(`http://localhost:8000/auth/admin/approveaccounts/${acc._id}`);
+    await fetch(`http://localhost:8000/auth/admin/approveaccounts/${acc._id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
     window.location.reload();
   };
   const handleDelete = async ({ acc }) => {
     await fetch(
-      `http://localhost:8000/auth/admin/deleteunapproveaccount/${acc._id}`
+      `http://localhost:8000/auth/admin/deleteunapproveaccount/${acc._id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
     window.location.reload();
   };

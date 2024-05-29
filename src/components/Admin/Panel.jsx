@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import pic from "../../assets/user.png";
-
+import {useSelector} from 'react-redux'
 import TeacherRow from "./TeacherRow";
 
 const Panel = () => {
+  const {token}=useSelector(state=>state.auth);
+  console.log(token)
   const [unapprovedAccounts, setUnapprovedAccounts] = useState([]);
   const [accounts, setAccounts] = useState([]);
   const fetchAccounts = async () => {
@@ -18,8 +20,12 @@ const Panel = () => {
   };
   const handleApprove = async (acc) => {
     console.log(acc);
-    await fetch(`http://localhost:8000/auth/admin/approveaccounts/${acc._id}`);
-    window.location.reload();
+    await fetch(`http://localhost:8000/auth/admin/approveaccounts/${acc._id}`,{
+      headers: {'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    // window.location.reload();
     const updatedUnapprovedAccounts = unapprovedAccounts.filter(
       (account) => account._id !== acc._id
     );
