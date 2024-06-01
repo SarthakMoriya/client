@@ -49,6 +49,15 @@ const ExamRow = ({ exam, i, studentName, courseName, exams }) => {
         >
           {testGradeCalculator({ mt: exam?.mt, mo: exam?.mo })}
         </motion.div>
+        <motion.div
+          whileInView={{ scale: [0, 1], opacity: [0, 1] }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          className={`text-center sm:p-1 p-[2px] sm:text-base text-xs w-[20%] ${
+            user ? "w-[20%]" : "w-[25%]"
+          }`}
+        >
+          {(exam?.mo/exam?.mt)*100+"%"}
+        </motion.div>
       </motion.div>
     </motion.div>
   );

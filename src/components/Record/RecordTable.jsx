@@ -46,11 +46,14 @@ const RecordTable = ({ exams, studentName, studentCourseName }) => {
         >
           Grade
         </motion.div>
-        {!location.pathname.includes("pdf") && user!=null &&(
-          <motion.div className="bg-white text-black text-center sm:p-1 p-[2px] sm:py-4 py-2 whitespace-nowrap w-[20%] border sm:text-base text-xs ">
-            Modify
-          </motion.div>
-        )}
+        <motion.div
+          whileInView={{ scale: [0, 1], opacity: [0, 1] }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          className={`bg-white text-black text-center sm:p-1 p-[2px] sm:py-4 py-2 whitespace-nowrap ${user?"w-[20%]":"w-[25%]"} border sm:text-base text-xs `}
+        >
+          Percentage
+        </motion.div>
+        
       </motion.div>
       {exams?.map((exam, i) => (
         <>

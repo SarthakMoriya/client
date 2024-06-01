@@ -1,30 +1,33 @@
 import React, { useEffect, useState } from "react";
 import pic from "../../assets/user.png";
-import {useSelector} from 'react-redux'
+import { useSelector } from "react-redux";
 import TeacherRow from "./TeacherRow";
 import { BASE_URL } from "../../api";
 
 const Panel = () => {
-  const {token}=useSelector(state=>state.auth);
-  console.log(token)
+  const { token } = useSelector((state) => state.auth);
+  console.log(token);
   const [unapprovedAccounts, setUnapprovedAccounts] = useState([]);
   const [accounts, setAccounts] = useState([]);
   const fetchAccounts = async () => {
-    const res = await fetch(
-      `${BASE_URL}/auth/admin/getunapprovedaccounts`
-    );
+    const res = await fetch(`${BASE_URL}/auth/admin/getunapprovedaccounts`, {
+      headers: { "Authorization": `Bearer ${token}` },
+    });
     const data = await res.json();
-    const acc = await fetch(`${BASE_URL}/auth/admin/getallaccounts`);
+    const acc = await fetch(`${BASE_URL}/auth/admin/getallaccounts`, {
+      headers: { "Authorization": `Bearer ${token}` },
+    });
     const accs = await acc.json();
     setAccounts(accs);
     setUnapprovedAccounts(data);
   };
   const handleApprove = async (acc) => {
     console.log(acc);
-    await fetch(`${BASE_URL}/auth/admin/approveaccounts/${acc._id}`,{
-      headers: {'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }
+    await fetch(`${BASE_URL}/auth/admin/approveaccounts/${acc._id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     });
     // window.location.reload();
     const updatedUnapprovedAccounts = unapprovedAccounts.filter(
@@ -35,9 +38,7 @@ const Panel = () => {
   };
   const handleDelete = async (acc) => {
     console.log(acc);
-    await fetch(
-      `${BASE_URL}/auth/admin/deleteunapproveaccount/${acc._id}`
-    );
+    await fetch(`${BASE_URL}/auth/admin/deleteunapproveaccount/${acc._id}`);
     window.location.reload();
   };
   useEffect(() => {
@@ -47,12 +48,12 @@ const Panel = () => {
     <div className="bg-primary min-h-screen border border-secondary ">
       {unapprovedAccounts?.length !== 0 && (
         <div className="flex items-center justify-center">
-        <div className="border-secondary border-b-4  text-2xl font-semibold text-white my-4">
-          Pending Requests
+          <div className="border-secondary border-b-4  text-2xl font-semibold text-white my-4">
+            Pending Requests
+          </div>
         </div>
-      </div>
       )}
-      
+
       {unapprovedAccounts?.length !== 0 && (
         <div className="bg-gray-900 mt-3">
           {unapprovedAccounts?.map((acc) => (
@@ -72,11 +73,7 @@ const Panel = () => {
               <div className=" flex items-center border">
                 <div className="w-[50%] p-2 rounded-lg flex items-center cursor-pointer">
                   <img
-                    src={
-                      acc?.picturePath
-                        ? `${acc?.picturePath}`
-                        : pic
-                    }
+                    src={acc?.picturePath ? `${acc?.picturePath}` : pic}
                     className="w-10 h-10 rounded-full"
                     alt="pic"
                   />

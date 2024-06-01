@@ -1,7 +1,7 @@
 import React from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { Formik } from "formik";
-
+import { useSelector } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 import {
   initialValuesPasscode,
@@ -10,11 +10,19 @@ import {
 import { BASE_URL } from "../../api";
 
 const UpdatePasscode = ({ user, setIsUpdatePasscode }) => {
+  const token = useSelector((state) => state.auth.token);
   const handleUpdatePasscode = async (values, onSubmitProps) => {
     const res = await fetch(`${BASE_URL}/auth/changepasscode`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ oldPasscode:values.oldpasscode, newPasscode:values.newpasscode, id: user?._id }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        oldPasscode: values.oldpasscode,
+        newPasscode: values.newpasscode,
+        id: user?._id,
+      }),
     });
     const data = await res.json();
     if (data.ok) {
@@ -32,9 +40,9 @@ const UpdatePasscode = ({ user, setIsUpdatePasscode }) => {
     else toast.error(message);
   };
 
-  const handleClose=()=>{
+  const handleClose = () => {
     setIsUpdatePasscode(false);
-  }
+  };
   return (
     <Formik
       onSubmit={handleUpdatePasscode}
@@ -70,7 +78,12 @@ const UpdatePasscode = ({ user, setIsUpdatePasscode }) => {
           <div className="text-center font-bold text-blue text-2xl my-4">
             Update Passcode
           </div>
-          <div className="text-blue font-extrabold text-2xl absolute top-4 left-4 cursor-pointer" onClick={handleClose}>X</div>
+          <div
+            className="text-blue font-extrabold text-2xl absolute top-4 left-4 cursor-pointer"
+            onClick={handleClose}
+          >
+            X
+          </div>
 
           {/* OLD PASSWORD */}
           <div className="px-4 py-2">
@@ -90,7 +103,9 @@ const UpdatePasscode = ({ user, setIsUpdatePasscode }) => {
               onBlur={handleBlur}
               value={values.oldpasscode}
               onChange={handleChange}
-              error={Boolean(touched.oldpasscode) && Boolean(errors.oldpasscode)}
+              error={
+                Boolean(touched.oldpasscode) && Boolean(errors.oldpasscode)
+              }
               helperText={touched.oldpasscode && errors.oldpasscode}
             />
             {touched.oldpasscode && errors.oldpasscode && (
@@ -117,7 +132,9 @@ const UpdatePasscode = ({ user, setIsUpdatePasscode }) => {
               onBlur={handleBlur}
               value={values.newpasscode}
               onChange={handleChange}
-              error={Boolean(touched.newpasscode) && Boolean(errors.newpasscode)}
+              error={
+                Boolean(touched.newpasscode) && Boolean(errors.newpasscode)
+              }
               helperText={touched.newpasscode && errors.newpasscode}
             />
             {touched.newpasscode && errors.newpasscode && (
@@ -144,7 +161,10 @@ const UpdatePasscode = ({ user, setIsUpdatePasscode }) => {
               onBlur={handleBlur}
               value={values.confirmpasscode}
               onChange={handleChange}
-              error={Boolean(touched.confirmpasscode) && Boolean(errors.confirmpasscode)}
+              error={
+                Boolean(touched.confirmpasscode) &&
+                Boolean(errors.confirmpasscode)
+              }
               helperText={touched.confirmpasscode && errors.confirmpasscode}
             />
             {touched.confirmpasscode && errors.confirmpasscode && (

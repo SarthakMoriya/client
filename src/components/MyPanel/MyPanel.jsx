@@ -5,7 +5,6 @@ import UpdatePassword from "./UpdatePassword";
 import UpdatePasscode from "./UpdatePasscode";
 import Student from "./Student";
 import OtpModal from "./OtpModal";
-import { motion } from "framer-motion";
 import "./MyPanel.css";
 import { notify } from "../../utils/notification";
 import {
@@ -17,8 +16,10 @@ import {
 import { app } from "../../firebase/firebase";
 import { formatDate } from "../../utils/dateFormatter";
 import { BASE_URL } from "../../api";
+import { ToastContainer } from "react-toastify";
 const MyPanel = () => {
   const { user } = useSelector((state) => state.auth);
+  const { token } = useSelector((state) => state.auth);
   const [isUpdatePassword, setIsUpdatePassword] = useState(false);
   const [isUpdatePasscode, setIsUpdatePasscode] = useState(false);
   const [teacherRecords, setTeacherRecords] = useState([]);
@@ -28,24 +29,32 @@ const MyPanel = () => {
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [isImageUploaded, setIsImageUploaded] = useState(false);
+  const [error, setError] = useState("");
   const location = useLocation();
-  console.log(user);
   useEffect(() => {
     // Update the title based on the current route
     document.title = `Webcooks | MyPanel - ${user?.username}`;
   }, [location.pathname]);
 
   const fetchStudents = async () => {
-    const data = await fetch(
-      `${BASE_URL}/records/getstudents/${user?._id}`
-    );
+    const data = await fetch(`${BASE_URL}/records/getstudents/${user?._id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     const res = await data.json();
-    setTeacherRecords(res.records);
+    if (res.ok == false) {
+      setError(res.message);
+      notify(res.message);
+      return;
+    }
+    setTeacherRecords(res?.records);
   };
   const verifyEmail = async () => {
     const res = await fetch(`${BASE_URL}/auth/verifyemail`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify({ email: user?.email }),
     });
     const data = await res.json();
@@ -84,14 +93,11 @@ const MyPanel = () => {
   const handleSaveImage = async () => {
     try {
       setLoading(true);
-      const response = await fetch(
-        `${BASE_URL}/auth/editimage/${user._id}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ picturePath: url }),
-        }
-      );
+      const response = await fetch(`${BASE_URL}/auth/editimage/${user._id}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ picturePath: url }),
+      });
 
       if (response.ok) {
         alert("Image uploaded successfully", "success");
@@ -111,6 +117,18 @@ const MyPanel = () => {
   }, []);
   return (
     <div className="bg-background min-h-[100vh] mt-5 mx-3 sm:mx-6 md:mx-12 lg:mx-24 ">
+      <ToastContainer
+          position="top-center"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
       <div className="flex items-center justify-center">
         <div className="border-secondary border-b-4 text-xl md:text-xl lg:text-2xl font-semibold text-blue mb-4">
           PERSONAL DETAILS
@@ -167,7 +185,7 @@ const MyPanel = () => {
                   type="button"
                   onClick={verifyEmail}
                   disabled={isVerified ? false : true}
-                  className="text-white mx-2 bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg lg:w-56"
+                  className="text-white mx-2 cursor-pointer bg-secondary focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium text-sm px-5 py-2.5 text-center mb-2 mt-2    ease-in-out duration-500 rounded-lg lg:w-56"
                 >
                   Unverified Account
                 </span>
@@ -223,16 +241,21 @@ const MyPanel = () => {
           YOUR STUDENTS
         </div>
       </div>
-      {teacherRecords.length > 0 && (
+      {teacherRecords.length > 0 && error === "" && (
         <div className="mb-8 sm:mb-4">
           {teacherRecords.map((stu) => (
             <Student key={stu?._id} student={stu} />
           ))}
         </div>
       )}
-      {teacherRecords.length === 0 && (
+      {teacherRecords.length === 0 && error ==="" && (
         <div className="text-center text-3xl text-blue-800 w-full ">
           No Student Records Found!
+        </div>
+      )}
+      { error !=="" && (
+        <div className="text-center text-3xl text-blue-800 w-full ">
+          Failed to get Students Records
         </div>
       )}
       {isUpdatePassword && (

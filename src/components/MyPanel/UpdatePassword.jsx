@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { Formik } from "formik";
-
+import { useSelector } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 import {
   initialValuesPassword,
@@ -10,14 +10,19 @@ import {
 import { BASE_URL } from "../../api";
 
 const UpdatePassword = ({ user, setIsUpdatePassword }) => {
+  const token = useSelector((state) => state.auth.token);
   const handleUpdatePassword = async (values, onSubmitProps) => {
-    if(values.newPassword !== values.confirmpassword){
-      alert("Please enter new password correctly")
+    if (values.newpassword !== values.confirmpassword) {
+      console.log(values.newpassword,values.confirmpassword)
+      alert("Please enter new password correctly");
       return;
     }
     const res = await fetch(`${BASE_URL}/auth/changepassword`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
       body: JSON.stringify({
         oldPassword: values.oldpassword,
         newPassword: values.newpassword,
@@ -39,9 +44,9 @@ const UpdatePassword = ({ user, setIsUpdatePassword }) => {
     if (type === "success") toast.success(message);
     else toast.error(message);
   };
-  const handleClose=()=>{
+  const handleClose = () => {
     setIsUpdatePassword(false);
-  }
+  };
   return (
     <>
       <Formik
@@ -63,7 +68,12 @@ const UpdatePassword = ({ user, setIsUpdatePassword }) => {
             onSubmit={handleSubmit}
             className=" w-screen min-h-[50vh] border-2 rounded-lg bg-white z-10 absolute top-[25%] left-0 "
           >
-            <div className="text-blue font-extrabold text-2xl absolute top-4 left-4 cursor-pointer" onClick={handleClose}>X</div>
+            <div
+              className="text-blue font-extrabold text-2xl absolute top-4 left-4 cursor-pointer"
+              onClick={handleClose}
+            >
+              X
+            </div>
             <ToastContainer
               position="top-center"
               autoClose={1000}
