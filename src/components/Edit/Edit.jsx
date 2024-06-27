@@ -25,11 +25,12 @@ const Edit = () => {
 
   useEffect(() => {
     // Update the title based on the current route
-    document.title = `Webcooks | Edit - ${record.studentId}`;
+    document.title = `Webcooks | Edit - ${record?.studentId}`;
   }, [location.pathname]);
 
   const record = useSelector((state) => {
-    return state?.record?.records?.find((rec) => rec._id === id?.id);
+    let currRec=state?.record?.records?.find((rec) => rec._id === id?.id);
+    return currRec 
   });
 
   const [sName, setSname] = useState(record?.studentName);
@@ -37,7 +38,7 @@ const Edit = () => {
   const [date, setDate] = useState(record?.dateEnrolled);
   const [studentId, setStudentId] = useState(record?.studentId);
   const [isAddingExam, setIsAddingExam] = useState(false);
-  const [examsArr, setExamsArr] = useState([...record?.exams]);
+  const [examsArr, setExamsArr] = useState(record?.exams?.length?record.exams:[]);
   const [mainExamName, setMainExamName] = useState(record?.mainExamName);
   const [mainExamMT, setMainExamMT] = useState(record?.mainExamMT);
   const [mainExamMO, setMainExamMO] = useState(record?.mainExamMO);
@@ -152,7 +153,7 @@ const Edit = () => {
               transition={{ duration: 1, ease: "easeInOut" }}
               className="mb-4 text-xl font-bold text-gray-900 dark:text-white"
             >
-              Edit record of studentId: {record.studentId}
+              Edit record of studentId: {record?.studentId}
             </motion.h2>
             {/* IMAGE FIELD */}
             <motion.div
@@ -160,7 +161,7 @@ const Edit = () => {
               transition={{ duration: 1, ease: "easeInOut" }}
             >
               <img
-                src={url ? url : record.imageName}
+                src={url ? url : record?.imageName}
                 alt=""
                 className="w-32 h-32 "
               />

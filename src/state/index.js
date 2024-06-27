@@ -29,10 +29,10 @@ export const recordsSlice = createSlice({
   reducers: {
     setRecords: (state, action) => {
       state.records = action?.payload?.records;
-      // console.log(action.payload.records);
+      console.log(action.payload.records);
     },
     setNewRecords: (state, action) => {
-      state.records = [...state.records, action.payload.record];
+      state.records = [...state.records, ...action.payload.record];
       console.log("NEW RECORDS" + state.records);
     },
   },

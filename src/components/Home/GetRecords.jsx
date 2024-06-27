@@ -1,18 +1,23 @@
+import { useDispatch } from "react-redux";
 import React, { useEffect, useState } from "react";
 import StudentCard from "./StudentCard";
 import SearchBar from "./SearchBar";
 import { BASE_URL } from "../../api";
+import { setRecords } from "../../state";
 
 const GetRecords = () => {
-  const [records, setRecords] = useState([]);
+  const dispatch = useDispatch();
+  const [data, setData] = useState([]);
 
   const getRecords = async (searchResults) => {
     if (searchResults.length > 0) {
-      setRecords(searchResults);
+      setData(searchResults);
     } else {
-      const data = await fetch(BASE_URL+"/records/getrecords");
+      const data = await fetch(BASE_URL + "/records/getrecords");
       const res = await data.json();
-      setRecords(res);
+      console.log(res);
+      dispatch(setRecords({ records: res }));
+      setData(res);
     }
   };
   useEffect(() => {
@@ -24,22 +29,20 @@ const GetRecords = () => {
         <SearchBar searchRecords={getRecords} />
       </div>
       <div className="flex flex-wrap md:justify-center justify-normal">
-        {records.length === 0 && (
+        {data.length === 0 && (
           <div className="text-3xl text-center text-white w-full">
             NO RECORDS{" "}
           </div>
         )}
-        {records?.length > 0 &&
-          records?.map((rec) => {
+        {data?.length > 0 &&
+          data?.map((rec) => {
             return (
-              <>
-                <StudentCard
-                  key={rec?._id}
-                  data={rec}
-                  setRecords={setRecords}
-                  records={records}
-                />
-              </>
+              <StudentCard
+                key={rec?._id}
+                data={rec}
+                setRecords={setData}
+                records={data}
+              />
             );
           })}
       </div>

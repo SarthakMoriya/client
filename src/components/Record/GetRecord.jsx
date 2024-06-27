@@ -86,6 +86,7 @@ const GetRecord = () => {
   };
   // TO UPLOAD URL TO MONGODB
   const handleCertificate = async () => {
+
     if (certificate) {
       setLoading(true);
       await fetch(`${BASE_URL}/records/certificate`, {
@@ -93,18 +94,25 @@ const GetRecord = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, certificate: url }),
       }).then(async (res) => {
-        alert("CERTIFICATE UPLOADED");
+        notify("Certificate saved","success");
         setLoading(false)
+        setIsUpdatingCertificate(false);
+        fetchRecord();
       });
-
       //
     } else {
       console.error("No file selected");
+      notify("Please upload a certificate first!");
+      setIsUpdatingCertificate(true);
       setLoading(false)
     }
   };
   // TO GET URL FROM FIREBASE
   const handleCertificateUpload = async () => {
+    if(certificate==null || certificate === "" || certificate===undefined){
+      notify("No certificate Selected!");
+      return;
+    }
     setLoading(true);
     const storage = getStorage(app);
     const fileName = new Date().getTime() + certificate.name; // So no two users have same file
@@ -125,6 +133,7 @@ const GetRecord = () => {
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
           setUrl(downloadUrl);
+          notify("Certificate upload succesfully","success")
           setLoading(false);
         });
       }
@@ -372,7 +381,7 @@ const GetRecord = () => {
             STUDENT PERFORMANCE
           </div>
         </div>
-        {record?.exams?.length && (
+        {record?.exams?.length>0 && (
           <RecordTable
             exams={record?.exams}
             studentName={record?.studentName}
