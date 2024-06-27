@@ -39,7 +39,7 @@ export const gradeCalculator = (exams) => {
 export const percentageCalcuator = (exams) => {
   const marksTotal = total_Marks(exams);
   const marksObt = totalMarksObtained(exams);
-  return Math.floor((marksObt / marksTotal) * 100);
+  return ((marksObt / marksTotal) * 100).toFixed(1);
 };
 
 //COMPLETE PERCENTAGE MAIN EXAM PLUS TESTS

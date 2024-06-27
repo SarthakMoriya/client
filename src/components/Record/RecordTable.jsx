@@ -37,7 +37,7 @@ const RecordTable = ({ exams, studentName, studentCourseName }) => {
           transition={{ duration: 0.5, ease: "easeInOut" }}
           className={`bg-white text-black text-center sm:p-1 p-[2px] sm:py-4 py-2 whitespace-nowrap ${user?"w-[20%]":"w-[25%]"} border sm:text-base text-xs `}
         >
-          Marks Totl
+          Marks Total
         </motion.div>
         <motion.div
           whileInView={{ scale: [0, 1], opacity: [0, 1] }}

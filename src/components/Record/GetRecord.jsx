@@ -403,7 +403,7 @@ const GetRecord = () => {
             <motion.div className="flex items-center justify-center  text-black border  ">
               {["Exam", "Marks Obt", "Marks Total", "Grade", "Percentage"].map(
                 (val) => (
-                  <motion.div className="text-blue text-center px-1 sm:px-2 py-2 sm:py-4 max-w-[20%] w-[20%] border whitespace-nowrap overflow-ellipsis text-xs sm:text-base">
+                  <motion.div key={val} className="text-blue text-center px-1 sm:px-2 py-2 sm:py-4 max-w-[20%] w-[20%] border whitespace-nowrap overflow-ellipsis text-xs sm:text-base">
                     {`${val}`}
                   </motion.div>
                 )

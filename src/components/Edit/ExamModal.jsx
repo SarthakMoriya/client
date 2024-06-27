@@ -15,7 +15,9 @@ const ExamModal = ({ exam, exams, handleUpdateExam }) => {
           obtMarks
       );
     } else {
-      exams.push({ name: examName, mt: totalMarks, mo: obtMarks });
+      console.log(exams)
+      console.log({ name: examName, mt: totalMarks, mo: obtMarks })
+      exams=[...exams,{ name: examName, mt: totalMarks, mo: obtMarks }];
       setExamName("");
       setObtMarks("");
       setTotalMarks("");

@@ -18,6 +18,7 @@ import Pdf from "./components/PDF/Pdf";
 import Certificate from "./components/Certificate/Certificate";
 import { getRecords } from "./api";
 import Footer from "./components/Footer/Footer";
+import CompareResult from "./components/CompareStudent/CompareResult";
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
@@ -64,6 +65,7 @@ const fetchRecords=async()=>{
         />
         <Route path="/record/pdf/:id" element={<Pdf />} />
         <Route path="/record/certificate/:id" element={<Certificate />} />
+        <Route path="/record/compare/:id1/:id2" element={<CompareResult />} />
       </Routes>
       <Footer/>
     </BrowserRouter>
