@@ -6,12 +6,9 @@ import { averageCourse } from '../../utils/courseAverageCalculator';
 
 const BarPerformanceChart = ({ averageData, individualData,course }) => {
   const [isValidAverage, setIsValidAverage] = useState(false)
-  console.log("Course "+course)
   const records=useSelector(state=>state.record)
   const id=useParams();
   const average=averageCourse({records,courseName:course,id});
-  console.log("Average::"+average)
-  console.log(isNaN(average))
 
   const data = [
     { category: course, average: average, individual: individualData.value },

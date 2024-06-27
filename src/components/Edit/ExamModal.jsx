@@ -6,7 +6,6 @@ const ExamModal = ({ exam, exams, handleUpdateExam }) => {
   const [obtMarks, setObtMarks] = useState(exam?.mo);
 
   const handleAddNewExam = () => {
-    console.log(totalMarks,obtMarks);
     if (Number(totalMarks) < Number(obtMarks)) {
       alert(
         "Total marks must be greater than Marks Obtained! \n " +

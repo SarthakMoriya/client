@@ -66,7 +66,6 @@ const MyPanel = () => {
     const fileName = new Date().getTime() + image.name; // So no two users have same file
     const storageRef = ref(storage, fileName); //location+filename
     const uploadTask = uploadBytesResumable(storageRef, image); //finalStep
-    console.log(uploadTask);
     uploadTask.on(
       "state_changed",
       (snapshot) => {
@@ -78,7 +77,6 @@ const MyPanel = () => {
         alert("Image Size must be less than 2mb");
         setLoading(false);
         setIsImageUploaded(false);
-        console.log("eroooooooooooooor");
         return;
       },
       () => {

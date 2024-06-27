@@ -42,7 +42,6 @@ const CreateRecord = () => {
       alert("Obtained Marks cannot be higher than Total Marks");
       return;
     }
-    console.log(values.secretKey,values.studentId)
     if (values.secretKey === secretKey) {
       const res = await fetch(BASE_URL+"/records/createrecord", {
         method: "POST",
@@ -103,12 +102,10 @@ const CreateRecord = () => {
   };
 
   const handleFileUpload = async () => {
-    console.log(image);
     const storage = getStorage(app);
     const fileName = new Date().getTime() + image.name; // So no two users have same file
     const storageRef = ref(storage, fileName); //location+filename
     const uploadTask = uploadBytesResumable(storageRef, image); //finalStep
-    console.log(uploadTask);
     uploadTask.on(
       "state_changed",
       (snapshot) => {
@@ -116,13 +113,10 @@ const CreateRecord = () => {
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
       },
       (err) => {
-        console.log(true);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
           setUrl(downloadUrl);
-          console.log(downloadUrl);
-          console.log(url);
         });
       }
     );

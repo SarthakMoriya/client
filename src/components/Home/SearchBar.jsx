@@ -21,7 +21,6 @@ const SearchBar = ({ searchRecords }) => {
         searchResults.push(rec);
       }
     });
-    console.log(searchResults);
     if (searchResults.length > 0) {
       searchRecords(searchResults);
       setIsValidSearch("true");

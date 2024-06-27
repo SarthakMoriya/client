@@ -9,9 +9,7 @@ const Certificate = () => {
   const fetchCertificate = async () => {
     const record = await fetch(`${BASE_URL}/records/getrecord/${id}`);
     const data = await record.json();
-    console.log(data)
     setRecord(data.data);
-    console.log(record)
   };
   const handleDownload = () => {
     // Replace 'BASE_URL/assets/${record?.certificate}' with the actual file URL

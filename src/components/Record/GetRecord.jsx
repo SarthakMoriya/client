@@ -51,7 +51,6 @@ const GetRecord = () => {
       if (res.ok) {
         const { data } = await res.json();
         setRecord(data); //Sets the complete record data to state --> record
-        console.log(record);
       } else {
         setError(res);
         console.error("Failed to fetch data");
@@ -118,7 +117,6 @@ const GetRecord = () => {
     const fileName = new Date().getTime() + certificate.name; // So no two users have same file
     const storageRef = ref(storage, fileName); //location+filename
     const uploadTask = uploadBytesResumable(storageRef, certificate); //finalStep
-    console.log(uploadTask);
     uploadTask.on(
       "state_changed",
       (snapshot) => {
@@ -141,7 +139,6 @@ const GetRecord = () => {
   };
   // TO ONLY DOWNLOAD CERTIFICATE
   const handleCertificateDownload = () => {
-    console.log(record.certificate, user);
     if (record.certificate === "" && user === null) {
       alert("No certificate Uploaded");
       return;
@@ -299,7 +296,6 @@ const GetRecord = () => {
                       type="file"
                       onChange={(e) => {
                         setCertificate(e.target.files[0]);
-                        console.log(certificate);
                       }}
                       className="record_event_btn"
                     />
@@ -344,7 +340,6 @@ const GetRecord = () => {
                       type="file"
                       onChange={(e) => {
                         setCertificate(e.target.files[0]);
-                        console.log(certificate);
                       }}
                       className="record_event_btn"
                     />

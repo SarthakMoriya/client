@@ -6,12 +6,10 @@ export const averageCourse = ({ records, courseName, id }) => {
     (rec) => {
       return rec.studentCourse?.toLowerCase() === courseName?.toLowerCase() && rec._id !== id.id}
   );
-console.log(courseRecords)
   let validRecords=0;
   let totalPercentage =0;
   courseRecords.forEach(record =>{
     const percentage=overallPercentage(record)
-    console.log(percentage)
     if(!isNaN(percentage)){
       totalPercentage += percentage;
       validRecords++;

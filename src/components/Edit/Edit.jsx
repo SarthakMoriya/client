@@ -62,7 +62,6 @@ const Edit = () => {
       setLoading(false);
       return;
     } else {
-      console.log(url)
       const res = await fetch(
         `${BASE_URL}/records/updatefullrecord/${id.id}`,
         {
@@ -108,7 +107,6 @@ const Edit = () => {
     const fileName = new Date().getTime() + image.name; // So no two users have same file
     const storageRef = ref(storage, fileName); //location+filename
     const uploadTask = uploadBytesResumable(storageRef, image); //finalStep
-    console.log(uploadTask);
     uploadTask.on(
       "state_changed",
       (snapshot) => {

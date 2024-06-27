@@ -20,14 +20,12 @@ const ExamRow = ({ exam, exams, handleUpdateExam }) => {
       let newExams = [];
       exams?.forEach((ex, i) => {
         if (ex.name === oldName) {
-          console.log("EXAM UPDATED");
           newExams.push({ name: examName, mt: totalMarks, mo: obtMarks });
         } else {
           newExams.push(ex);
         }
       });
       exams = newExams;
-      console.log("EXAMS ARRAY IN EXAMROW COMPONENT:");
       handleUpdateExam(exams);
     }
   };

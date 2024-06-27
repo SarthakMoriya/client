@@ -51,7 +51,6 @@ export const overallPercentage = (record) => {
     return less + more;
   }
   else if (record?.exams?.length === 0 && record?.mainExamMT > 0) {
-    console.log("ONLY MAIN EXAM FOUND")
     return Math.floor((record?.mainExamMO / record?.mainExamMT) * 100);
   }
   else if (record?.exams?.length > 0 && !record?.mainExamMT > 0) {

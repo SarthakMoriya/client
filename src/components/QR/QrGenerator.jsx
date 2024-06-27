@@ -5,7 +5,6 @@ const QRCodeComponent = ({ url }) => {
   const qrRef = React.useRef();
 
   const handleShare = () => {
-    console.log("clicked");
     const canvas = qrRef.current.querySelector("canvas");
     if (canvas) {
       canvas.toBlob((blob) => {

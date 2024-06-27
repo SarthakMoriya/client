@@ -15,7 +15,6 @@ const GetRecords = () => {
     } else {
       const data = await fetch(BASE_URL + "/records/getrecords");
       const res = await data.json();
-      console.log(res);
       dispatch(setRecords({ records: res }));
       setData(res);
     }

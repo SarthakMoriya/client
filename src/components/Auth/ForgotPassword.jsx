@@ -28,7 +28,6 @@ const ForgotPassword = ({ forgot, setForgot }) => {
 
   const handleUpdatePassword = async (e) => {
     e.preventDefault();
-    console.log(otp);
     if (otpRecieved !== otp) {
       alert("Incorrect OTP");
     } else {
@@ -43,7 +42,6 @@ const ForgotPassword = ({ forgot, setForgot }) => {
         });
 
         const result=await res.json();
-        console.log(result);
         alert("Password Changed");
         setForgot(false);
       }

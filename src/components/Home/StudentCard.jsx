@@ -10,7 +10,6 @@ import { BASE_URL } from "../../api";
 import { formatDateOnCard } from "../../utils/dateFormatter";
 
 const StudentCard = ({ data, setRecords, records }) => {
-  console.log(records);
   const navigate = useNavigate();
   const notify = (message, type = "error") => {
     if (type === "success") toast.success(message);

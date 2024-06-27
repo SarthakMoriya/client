@@ -6,7 +6,6 @@ import { BASE_URL } from "../../api";
 
 const Panel = () => {
   const { token } = useSelector((state) => state.auth);
-  console.log(token);
   const [unapprovedAccounts, setUnapprovedAccounts] = useState([]);
   const [accounts, setAccounts] = useState([]);
   const fetchAccounts = async () => {
@@ -22,7 +21,6 @@ const Panel = () => {
     setUnapprovedAccounts(data);
   };
   const handleApprove = async (acc) => {
-    console.log(acc);
     await fetch(`${BASE_URL}/auth/admin/approveaccounts/${acc._id}`, {
       headers: {
         "Content-Type": "application/json",
@@ -33,11 +31,9 @@ const Panel = () => {
     const updatedUnapprovedAccounts = unapprovedAccounts.filter(
       (account) => account._id !== acc._id
     );
-    console.log(updatedUnapprovedAccounts);
     setUnapprovedAccounts(updatedUnapprovedAccounts);
   };
   const handleDelete = async (acc) => {
-    console.log(acc);
     await fetch(`${BASE_URL}/auth/admin/deleteunapproveaccount/${acc._id}`);
     window.location.reload();
   };

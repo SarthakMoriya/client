@@ -13,7 +13,6 @@ const UpdatePassword = ({ user, setIsUpdatePassword }) => {
   const token = useSelector((state) => state.auth.token);
   const handleUpdatePassword = async (values, onSubmitProps) => {
     if (values.newpassword !== values.confirmpassword) {
-      console.log(values.newpassword,values.confirmpassword)
       alert("Please enter new password correctly");
       return;
     }
