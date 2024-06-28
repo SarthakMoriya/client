@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BASE_URL, deleteRecord } from "../../api";
@@ -26,6 +28,7 @@ import {
 } from "firebase/storage";
 import { app } from "../../firebase/firebase";
 import QRCodeComponent from "../QR/QrGenerator";
+import HeadingWrapper from "../../Wrapper/HeadingWrapper";
 
 const GetRecord = () => {
   const [record, setRecord] = useState("");
@@ -85,7 +88,6 @@ const GetRecord = () => {
   };
   // TO UPLOAD URL TO MONGODB
   const handleCertificate = async () => {
-
     if (certificate) {
       setLoading(true);
       await fetch(`${BASE_URL}/records/certificate`, {
@@ -93,8 +95,8 @@ const GetRecord = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, certificate: url }),
       }).then(async (res) => {
-        notify("Certificate saved","success");
-        setLoading(false)
+        notify("Certificate saved", "success");
+        setLoading(false);
         setIsUpdatingCertificate(false);
         fetchRecord();
       });
@@ -103,12 +105,16 @@ const GetRecord = () => {
       console.error("No file selected");
       notify("Please upload a certificate first!");
       setIsUpdatingCertificate(true);
-      setLoading(false)
+      setLoading(false);
     }
   };
   // TO GET URL FROM FIREBASE
   const handleCertificateUpload = async () => {
-    if(certificate==null || certificate === "" || certificate===undefined){
+    if (
+      certificate == null ||
+      certificate === "" ||
+      certificate === undefined
+    ) {
       notify("No certificate Selected!");
       return;
     }
@@ -131,7 +137,7 @@ const GetRecord = () => {
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
           setUrl(downloadUrl);
-          notify("Certificate upload succesfully","success")
+          notify("Certificate upload succesfully", "success");
           setLoading(false);
         });
       }
@@ -170,6 +176,35 @@ const GetRecord = () => {
     value: isNaN(overallPercentage(record))
       ? "Not Graded"
       : Math.floor(overallPercentage(record)),
+  };
+
+  const downloadReport = async () => {
+    const element = document.getElementById("root");
+    try {
+      // Capture the element as a canvas
+      const canvas = await html2canvas(element, {
+        scrollY: -window.scrollY, // Ensure to capture scrolled content
+        scale: 2, // Increase scale for better quality
+      });
+
+      // Convert canvas to image data
+      const imgData = canvas.toDataURL("image/png");
+
+      // Create PDF
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "px",
+        format: [canvas.width, canvas.height],
+      });
+
+      // Add image to PDF
+      pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+
+      // Save the PDF
+      pdf.save("report.pdf");
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    }
   };
 
   return (
@@ -271,24 +306,13 @@ const GetRecord = () => {
                     </button>
                   </>
                 )}
-                {user && (
-                  <button
-                    type="button"
-                    onClick={uplodaData}
-                    className="record_event_btn"
-                  >
-                    Upload Data
-                  </button>
-                )}
-                {!user && (
-                  <button
-                    type="button"
-                    onClick={uplodaData}
-                    className="record_event_btn"
-                  >
-                    Download Record
-                  </button>
-                )}
+                <button
+                  type="button"
+                  onClick={downloadReport}
+                  className="record_event_btn"
+                >
+                  Download Record
+                </button>
 
                 {user && record?.certificate === "" ? (
                   <>
@@ -348,7 +372,7 @@ const GetRecord = () => {
                       onClick={handleCertificateUpload}
                       className="record_event_btn"
                     >
-                      {loading?"Uploading...":"Upload Certificate"}
+                      {loading ? "Uploading..." : "Upload Certificate"}
                     </button>
                     {user && record?.certificate !== "" && (
                       <button
@@ -366,21 +390,20 @@ const GetRecord = () => {
                 )}
               </motion.div>
               <div className="m-2 border rounded-lg p-2">
-              <QRCodeComponent url={`http://localhost:3000/record/${record?._id}`}/>
+                <QRCodeComponent
+                  url={`http://localhost:3000/record/${record?._id}`}
+                />
               </div>
             </motion.div>
           </motion.div>
         )}
-        <div className="flex items-center justify-center">
-          <div className="border-secondary border-b-4  text-2xl font-semibold text-blue mt-8">
-            STUDENT PERFORMANCE
-          </div>
-        </div>
-        {record?.exams?.length>0 && (
+        <HeadingWrapper val={"STUDENT PERFORMANCE"}/>
+        {record?.exams?.length > 0 && (
           <RecordTable
             exams={record?.exams}
             studentName={record?.studentName}
             studentCourseName={record?.studentCourse}
+            id={record?._id}
           />
         )}
         {!record?.exams?.length && (
@@ -389,11 +412,8 @@ const GetRecord = () => {
           </p>
         )}
         {/* MAIN EXAM DETAILS */}
-        <div className="flex items-center justify-center">
-          <div className="border-secondary border-b-4  text-2xl font-semibold text-blue my-8">
-            MAIN EXAM DETAILS
-          </div>
-        </div>
+        <HeadingWrapper val="Main Exam Details"/>
+        <br />
         {record?.mainExamMT > 0 && (
           <motion.div
             whileInView={{ scale: [0, 1], opacity: [0, 1] }}
@@ -403,7 +423,10 @@ const GetRecord = () => {
             <motion.div className="flex items-center justify-center  text-black border  ">
               {["Exam", "Marks Obt", "Marks Total", "Grade", "Percentage"].map(
                 (val) => (
-                  <motion.div key={val} className="text-blue text-center px-1 sm:px-2 py-2 sm:py-4 max-w-[20%] w-[20%] border whitespace-nowrap overflow-ellipsis text-xs sm:text-base">
+                  <motion.div
+                    key={val}
+                    className="text-blue text-center px-1 sm:px-2 py-2 sm:py-4 max-w-[20%] w-[20%] border whitespace-nowrap overflow-ellipsis text-xs sm:text-base"
+                  >
                     {`${val}`}
                   </motion.div>
                 )

@@ -93,6 +93,26 @@ const CompareResult = () => {
                     </td>
                   </tr>
                 ))}
+                <tr
+                    className="bg-amber-400 border-b dark:border-gray-700"
+                  >
+                    <th
+                      scope="row"
+                      className="px-6 py-4 font-medium text-white"
+                    >
+                      Main Exam
+                    </th>
+                    <td className="px-6 py-4 text-white">{records[0]?.mainExamMO}/{records[0]?.mainExamMT}</td>
+                    <td className="px-6 py-4 text-white">{records[1]?.mainExamMO}/{records[1]?.mainExamMT}</td>
+                    <td className="px-6 py-4 text-white font-bold text-xl">
+                      {findWinner(
+                       records[0]?.mainExamMO,
+                       records[1]?.mainExamMO,
+                        records[0]?.studentName,
+                        records[1]?.studentName
+                      )}
+                    </td>
+                  </tr>
             </tbody>
           </table>
         </div>
