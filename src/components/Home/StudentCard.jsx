@@ -37,7 +37,7 @@ const StudentCard = ({ data, setRecords, records }) => {
     <div
       whileInView={{ opacity: [0, 1] }}
       transition={{ duration: 0.5, ease: "easeInOut" }}
-      className="flex flex-col w-[100%] md:w-[70%] lg:w-[45%] max-h-[50vh] h-[100%] shadow-2xl rounded-lg mr-4 mb-4 ml-4  bg-white px-4 py-6 border border-blue"
+      className="flex flex-col w-[100%] md:w-[70%] lg:w-[45%] max-h-[50vh] h-[100%] shadow-2xl rounded-lg mr-4 mb-4 ml-4 dark:bg-gray-900 bg-white px-4 py-6 border border-blue dark:border-white text-blue dark:text-white"
     >
       <ToastContainer
         position="top-center"
@@ -60,7 +60,7 @@ const StudentCard = ({ data, setRecords, records }) => {
           />
         </div>
 
-        <div className="info flex flex-col  justify-center text-blue ">
+        <div className="info flex flex-col  justify-center ">
           <div className="mx-4 my-2 font-semibold text-md">
             Id: {data?.studentId}
           </div>
@@ -78,7 +78,7 @@ const StudentCard = ({ data, setRecords, records }) => {
       <div className="flex p-2 lg:flex-row flex-col ">
         <button
           type="button"
-          className="text-white bg-secondary hover:bg-blue focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-2.5 py-2.5 text-center mb-2 sm:mr-2 w-[100%] rounded-lg  ease-in-out duration-500"
+          className="text-white dark:text-black bg-secondary dark:bg-gray-200 hover:bg-blue dark:hover:bg-gray-300 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-2.5 py-2.5 text-center mb-2 sm:mr-2 w-[100%] rounded-lg  ease-in-out duration-500"
           onClick={() => {
             navigate(`/record/${data?._id}`);
           }}
@@ -89,7 +89,7 @@ const StudentCard = ({ data, setRecords, records }) => {
           <button
             type="button"
             onClick={handleDownloadCertificate}
-            className="text-white bg-secondary hover:bg-blue focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-2.5 py-2.5 text-center mb-2 sm:mr-2 w-[100%] rounded-lg  ease-in-out duration-500"
+            className="text-white dark:text-black bg-secondary dark:bg-gray-200 hover:bg-blue dark:hover:bg-gray-300 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-2.5 py-2.5 text-center mb-2 sm:mr-2 w-[100%] rounded-lg  ease-in-out duration-500"
           >
             Download Certificate
           </button>
@@ -98,7 +98,7 @@ const StudentCard = ({ data, setRecords, records }) => {
           <button
             type="button"
             onClick={handleDeleteRecord}
-            className="text-white bg-secondary hover:bg-blue focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-2.5 py-2.5 text-center mb-2 sm:mr-2 w-[100%] rounded-lg  ease-in-out duration-500"
+            className="text-white dark:text-black bg-secondary dark:bg-gray-200 hover:bg-blue dark:hover:bg-gray-300 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium  text-sm px-2.5 py-2.5 text-center mb-2 sm:mr-2 w-[100%] rounded-lg  ease-in-out duration-500"
           >
             Delete
           </button>

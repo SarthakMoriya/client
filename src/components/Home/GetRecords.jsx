@@ -37,7 +37,7 @@ const GetRecords = () => {
     getRecords([]);
   }, []);
   return (
-    <div className="w-[100%] md:w-[70%] bg-[#e6e6e6]">
+    <div className="w-[100%] md:w-[70%] bg-[#e6e6e6] dark:bg-gray-800">
       <div className="mb-4 mt-4">
         <SearchBar searchRecords={getRecords} />
       </div>

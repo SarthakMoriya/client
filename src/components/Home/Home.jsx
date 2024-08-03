@@ -11,7 +11,7 @@ const Home = () => {
     document.title = `Webcooks `;
   }, [location.pathname]);
   return (
-    <div className="bg-background flex min-h-[100vh]">
+    <div className=" flex min-h-[100vh]">
       <GetRecords />
       <Sidebar />
     </div>

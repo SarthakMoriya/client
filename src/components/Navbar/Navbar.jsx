@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { setLogout } from "../../state";
 import { useDispatch } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
+import DarkModeToggle from "../../DarkModeToggle";
 const Navbar = () => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -16,14 +17,14 @@ const Navbar = () => {
     dispatch(setLogout());
     localStorage.removeItem("is_verified");
     navigate("http://localhost:3000/login");
-    setIsMobile(false)
+    setIsMobile(false);
   };
   return (
     <>
       {!location.pathname.includes("pdf") && (
-        <nav className="bg-white border-gray-200  border-b-4 border-b-primary fixed w-full z-10">
+        <nav className="bg-white dark:bg-gray-900  border-gray-200  dark:border-black  border-b-4 border-b-primary fixed w-full z-10">
           <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-2">
-            <Link to="/" className="flex items-center">
+            <Link to="/" className="flex items-center border border-white bg-white">
               <img src={logo} className="h-8 mr-3" alt="WebCooks" />
               {/* <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
                 WebCooks
@@ -35,7 +36,7 @@ const Navbar = () => {
                 className="hidden w-full md:block md:w-auto"
                 id="navbar-default"
               >
-                <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800  dark:border-gray-700 text-blue">
+                <ul className="font-medium flex flex-col gap-4 p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0  dark:border-gray-700 text-blue dark:text-white">
                   {/* CREATE RECORD */}
                   <li>
                     <Link
@@ -51,7 +52,7 @@ const Navbar = () => {
                     <li>
                       <Link
                         to="/mypanel"
-                        className="block py-2 pl-3 pr-4 text-gray-900 rounded "
+                        className="block py-2 pl-3 pr-4  rounded "
                       >
                         MyPanel
                       </Link>
@@ -75,12 +76,15 @@ const Navbar = () => {
                     <Link
                       href="#"
                       onClick={handleLogout}
-                      className="block py-2 pl-3 pr-4 text-gray-900 bg-secondary rounded  "
+                      className="block py-2 pl-3 pr-4 text-gray-900 dark:text-white bg-secondary dark:bg-gray-600 dark:hover:bg-gray-700 rounded  "
                     >
                       Logout
                     </Link>
                   </li>
                 </ul>
+                <div className="absolute right-4 top-2">
+                  <DarkModeToggle />
+                </div>
               </div>
             )}
             {/* LOGGEDIN NAVBAR Below 768PX*/}
@@ -153,7 +157,7 @@ const Navbar = () => {
             )}
 
             {/* NAVBAR WITHOUT LOGIN ABOVE 768PX*/}
-            {user === null &&  (
+            {user === null && (
               <>
                 <div
                   className="hidden w-full md:block md:w-auto"
@@ -165,7 +169,6 @@ const Navbar = () => {
                         to="/login"
                         className=" block  text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 px-2 py-2"
                         aria-current="page"
-
                       >
                         Signin
                       </Link>
@@ -174,7 +177,6 @@ const Navbar = () => {
                       <Link
                         to="/signup"
                         className="bg-secondary block  text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent  md:hover:text-blue-700 px-2 py-2 hover:border-secondary hover:border-2 border-2"
- 
                       >
                         SignUp
                       </Link>
@@ -186,10 +188,7 @@ const Navbar = () => {
             {/* NAVBAR WITHOUT LOGIN BELOW 768PX*/}
             {user === null && isMobile && (
               <>
-                <div
-                  className=" w-full"
-                  id="navbar-default"
-                >
+                <div className=" w-full" id="navbar-default">
                   <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white   dark:border-gray-700">
                     <li>
                       <Link
