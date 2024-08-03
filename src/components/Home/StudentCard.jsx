@@ -34,7 +34,7 @@ const StudentCard = ({ data, setRecords, records }) => {
     }
   };
   return (
-    <motion.div
+    <div
       whileInView={{ opacity: [0, 1] }}
       transition={{ duration: 0.5, ease: "easeInOut" }}
       className="flex flex-col w-[100%] md:w-[70%] lg:w-[45%] max-h-[50vh] h-[100%] shadow-2xl rounded-lg mr-4 mb-4 ml-4  bg-white px-4 py-6 border border-blue"
@@ -104,7 +104,7 @@ const StudentCard = ({ data, setRecords, records }) => {
           </button>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 };
 
