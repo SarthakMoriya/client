@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import viewicon from "../../assets/viewicon.png";
 import editicon from "../../assets/edit.png";
 import deleteicon from "../../assets/delete.png";
-import { deleteRecord, editRecord, viewRecord } from "../../api";
+import { deleteRecord } from "../../api";
 
 const Student = ({ student }) => {
   const navigate = useNavigate();

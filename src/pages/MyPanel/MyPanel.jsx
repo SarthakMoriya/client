@@ -41,7 +41,7 @@ const MyPanel = () => {
       headers: { Authorization: `Bearer ${token}` },
     });
     const res = await data.json();
-    if (res.ok == false) {
+    if (res.ok === false) {
       setError(res.message);
       notify(res.message);
       return;
@@ -69,8 +69,8 @@ const MyPanel = () => {
     uploadTask.on(
       "state_changed",
       (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        // const progress =
+        //   (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
       },
       (err) => {
         notify("Image Size must be less than 2mb");

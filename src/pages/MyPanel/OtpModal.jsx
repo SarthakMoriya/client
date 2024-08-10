@@ -17,7 +17,6 @@ const initialValuesOtp = { otp: "" };
 
 const OtpModal = ({ otp, setIsOtpSent, setIsVerified }) => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth);
 
   const id = useSelector((state) => state.auth.user._id);
   const notify = (message, type = "error") => {

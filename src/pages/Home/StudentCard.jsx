@@ -1,7 +1,4 @@
 import React from "react";
-import userfallback from "../../assets/user.png";
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";

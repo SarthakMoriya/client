@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BASE_URL } from "../../api";
+import PrimaryButton from "../../components/buttons/PrimaryButton";
 
 const ForgotPassword = ({ forgot, setForgot }) => {
   const [otp, setOtp] = useState("");
@@ -102,13 +103,7 @@ const ForgotPassword = ({ forgot, setForgot }) => {
           />
         </div>
         <div className="px-4 py-2">
-          <button
-            type="button"
-            onClick={handleSendOtp}
-            className="bg-secondary border border-secondary text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
-          >
-            Send OTP
-          </button>
+          <PrimaryButton text={'Send OTP'} click={handleSendOtp}/>
         </div>
         {/* OTP */}
         <div className="px-4 py-2">
@@ -169,12 +164,7 @@ const ForgotPassword = ({ forgot, setForgot }) => {
           />
         </div>
         <div className="px-4 py-2">
-          <button
-            type="submit"
-            className="bg-secondary border border-secondary text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
-          >
-            Update Password
-          </button>
+          <PrimaryButton text={'Update Password'} type="submit"/>
         </div>
       </form>
     </div>

@@ -1,17 +1,17 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import Home from "./components/Home/Home";
+import Home from "./pages/Home/Home";
 import Navbar from "./components/Navbar/Navbar";
-import Login from "./components/Auth/Login";
-import Signup from "./components/Auth/Signup";
-import CreateRecord from "./components/CreateRecord/CreateRecord";
+import Login from "./pages/Auth/Login";
+import Signup from "./pages/Auth/Signup";
+import CreateRecord from "./pages/CreateRecord/CreateRecord";
 import GetRecord from "./components/Record/GetRecord";
 import { useEffect } from "react";
 import { setRecords } from "./state";
 import { useDispatch } from "react-redux";
 import Edit from "./components/Edit/Edit";
-import MyPanel from "./components/MyPanel/MyPanel";
+import MyPanel from "./pages/MyPanel/MyPanel";
 import AdminLogin from "./components/Admin/AdminLogin";
 import Panel from "./components/Admin/Panel";
 import Pdf from "./components/PDF/Pdf";

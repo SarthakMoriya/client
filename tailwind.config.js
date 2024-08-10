@@ -5,7 +5,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Poppins", "Roboto"],
+        sans: ["Poppins", "Roboto"]
         // You can add more font families here if needed
       },
       colors: {

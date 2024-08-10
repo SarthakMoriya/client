@@ -7,8 +7,9 @@ import { Formik } from "formik";
 import { initialValuesLogin, loginSchema } from "../../schemas/authSchema";
 import { motion } from "framer-motion";
 import ForgotPassword from "./ForgotPassword";
-import Warning from "../Icons/Warning";
+// import Warning from "../Icons/Warning";
 import { BASE_URL } from "../../api";
+import PrimaryButton from "../../components/buttons/PrimaryButton";
 
 const Login = () => {
   const distpatch = useDispatch();
@@ -54,7 +55,7 @@ const Login = () => {
               </h1>
               {error && (
                 <div className="flex items-center gap-4">
-                  <Warning className="text-red-600 text-sm" />
+                  {/* <Warning className="text-red-600 text-sm" /> */}
                   <div className="text-red-600 text-sm">{error}</div>
                 </div>
               )}
@@ -149,14 +150,7 @@ const Login = () => {
                         Forgot password?
                       </Link>
                     </motion.div>
-                    <motion.button
-                      whileInView={{ opacity: [0, 1] }}
-                      transition={{ duration: 1, ease: "easeInOut" }}
-                      type="submit"
-                      className="w-full text-white bg-secondary hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-gray-600 dark:focus:ring-primary-800"
-                    >
-                      Sign in
-                    </motion.button>
+                    <PrimaryButton text={"Sign In"} type="submit" />
                     <motion.p
                       whileInView={{ opacity: [0, 1] }}
                       transition={{ duration: 1, ease: "easeInOut" }}

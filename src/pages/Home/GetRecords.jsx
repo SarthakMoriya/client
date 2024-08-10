@@ -4,11 +4,8 @@ import StudentCard from "./StudentCard";
 import SearchBar from "./SearchBar";
 import { BASE_URL } from "../../api";
 import { setRecords } from "../../state";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
 import StudentCardSkeleton from "./StudentCardSkeleton";
 
-let skeletons = [0, 1, 2, 3];
 
 const GetRecords = () => {
   const dispatch = useDispatch();

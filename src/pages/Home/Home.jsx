@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import {useLocation} from "react-router-dom"
 import GetRecords from "./GetRecords";
-import Sidebar from "../Sidebar/Sidebar";
+import Sidebar from "../../components/Sidebar/Sidebar";
 
 const Home = () => {
   const location = useLocation();
