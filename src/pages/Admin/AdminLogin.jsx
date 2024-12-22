@@ -9,7 +9,7 @@ import {
   adminloginSchema,
 } from "../../schemas/authSchema";
 import { ToastContainer } from "react-toastify";
-import Warning from "../Icons/Warning";
+import Warning from "../../components/Icons/Warning";
 import { BASE_URL } from "../../api";
 
 const AdminLogin = () => {

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Link,  useParams } from "react-router-dom";
 
 import user from "../../assets/user.png";
-import RecordTable from "../Record/RecordTable";
+import RecordTable from "../../pages/Record/RecordTable";
 import { gradeCalculator } from "../../utils/gradeCalculator";
 import { BASE_URL } from "../../api";
 

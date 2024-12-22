@@ -16,9 +16,9 @@ import { notify } from "../../utils/notification";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import BarChart from "../Charts/BarChart";
-import PerformanceChart from "../Charts/PerformanceChart";
-import GrowthChart from "../Charts/GrowthChart";
+import BarChart from "../../components/Charts/BarChart";
+import PerformanceChart from "../../components/Charts/BarChart";
+import GrowthChart from "../../components/Charts/GrowthChart";
 import "./style.css";
 import {
   getDownloadURL,
@@ -27,7 +27,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../../firebase/firebase";
-import QRCodeComponent from "../QR/QrGenerator";
+import QRCodeComponent from "../../components/QR/QrGenerator";
 import HeadingWrapper from "../../Wrapper/HeadingWrapper";
 
 const GetRecord = () => {
